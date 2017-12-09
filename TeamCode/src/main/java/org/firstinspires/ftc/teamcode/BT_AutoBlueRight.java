@@ -103,7 +103,7 @@ public class BT_AutoBlueRight extends LinearOpMode {
         }
         telemetry.addData("Status", "Identified column: %s ",vuMark);
         telemetry.update();
-
+//Test
     robot.jewels.moveJewel(BT_Jewels.JewelColor.RED , this);
     }
 }
