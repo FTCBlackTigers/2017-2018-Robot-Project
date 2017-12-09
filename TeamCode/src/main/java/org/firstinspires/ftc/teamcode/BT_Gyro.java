@@ -64,8 +64,7 @@ public class BT_Gyro
     BNO055IMU imu;
 
     // State used for updating telemetry
-    Orientation angles;
-    Acceleration gravity;
+
 
     //----------------------------------------------------------------------------------------------
     // Main logic
@@ -93,6 +92,10 @@ public class BT_Gyro
     public void start () {
         // Start the logging of measured acceleration
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+    }
+    public double getAngle() {
+        Orientation angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        return angles.firstAngle;
     }
 
     //----------------------------------------------------------------------------------------------

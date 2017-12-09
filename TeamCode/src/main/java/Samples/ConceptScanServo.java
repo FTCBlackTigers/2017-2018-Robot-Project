@@ -55,7 +55,7 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @Autonomous(name = "Concept: Scan Servo", group = "Concept")
-//@Disabled
+@Disabled
 public class ConceptScanServo extends LinearOpMode {
 
     NormalizedColorSensor colorSensor;

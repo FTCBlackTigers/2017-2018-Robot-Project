@@ -32,10 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
@@ -64,11 +61,10 @@ public class BT_AutoBlueRight extends LinearOpMode {
     static final double LEFT_DRIVE_DIST = 50 ;
     static final double CENTER_DRIVE_DIST = 60 ;
     static final double RIGHT_DRIVE_DIST = 70 ;
-
     @Override
     public void runOpMode() {
 
-        double driveDist ;
+        double driveDist = 0 ;
         robot.init(hardwareMap);
         telemetry.addData("Status", "Robot Initialized");
         telemetry.update();
@@ -104,6 +100,8 @@ public class BT_AutoBlueRight extends LinearOpMode {
         telemetry.addData("Status", "Identified column: %s ",vuMark);
         telemetry.update();
 
-    robot.jewels.moveJewel(BT_Jewels.JewelColor.RED , this);
+        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED , this);
+        robot.drive.move(driveDist, 3000);
+        robot.drive.turn(90 , 1000,telemetry);
     }
 }

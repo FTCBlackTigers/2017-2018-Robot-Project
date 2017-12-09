@@ -56,7 +56,6 @@ public class BT_Hardware {
     public BT_Jewels jewels = new BT_Jewels();
     public BT_Intake intake = new BT_Intake();
     public BT_Glyphs glyphs = new BT_Glyphs();
-    public BT_Gyro gyro = new BT_Gyro();
 
     HardwareMap hwMap = null;
 
@@ -75,6 +74,5 @@ public class BT_Hardware {
         jewels.init(hwMap);
         intake.init(hwMap);
         glyphs.init(hwMap);
-        gyro.init(hwMap);
     }
 }

@@ -30,8 +30,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /**
  * This is NOT an opmode.
@@ -50,6 +54,7 @@ public class BT_Drive {
     public DcMotor  frontRightDrive  = null;
     public DcMotor  rearLeftDrive   = null;
     public DcMotor  rearRightDrive  = null;
+    public BT_Gyro  gyro = new BT_Gyro();
     
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     //TODO : fix  DRIVE_GEAR_REDUCTION after installing wheels
@@ -58,7 +63,12 @@ public class BT_Drive {
     static final double     COUNTS_PER_CM           = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_CM * 3.1415);
     static final double     AUTO_DRIVE_SPEED             = 0.6;
-    static final double      AUTO_TURN_SPEED              = 0.5;
+    static final double      AUTO_TURN_SPEED              = 0.3;
+
+    static final double     THRESHOLD = 0.1;
+    static final double     P_TURN_COEFF            = 0.1;
+
+    ElapsedTime runtime = new ElapsedTime();
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -76,52 +86,101 @@ public class BT_Drive {
         // Define and Initialize Motors
         frontLeftDrive = hwMap.get(DcMotor.class, "frontLeftDrive");
         frontRightDrive = hwMap.get(DcMotor.class, "frontRightDrive");
-        rearLeftDrive = hwMap.get(DcMotor.class, "rearLeftDrive");
-        rearRightDrive = hwMap.get(DcMotor.class, "rearRightDrive");
+//        rearLeftDrive = hwMap.get(DcMotor.class, "rearLeftDrive");
+//        rearRightDrive = hwMap.get(DcMotor.class, "rearRightDrive");
        //TODO: fix directions
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-        rearLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rearRightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-
-
-
+//        rearLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+//        rearRightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
         // Set all motors to zero power
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
-        rearLeftDrive.setPower(0);
-        rearRightDrive.setPower(0);
-
-
+//        rearLeftDrive.setPower(0);
+//        rearRightDrive.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
         //TODO: fix motors mode
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rearRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+//        rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rearRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //Initiate the gyro
+        gyro.init(hwMap);
     }
     
     public void move (double distCm , double timeoutS ){
         encoderDrive( AUTO_DRIVE_SPEED, distCm, distCm, timeoutS);
     }
 
-    public void turn (double degrees, double timeoutS) {
+    public void turn (double degrees, double timeoutMs, Telemetry telemetry) {
         //TODO : fix turn by gyro
+        double rightSpeed, leftSpeed;
+        double steer;
+        double error = getError(degrees);
+        double t;
+        runtime.reset();
+        // keep looping while we are still active, and not on heading.
+        while((Math.abs(error) > THRESHOLD) && (runtime.time() < timeoutMs)) {
+            while (Math.abs(error) > THRESHOLD ) {
+                // Update telemetry & Allow time for other processes to run.
+                steer = getSteer(error, P_TURN_COEFF);
+                rightSpeed = AUTO_TURN_SPEED * steer;
+                if(rightSpeed>0&& rightSpeed<0.1)
+                    rightSpeed=0.1;
+                else if(rightSpeed<0&&rightSpeed>-0.1)
+                    rightSpeed=-0.1;
+                leftSpeed = -rightSpeed;
+
+                frontLeftDrive.setPower(leftSpeed);
+                frontRightDrive.setPower(rightSpeed);
+                error = getError(degrees);
+                telemetry.addData("Error", error);
+                telemetry.update();
+            }
+            frontLeftDrive.setPower(0);
+            frontRightDrive.setPower(0);
+            t= runtime.time();
+            while (runtime.time() < t + 300){
+                error = getError(degrees);
+                telemetry.addData("Error", error);
+                telemetry.update();
+            }
+        }
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+    }
+    public double getError(double targetAngle) {
+
+        double robotError;
+
+        // calculate error in -179 to +180 range  (
+        robotError = targetAngle - gyro.getAngle();
+        while (robotError > 180)  robotError -= 360;
+        while (robotError <= -180) robotError += 360;
+        return robotError;
+    }
+    public double getSteer(double error, double PCoeff) {
+        return Range.clip(error * PCoeff, -1, 1);
     }
 
-    public void teleopDrive (double driveSpeedRight, double driveSpeedLeft) {
-        frontLeftDrive.setPower(driveSpeedLeft);
-        frontRightDrive.setPower(driveSpeedRight);
+    public void teleopDrive (Gamepad gamepad) {
+        double left;
+        double right;
+        // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
+        left = -gamepad.left_stick_y;
+        right = -gamepad.right_stick_y;
+
+        frontLeftDrive.setPower(left);
+        frontRightDrive.setPower(right);
 
     }
 
     public void encoderDrive(double speed,
                              double leftCm, double rightCm,
-                             double timeoutS) {
+                             double timeoutMs) {
         int newLeftTarget;
         int newRightTarget;
         ElapsedTime runtime =new ElapsedTime();
@@ -146,7 +205,7 @@ public class BT_Drive {
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while ((runtime.seconds() < timeoutS) &&
+            while ((runtime.time() < timeoutMs) &&
                     (frontLeftDrive.isBusy() && frontRightDrive.isBusy())) {
 
             }
@@ -159,7 +218,5 @@ public class BT_Drive {
             frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            //  sleep(250);   // optional pause after each move
         }
-    //HI
     }
