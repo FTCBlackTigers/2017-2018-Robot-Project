@@ -114,6 +114,10 @@ public class BT_Drive {
     public void move (double distCm , double timeoutS ){
         encoderDrive( AUTO_DRIVE_SPEED, distCm, distCm, timeoutS);
     }
+    public void moveByPower (double power ){
+        frontLeftDrive.setPower(power);
+        frontRightDrive.setPower(power);
+    }
 
     public void turn (double degrees, double timeoutMs, Telemetry telemetry) {
         //TODO : fix turn by gyro
