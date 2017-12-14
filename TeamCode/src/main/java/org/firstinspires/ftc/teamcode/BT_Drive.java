@@ -84,7 +84,7 @@ public class BT_Drive {
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        frontLeftDrive = hwMap.get(DcMotor.class, "frontLeftDrive");
+        frontLeftDrive  = hwMap.get(DcMotor.class, "frontLeftDrive");
         frontRightDrive = hwMap.get(DcMotor.class, "frontRightDrive");
 //        rearLeftDrive = hwMap.get(DcMotor.class, "rearLeftDrive");
 //        rearRightDrive = hwMap.get(DcMotor.class, "rearRightDrive");

@@ -51,7 +51,7 @@ public class BT_Intake
     public DcMotor  rightIntake  = null;
 
     //TODO: define constants
-    public static final double INTAKE_POWER  = -0.45 ;
+    public static final double INTAKE_POWER  = 0.45 ;
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -68,8 +68,11 @@ public class BT_Intake
 
         // Define and Initialize Motors
 
-        leftIntake = hwMap.get(DcMotor.class, "leftIntake");
-        rightIntake = hwMap.get(DcMotor.class, "rightIntake");
+        //leftIntake = hwMap.get(DcMotor.class, "leftIntake");
+        //rightIntake = hwMap.get(DcMotor.class, "rightIntake");
+        leftIntake = hwMap.get(DcMotor.class, "frontLeftDrive");
+        rightIntake = hwMap.get(DcMotor.class, "frontRightDrive");
+
        //TODO: fix directions
         leftIntake.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightIntake.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
@@ -80,13 +83,16 @@ public class BT_Intake
         leftIntake.setPower(0);
         rightIntake.setPower(0);
 
-
-        // Set all motors to run without encoders.
-        // May want to use RUN_USING_ENCODERS if encoders are installed.
-        //TODO: fix motors mode
-
         leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+    public void glyphsIn() {
+        leftIntake.setPower(INTAKE_POWER);
+        rightIntake.setPower(INTAKE_POWER);
+    }
+    public void glyphsOut() {
+        leftIntake.setPower(-INTAKE_POWER);
+        rightIntake.setPower(-INTAKE_POWER);
     }
  }
 
