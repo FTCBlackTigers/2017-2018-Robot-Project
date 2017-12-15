@@ -150,6 +150,7 @@ public class BT_Jewels {
     }
 
     public void moveJewel(JewelColor targetColor , LinearOpMode callerOpmode){
+
         JewelColor jewelColor;
         armDown(callerOpmode);
         callerOpmode.sleep(1000);
