@@ -90,6 +90,7 @@ public class BT_Intake
         leftIntake.setPower(INTAKE_POWER);
         rightIntake.setPower(INTAKE_POWER);
     }
+
     public void glyphsOut() {
         leftIntake.setPower(-INTAKE_POWER);
         rightIntake.setPower(-INTAKE_POWER);

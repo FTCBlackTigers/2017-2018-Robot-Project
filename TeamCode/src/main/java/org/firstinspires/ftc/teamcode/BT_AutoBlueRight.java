@@ -51,13 +51,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  */
 
 @Autonomous(name="BlueRight", group="Auto")
-@Disabled
+//@Disabled
 public class BT_AutoBlueRight extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private BT_Hardware robot = new BT_Hardware();
-    static final double WAIT_FOR_VUMARK = 6000;
+    static final double WAIT_FOR_VUMARK = 1000;
     static final double LEFT_DRIVE_DIST = 50 ;
     static final double CENTER_DRIVE_DIST = 60 ;
     static final double RIGHT_DRIVE_DIST = 70 ;
@@ -69,39 +69,40 @@ public class BT_AutoBlueRight extends LinearOpMode {
         telemetry.addData("Status", "Robot Initialized");
         telemetry.update();
 
-        BT_Vumark btVumark = new BT_Vumark(hardwareMap) ;
-        telemetry.addData("Status", "Vumark Initialized");
-        telemetry.update();
+//        BT_Vumark btVumark = new BT_Vumark(hardwareMap) ;
+//        telemetry.addData("Status", "Vumark Initialized");
+//        telemetry.update();
 
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.UNKNOWN ;
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-        while ((vuMark == RelicRecoveryVuMark.UNKNOWN) && (runtime.time()< WAIT_FOR_VUMARK)) {
-            vuMark = btVumark.getVuMark();
-        }
-           /* if (vuMark == RelicRecoveryVuMark.UNKNOWN){
-                vuMark = RelicRecoveryVuMark.LEFT ;
-            } */
-        switch (vuMark) {
-            case RIGHT :
-                driveDist = RIGHT_DRIVE_DIST ;
-                break;
-            case CENTER:
-                driveDist = CENTER_DRIVE_DIST ;
-                break;
-            case LEFT:
-                driveDist = LEFT_DRIVE_DIST ;
-                break;
-            case UNKNOWN:
-                driveDist = RIGHT_DRIVE_DIST ;
-                break;
-        }
-        telemetry.addData("Status", "Identified column: %s ",vuMark);
-        telemetry.update();
+//        while ((vuMark == RelicRecoveryVuMark.UNKNOWN) && (runtime.time()< WAIT_FOR_VUMARK)) {
+//            vuMark = btVumark.getVuMark();
+//        }
+//           /* if (vuMark == RelicRecoveryVuMark.UNKNOWN){
+//                vuMark = RelicRecoveryVuMark.LEFT ;
+//            } */
+//        switch (vuMark) {
+//            case RIGHT :
+//                driveDist = RIGHT_DRIVE_DIST ;
+//                break;
+//            case CENTER:
+//                driveDist = CENTER_DRIVE_DIST ;
+//                break;
+//            case LEFT:
+//                driveDist = LEFT_DRIVE_DIST ;
+//                break;
+//            case UNKNOWN:
+//                driveDist = RIGHT_DRIVE_DIST ;
+//                break;
+//        }
+//        telemetry.addData("Status", "Identified column: %s ",vuMark);
+//        telemetry.update();
 
         robot.jewels.moveJewel(BT_Jewels.JewelColor.RED , this);
-        robot.drive.move(driveDist, 3000);
-        robot.drive.turn(90 , 1000,telemetry);
+//        sleep(3000);
+       // robot.drive.move(driveDist, 3000);
+        //robot.drive.turn(90 , 1000,telemetry);
     }
 }

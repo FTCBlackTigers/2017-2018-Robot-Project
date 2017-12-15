@@ -52,10 +52,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class BT_Glyphs
 {
     /* Public OpMode members. */
-    public DcMotor  leftIntake  = null;
-    public DcMotor  rightIntake  = null;
-    public Servo    jewelArm     = null;
-    public Servo    jewelFinger    = null;
+//    public DcMotor  leftIntake  = null;
+//    public DcMotor  rightIntake  = null;
+//    public Servo    jewelArm     = null;
+//    public Servo    jewelFinger    = null;
 
 
     //TODO: define constants
@@ -78,32 +78,32 @@ public class BT_Glyphs
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftIntake = hwMap.get(DcMotor.class, "leftIntake");
-        rightIntake = hwMap.get(DcMotor.class, "rightIntake");
-        jewelArm = hwMap.get(Servo.class, "jewelArm");
-        jewelFinger = hwMap.get(Servo.class, "jewelFinger");
-
-
-       //TODO: fix directions
-        leftIntake.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightIntake.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-
-
-
-        // Set all motors to zero power
-        leftIntake.setPower(0);
-        rightIntake.setPower(0);
-
-
-        // Set all motors to run without encoders.
-        // May want to use RUN_USING_ENCODERS if encoders are installed.
-        //TODO: fix motors mode
-        leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
-        jewelArm.setPosition(JEWEL_ARM_START);
-        jewelFinger.setPosition(JEWEL_FINGER_START);
+//        leftIntake = hwMap.get(DcMotor.class, "leftIntake");
+//        rightIntake = hwMap.get(DcMotor.class, "rightIntake");
+//        jewelArm = hwMap.get(Servo.class, "jewelArm");
+//        jewelFinger = hwMap.get(Servo.class, "jewelFinger");
+//
+//
+//       //TODO: fix directions
+//        leftIntake.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+//        rightIntake.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+//
+//
+//
+//        // Set all motors to zero power
+//        leftIntake.setPower(0);
+//        rightIntake.setPower(0);
+//
+//
+//        // Set all motors to run without encoders.
+//        // May want to use RUN_USING_ENCODERS if encoders are installed.
+//        //TODO: fix motors mode
+//        leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//
+//        jewelArm.setPosition(JEWEL_ARM_START);
+//        jewelFinger.setPosition(JEWEL_FINGER_START);
     }
  }
 

@@ -106,10 +106,13 @@ public class BT_Teleop extends OpMode
 
         if (glyphOut) {
             robot.intake.glyphsOut();
+            telemetry.addData("pressed","y");
         }
         else if (glyphIn) {
             robot.intake.glyphsIn();
+            telemetry.addData("pressed","a");
         }
+
     }
 
     /*
