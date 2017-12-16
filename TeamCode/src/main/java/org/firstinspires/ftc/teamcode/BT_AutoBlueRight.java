@@ -65,16 +65,22 @@ public class BT_AutoBlueRight extends LinearOpMode {
     public void runOpMode() {
 
         double driveDist = 0 ;
-        robot.init(hardwareMap);
-        telemetry.addData("Status", "Robot Initialized");
+        robot.init(hardwareMap,this);
+        BT_Status.cleanStatus();
+        BT_Status.addLine("Robot Initialized");
+        telemetry.addData("Status", BT_Status.getStatusLine());
         telemetry.update();
 
-//        BT_Vumark btVumark = new BT_Vumark(hardwareMap) ;
-//        telemetry.addData("Status", "Vumark Initialized");
-//        telemetry.update();
+        BT_Vumark btVumark = new BT_Vumark(hardwareMap) ;
+        BT_Status.addLine("Vumark Initialized");
+        telemetry.addData("Status",BT_Status.getStatusLine());
+        telemetry.update();
 
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.UNKNOWN ;
         // Wait for the game to start (driver presses PLAY)
+        BT_Status.addLine("Waiting for start...");
+        telemetry.addData("Status",BT_Status.getStatusLine());
+        telemetry.update();
         waitForStart();
         runtime.reset();
 //        while ((vuMark == RelicRecoveryVuMark.UNKNOWN) && (runtime.time()< WAIT_FOR_VUMARK)) {
@@ -100,7 +106,7 @@ public class BT_AutoBlueRight extends LinearOpMode {
 //        telemetry.addData("Status", "Identified column: %s ",vuMark);
 //        telemetry.update();
 
-        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED , this);
+        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
 //        sleep(3000);
        // robot.drive.move(driveDist, 3000);
         //robot.drive.turn(90 , 1000,telemetry);

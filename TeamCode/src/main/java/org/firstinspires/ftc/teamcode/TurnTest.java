@@ -14,7 +14,7 @@ public class TurnTest extends LinearOpMode {
     private BT_Drive robot = new BT_Drive();
     @Override
     public void runOpMode() {
-        robot.init(hardwareMap);
+        robot.init(hardwareMap, this);
 
         waitForStart();
         runtime.reset();

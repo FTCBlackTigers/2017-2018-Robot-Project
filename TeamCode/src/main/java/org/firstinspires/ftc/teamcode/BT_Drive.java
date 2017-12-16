@@ -90,27 +90,27 @@ public class BT_Drive {
         // Define and Initialize Motors
         frontLeftDrive  = hwMap.get(DcMotor.class, "frontLeftDrive");
         frontRightDrive = hwMap.get(DcMotor.class, "frontRightDrive");
-//        rearLeftDrive = hwMap.get(DcMotor.class, "rearLeftDrive");
-//        rearRightDrive = hwMap.get(DcMotor.class, "rearRightDrive");
-       //TODO: fix directions
+        rearLeftDrive = hwMap.get(DcMotor.class, "rearLeftDrive");
+        rearRightDrive = hwMap.get(DcMotor.class, "rearRightDrive");
+      // TODO: fix directions
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-//        rearLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-//        rearRightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        rearLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        rearRightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
         // Set all motors to zero power
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
-//        rearLeftDrive.setPower(0);
-//        rearRightDrive.setPower(0);
+        rearLeftDrive.setPower(0);
+        rearRightDrive.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
         //TODO: fix motors mode
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rearRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rearRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //Initiate the gyro
         gyro.init(hwMap);
     }
@@ -183,7 +183,8 @@ public class BT_Drive {
 
         frontLeftDrive.setPower(left);
         frontRightDrive.setPower(right);
-
+        rearLeftDrive.setPower(left);
+        rearRightDrive.setPower(right);
     }
 
     public void encoderDrive(double speed,
