@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -65,14 +67,14 @@ public class BT_Hardware {
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
+    public void init(HardwareMap ahwMap , OpMode callerOpmode) {
         // Save reference to Hardware map
         hwMap = ahwMap;
 
         // Define and Initialize systems
-        //drive.init(hwMap);
-        jewels.init(hwMap);
-        //intake.init(hwMap);
-        //glyphs.init(hwMap);
+        //drive.init(hwMap,callerOpmode);
+        jewels.init(hwMap , callerOpmode);
+        //intake.init(hwMap,callerOpmode);
+        //glyphs.init(hwMap,callerOpmode);
     }
 }

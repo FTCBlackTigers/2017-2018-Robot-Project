@@ -31,6 +31,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -38,6 +39,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import static android.os.SystemClock.sleep;
 
 /**
  * This is NOT an opmode.
@@ -72,6 +75,8 @@ public class BT_Jewels {
     public static final double ARM_UP_INTERVAL =  0.1 ;
 
     private ElapsedTime runtimeJ = new ElapsedTime();
+    private OpMode callerOpmode;
+
     static final double WAIT_FOR_COLOR = 3000;
     static final long WAIT_INTERVAL = 500;
 
@@ -84,9 +89,10 @@ public class BT_Jewels {
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
+    public void init(HardwareMap ahwMap, OpMode callerOpmode) {
         // Save reference to Hardware map
         hwMap = ahwMap;
+        this.callerOpmode = callerOpmode;
 
         // Define and Initialize Motors
         jewelArm = hwMap.get(Servo.class, "jewelArm");
@@ -98,25 +104,19 @@ public class BT_Jewels {
         jewelFinger.setPosition(JEWEL_FINGER_START);
     }
 
-    public void armDown(LinearOpMode caller){
+    public void armDown(){
         jewelFinger.setPosition(JEWEL_FINGER_MID);
         for (double pos = JEWEL_ARM_START; pos>=ARM_DOWN_POS; pos-=0.1 ){
             jewelArm.setPosition(pos);
-            caller.sleep(100);
+            ((LinearOpMode)callerOpmode).sleep(100);
         }
         jewelArm.setPosition(ARM_DOWN_POS);
     }
 
-    public void armUp(LinearOpMode caller){
-        for (double pos = ARM_DOWN_POS; pos<=JEWEL_ARM_START; pos+=0.1 ){
-            jewelArm.setPosition(pos);
-            caller.sleep(100);
-
-        }
-        while (jewelArm.getPosition() == JEWEL_ARM_START){
+    public void armUp(){
+        while (jewelArm.getPosition() <= JEWEL_ARM_START){
             jewelArm.setPosition(JEWEL_ARM_START);
         }
-
 
         jewelArm.setPosition(JEWEL_ARM_START);
         jewelFinger.setPosition(JEWEL_FINGER_START);
@@ -149,14 +149,14 @@ public class BT_Jewels {
         return jewelColor;
     }
 
-    public void moveJewel(JewelColor targetColor , LinearOpMode callerOpmode){
+    public void moveJewel(JewelColor targetColor){
 
         JewelColor jewelColor;
-        armDown(callerOpmode);
-        callerOpmode.sleep(1000);
+        armDown();
+        ((LinearOpMode)callerOpmode).sleep(1000);
         jewelColor = getJewelColor();
         while ((jewelColor == JewelColor.UNKNOWN) && (runtimeJ.time()< WAIT_FOR_COLOR)) {
-            callerOpmode.sleep(WAIT_INTERVAL);
+            ((LinearOpMode)callerOpmode).sleep(WAIT_INTERVAL);
             jewelColor = getJewelColor();
             jewelArm.setPosition(jewelArm.getPosition()+ARM_UP_INTERVAL);
         }
@@ -167,7 +167,7 @@ public class BT_Jewels {
                 fingerRight();
             }
         }
-        armUp(callerOpmode);
+        armUp();
     }
 }
 

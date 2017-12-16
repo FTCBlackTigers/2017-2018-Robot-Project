@@ -63,7 +63,7 @@ public class BT_Teleop extends OpMode
      */
     @Override
     public void init() {
-        robot.init(hardwareMap);
+        robot.init(hardwareMap, this);
         telemetry.addData("Status", "Robot Initialized");
         telemetry.update();
     }
@@ -88,19 +88,10 @@ public class BT_Teleop extends OpMode
      */
     @Override
     public void loop() {
-        // Setup a variable for each drive wheel to save power level for telemetry
-        double leftPower;
-        double rightPower;
+        robot.drive.tankTeleopDrive(gamepad1);
+        boolean glyphOut = gamepad2.y;
+        boolean glyphIn = gamepad2.a;
 
-        // Choose to drive using either Tank Mode, or POV Mode
-        // Comment out the method that's not used.  The default below is POV.
-
-        // POV Mode uses left stick to go forward, and right stick to turn.
-        // - This uses basic math to combine motions and is easier to drive straight.
-        boolean glyphOut = gamepad1.y;
-        boolean glyphIn = gamepad1.a;
-
-        // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
 

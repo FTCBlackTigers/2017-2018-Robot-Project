@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -69,6 +71,7 @@ public class BT_Drive {
     static final double     P_TURN_COEFF            = 0.1;
 
     ElapsedTime runtime = new ElapsedTime();
+    private OpMode callerOpmode;
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -79,9 +82,10 @@ public class BT_Drive {
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
+    public void init(HardwareMap ahwMap, OpMode callerOpmode) {
         // Save reference to Hardware map
         hwMap = ahwMap;
+        this.callerOpmode = callerOpmode;
 
         // Define and Initialize Motors
         frontLeftDrive  = hwMap.get(DcMotor.class, "frontLeftDrive");
@@ -170,7 +174,7 @@ public class BT_Drive {
         return Range.clip(error * PCoeff, -1, 1);
     }
 
-    public void teleopDrive (Gamepad gamepad) {
+    public void tankTeleopDrive (Gamepad gamepad) {
         double left;
         double right;
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)

@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -55,6 +57,7 @@ public class BT_Intake
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
+    private OpMode callerOpmode;
 
     /* Constructor */
     public BT_Intake(){
@@ -62,10 +65,10 @@ public class BT_Intake
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
+    public void init(HardwareMap ahwMap, OpMode callerOpmode) {
         // Save reference to Hardware map
         hwMap = ahwMap;
-
+        this.callerOpmode =callerOpmode;
         // Define and Initialize Motors
 
         //leftIntake = hwMap.get(DcMotor.class, "leftIntake");
@@ -80,8 +83,7 @@ public class BT_Intake
 
 
         // Set all motors to zero power
-        leftIntake.setPower(0);
-        rightIntake.setPower(0);
+       stop();
 
         leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -94,6 +96,11 @@ public class BT_Intake
     public void glyphsOut() {
         leftIntake.setPower(-INTAKE_POWER);
         rightIntake.setPower(-INTAKE_POWER);
+    }
+    public void stop() {
+        // Set all motors to zero power
+        leftIntake.setPower(0);
+        rightIntake.setPower(0);
     }
  }
 
