@@ -54,17 +54,16 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class BT_Glyphs
 {
     /* Public OpMode members. */
-//    public DcMotor  leftIntake  = null;
-//    public DcMotor  rightIntake  = null;
-//    public Servo    jewelArm     = null;
-//    public Servo    jewelFinger    = null;
+
+    public Servo    glyphsArm     = null;
+    public Servo    clamps    = null;
 
 
-    //TODO: define constants
-    public static final double JEWEL_ARM_START       =  0.5 ;
-    public static final double JEWEL_FINGER_START       =  0.5 ;
-    public static final double ARM_UP_POWER    =  0.45 ;
-    public static final double ARM_DOWN_POWER  = -0.45 ;
+    //TODO: define constantsS
+    public static final double GLYPHS_ARM_OPEN       =  0.5 ;
+    public static final double GLYPHS_ARM_CLOSE       =  0.5 ;
+    public static final double ARM_UP_POS    =  0.45 ;
+    public static final double ARM_DOWN_POS  = 0.45 ;
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -81,32 +80,23 @@ public class BT_Glyphs
         hwMap = ahwMap;
         this.callerOpmode =callerOpmode;
         // Define and Initialize Motors
-//        leftIntake = hwMap.get(DcMotor.class, "leftIntake");
-//        rightIntake = hwMap.get(DcMotor.class, "rightIntake");
-//        jewelArm = hwMap.get(Servo.class, "jewelArm");
-//        jewelFinger = hwMap.get(Servo.class, "jewelFinger");
-//
-//
-//       //TODO: fix directions
-//        leftIntake.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-//        rightIntake.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-//
-//
-//
-//        // Set all motors to zero power
-//        leftIntake.setPower(0);
-//        rightIntake.setPower(0);
-//
-//
-//        // Set all motors to run without encoders.
-//        // May want to use RUN_USING_ENCODERS if encoders are installed.
-//        //TODO: fix motors mode
-//        leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
-//
-//        jewelArm.setPosition(JEWEL_ARM_START);
-//        jewelFinger.setPosition(JEWEL_FINGER_START);
+        glyphsArm = hwMap.get(Servo.class, "glyphsArm");
+        clamps = hwMap.get(Servo.class, "clamps");
+
+        glyphsArm.setPosition(ARM_DOWN_POS);
+        clamps.setPosition(GLYPHS_ARM_OPEN);
+    }
+    public void armUp (){
+        glyphsArm.setPosition(ARM_UP_POS);
+    }
+    public void armDown (){
+        glyphsArm.setPosition(ARM_DOWN_POS);
+    }
+    public void catchGlyphs (){
+        clamps.setPosition(GLYPHS_ARM_OPEN);
+    }
+    public void releaseGlyphs (){
+        clamps.setPosition(GLYPHS_ARM_CLOSE);
     }
  }
 
