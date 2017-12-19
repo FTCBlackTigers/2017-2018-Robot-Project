@@ -81,6 +81,7 @@ public class BT_MecanumDrive {
      * @param rightStickY The right joystick Y.
      * @return The Mecanum motion vector.
      */
+
     public static Motion joystickToMotion(double leftStickX,
                                                      double leftStickY,
                                                      double rightStickX,
