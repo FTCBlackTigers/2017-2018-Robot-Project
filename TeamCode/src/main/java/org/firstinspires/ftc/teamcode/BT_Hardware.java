@@ -55,6 +55,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class BT_Hardware {
     /* Public OpMode members. */
     public BT_Drive drive = new BT_Drive();
+    public BT_MecanumDrive mecanumDrive = new BT_MecanumDrive();
     public BT_Jewels jewels = new BT_Jewels();
     public BT_Intake intake = new BT_Intake();
     public BT_Glyphs glyphs = new BT_Glyphs();
@@ -73,8 +74,9 @@ public class BT_Hardware {
 
         // Define and Initialize systems
         //drive.init(hwMap,callerOpmode);
-        jewels.init(hwMap , callerOpmode);
+        //jewels.init(hwMap , callerOpmode);
         //intake.init(hwMap,callerOpmode);
         //glyphs.init(hwMap,callerOpmode);
+        mecanumDrive.init(hwMap, callerOpmode);
     }
 }
