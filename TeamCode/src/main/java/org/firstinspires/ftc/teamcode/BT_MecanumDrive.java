@@ -84,12 +84,19 @@ public class BT_MecanumDrive {
     public static Motion joystickToMotion(double leftStickX,
                                                      double leftStickY,
                                                      double rightStickX,
-                                                     double rightStickY) {
+                                                     double rightStickY,
+                                          double curretAngle) {
         double vD = Math.min(Math.sqrt(Math.pow(leftStickX, 2) +
                         Math.pow(leftStickY, 2)),
                 1);
         double thetaD = Math.atan2(-leftStickX, leftStickY);
+        //driving by driver's view
+        thetaD -= curretAngle;
+        if (thetaD<0){
+            thetaD+=360;
+        }
         double vTheta = -rightStickX;
+
         return new Motion(vD, thetaD, vTheta);
     }
     public static class Wheels {
@@ -282,7 +289,7 @@ public class BT_MecanumDrive {
     }
 
     public void mecanumTeleopDrive (Gamepad gamepad) {
-        Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y);
+        Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y, 0);
         Wheels wheels = motionToWheels(motion);
 
         frontLeftDrive.setPower(wheels.frontLeft);
