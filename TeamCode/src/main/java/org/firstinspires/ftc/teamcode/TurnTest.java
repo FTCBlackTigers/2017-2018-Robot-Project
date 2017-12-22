@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous(name="turnTest", group="Auto")
 public class TurnTest extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    private BT_Drive robot = new BT_Drive();
+    private BT_TankDrive robot = new BT_TankDrive();
     @Override
     public void runOpMode() {
         robot.init(hardwareMap, this);

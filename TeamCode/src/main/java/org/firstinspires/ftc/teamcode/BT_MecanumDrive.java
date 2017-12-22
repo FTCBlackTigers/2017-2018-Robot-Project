@@ -54,6 +54,9 @@ import java.util.List;
  *
  */
 public class BT_MecanumDrive {
+    public enum DriveDirection {
+        FORWARD,BACKWARD,RIGHT,LEFT;
+    }
     //invert joystick values to motion
     public static class Motion {
         // Robot speed [-1, 1].
@@ -229,12 +232,8 @@ public class BT_MecanumDrive {
         gyro.init(hwMap);
     }
     
-    public void move (double distCm , double timeoutS ){
-        encoderDrive( AUTO_DRIVE_SPEED, distCm, distCm, timeoutS);
-    }
-    public void moveByPower (double power ){
-        frontLeftDrive.setPower(power);
-        frontRightDrive.setPower(power);
+    public void move (double distCm , DriveDirection direction,  double timeoutS ){
+        encoderDrive( AUTO_DRIVE_SPEED, distCm, direction , timeoutS);
     }
 
     public void turn (double degrees, double timeoutMs, Telemetry telemetry) {
@@ -288,7 +287,7 @@ public class BT_MecanumDrive {
         return Range.clip(error * PCoeff, -1, 1);
     }
 
-    public void mecanumTeleopDrive (Gamepad gamepad) {
+    public void teleopDrive(Gamepad gamepad) {
         Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y, 0);
         Wheels wheels = motionToWheels(motion);
 
@@ -299,44 +298,84 @@ public class BT_MecanumDrive {
     }
 
     public void encoderDrive(double speed,
-                             double leftCm, double rightCm,
+                             double distCm, DriveDirection direction,
                              double timeoutMs) {
-        int newLeftTarget;
-        int newRightTarget;
+        int newFrontLeftTarget = frontLeftDrive.getCurrentPosition();
+        int newFrontRightTarget = frontRightDrive.getCurrentPosition();
+        int newRearLeftTarget = rearLeftDrive.getCurrentPosition();
+        int newRearRightTarget = rearRightDrive.getCurrentPosition();
+
         ElapsedTime runtime =new ElapsedTime();
             // Determine new target position, and pass to motor controller
-            newLeftTarget = frontLeftDrive.getCurrentPosition() + (int)(leftCm * COUNTS_PER_CM);
-            newRightTarget = frontRightDrive.getCurrentPosition() + (int)(rightCm * COUNTS_PER_CM);
-            frontLeftDrive.setTargetPosition(newLeftTarget);
-            frontRightDrive.setTargetPosition(newRightTarget);
-
-            // Turn On RUN_TO_POSITION
-            frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-            frontLeftDrive.setPower(Math.abs(speed));
-            frontRightDrive.setPower(Math.abs(speed));
-
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while ((runtime.time() < timeoutMs) &&
-                    (frontLeftDrive.isBusy() && frontRightDrive.isBusy())) {
-
-            }
-
-            // Stop all motion;
-            frontLeftDrive.setPower(0);
-            frontRightDrive.setPower(0);
-
-            // Turn off RUN_TO_POSITION
-            frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        int ticks = (int)(distCm * COUNTS_PER_CM);
+        switch (direction){
+            case FORWARD:
+                newFrontLeftTarget += ticks ;
+                newFrontRightTarget += ticks;
+                newRearLeftTarget += ticks;
+                newRearRightTarget += ticks;
+                break;
+            case BACKWARD:
+                newFrontLeftTarget -= ticks ;
+                newFrontRightTarget -= ticks;
+                newRearLeftTarget -= ticks;
+                newRearRightTarget -= ticks;
+                break;
+            case RIGHT:
+                newFrontLeftTarget -= ticks ;
+                newFrontRightTarget += ticks;
+                newRearLeftTarget += ticks;
+                newRearRightTarget -= ticks;
+                break;
+            case LEFT:
+                newFrontLeftTarget += ticks ;
+                newFrontRightTarget -= ticks;
+                newRearLeftTarget -= ticks;
+                newRearRightTarget += ticks;
+                break;
 
         }
+
+        frontLeftDrive.setTargetPosition(newFrontLeftTarget);
+        frontRightDrive.setTargetPosition(newFrontRightTarget);
+        rearLeftDrive.setTargetPosition(newRearLeftTarget);
+        rearRightDrive.setTargetPosition(newRearRightTarget);
+
+        // Turn On RUN_TO_POSITION
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rearLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rearRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // reset the timeout time and start motion.
+        runtime.reset();
+        frontLeftDrive.setPower(Math.abs(speed));
+        frontRightDrive.setPower(Math.abs(speed));
+        rearLeftDrive.setPower(Math.abs(speed));
+        rearRightDrive.setPower(Math.abs(speed));
+
+        // keep looping while we are still active, and there is time left, and both motors are running.
+        // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+        // its target position, the motion will stop.  This is "safer" in the event that the robot will
+        // always end the motion as soon as possible.
+        // However, if you require that BOTH motors have finished their moves before the robot continues
+        // onto the next step, use (isBusy() || isBusy()) in the loop test.
+        while ((runtime.time() < timeoutMs) &&
+                (frontLeftDrive.isBusy() && frontRightDrive.isBusy() && rearLeftDrive.isBusy() && rearRightDrive.isBusy())) {
+
+        }
+
+        // Stop all motion;
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        rearLeftDrive.setPower(0);
+        rearRightDrive.setPower(0);
+
+        // Turn off RUN_TO_POSITION
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
+}

@@ -50,7 +50,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * Note:  All names are lower case and some have single spaces between words.
  *
  */
-public class BT_Drive {
+public class BT_TankDrive {
     /* Public OpMode members. */
     public DcMotor  frontLeftDrive   = null;
     public DcMotor  frontRightDrive  = null;
@@ -77,7 +77,7 @@ public class BT_Drive {
     HardwareMap hwMap           =  null;
     
     /* Constructor */
-    public BT_Drive(){
+    public BT_TankDrive(){
 
     }
 

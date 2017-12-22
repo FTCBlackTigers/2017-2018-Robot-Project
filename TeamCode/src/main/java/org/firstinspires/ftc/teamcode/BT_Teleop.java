@@ -29,12 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -88,21 +85,21 @@ public class BT_Teleop extends OpMode
      */
     @Override
     public void loop() {
-        robot.mecanumDrive.mecanumTeleopDrive(gamepad1);
-//        boolean glyphOut = gamepad2.y;
-//        boolean glyphIn = gamepad2.a;
-//
-//        telemetry.addData("Status", "Run Time: " + runtime.toString());
-//        telemetry.update();
-//
-//        if (glyphOut) {
-//            robot.intake.glyphsOut();
-//            telemetry.addData("pressed","y");
-//        }
-//        else if (glyphIn) {
-//            robot.intake.glyphsIn();
-//            telemetry.addData("pressed","a");
-//        }
+        robot.drive.teleopDrive(gamepad1);
+        boolean glyphOut = gamepad2.y;
+        boolean glyphIn = gamepad2.a;
+
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.update();
+
+        if (glyphOut) {
+           // robot.intake.glyphsOut();
+            telemetry.addData("pressed","y");
+        }
+        else if (glyphIn) {
+            //robot.intake.glyphsIn();
+            telemetry.addData("pressed","a");
+        }
 
     }
 
