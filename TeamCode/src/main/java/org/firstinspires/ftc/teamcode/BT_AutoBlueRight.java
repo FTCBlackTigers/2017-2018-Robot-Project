@@ -110,7 +110,7 @@ public class BT_AutoBlueRight extends LinearOpMode {
 //        sleep(3000);
 //        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.FORWARD, 3000 );
         //while (opModeIsActive()) {
-            robot.drive.frontLeftDrive.setPower(0.5);
+            robot.drive.frontLeftDrive.setPower(0.6);
             sleep(1000);
             robot.drive.frontRightDrive.setPower(0.5);
             sleep(1000);
