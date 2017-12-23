@@ -85,21 +85,28 @@ public class BT_Teleop extends OpMode
      */
     @Override
     public void loop() {
-        robot.drive.teleopDrive(gamepad1);
-        boolean glyphOut = gamepad2.y;
-        boolean glyphIn = gamepad2.a;
-
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        BT_Status.cleanStatus();
+        robot.drive.teleopDrive(gamepad1,telemetry);
+        telemetry.addData("status", BT_Status.getStatusLine());
         telemetry.update();
-
-        if (glyphOut) {
-           // robot.intake.glyphsOut();
-            telemetry.addData("pressed","y");
-        }
-        else if (glyphIn) {
-            //robot.intake.glyphsIn();
-            telemetry.addData("pressed","a");
-        }
+        boolean glyphOut = gamepad2.left_trigger > 0.5;
+        boolean glyphIn = gamepad2.right_trigger > 0.5;
+        boolean catchGlyphs = gamepad2.left_bumper;
+        boolean releaseGlyphs= gamepad2.right_bumper;
+        boolean glyphsUp=gamepad2.y;
+        boolean glyphsDown=gamepad2.a;
+//
+//        telemetry.addData("Status", "Run Time: " + runtime.toString());
+//        telemetry.update();
+//
+//        if (glyphOut) {
+//            robot.intake.glyphsOut();
+//            telemetry.addData("pressed","y");
+//        }
+//        else if (glyphIn) {
+//            robot.intake.glyphsIn();
+//            telemetry.addData("pressed","a");
+//        }
 
     }
 

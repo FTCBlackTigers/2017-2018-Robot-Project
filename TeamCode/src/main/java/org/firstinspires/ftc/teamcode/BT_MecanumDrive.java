@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -89,16 +90,34 @@ public class BT_MecanumDrive {
                                                      double rightStickX,
                                                      double rightStickY,
                                           double curretAngle) {
-        double vD = Math.min(Math.sqrt(Math.pow(leftStickX, 2) +
-                        Math.pow(leftStickY, 2)),
+        final double JOYSTICK_THRESHOLD = 0.2;
+        double leftX = -leftStickX;
+        double leftY = -leftStickY;
+        double rightX = -rightStickX;
+        if (Math.abs(leftX) < JOYSTICK_THRESHOLD){
+            leftX=0;
+        }
+        if (Math.abs(leftY) < JOYSTICK_THRESHOLD){
+            leftY=0;
+        }
+        if (Math.abs(rightX) < JOYSTICK_THRESHOLD){
+            rightX=0;
+        }
+        BT_Status.addLine("leftX: " + leftX);
+        BT_Status.addLine("leftY: " + leftY);
+        BT_Status.addLine("rightX: " + rightX);
+
+        double vD = Math.min(Math.sqrt(Math.pow(leftX, 2) +
+                        Math.pow(leftY, 2)),
                 1);
-        double thetaD = Math.atan2(-leftStickX, leftStickY);
+        double thetaD = Math.atan2(leftX,leftY);
+        double radAngle = curretAngle*Math.PI/180;
         //driving by driver's view
-        thetaD -= curretAngle;
+        thetaD -= radAngle;
         if (thetaD<0){
             thetaD+=360;
         }
-        double vTheta = -rightStickX;
+        double vTheta = rightX;
 
         return new Motion(vD, thetaD, vTheta);
     }
@@ -144,10 +163,10 @@ public class BT_MecanumDrive {
         double thetaD = motion.thetaD;
         double vTheta = motion.vTheta;
 
-        double frontLeft = vD * Math.sin(-thetaD + Math.PI / 4) - vTheta;
-        double frontRight  = vD * Math.cos(-thetaD + Math.PI / 4) + vTheta;
-        double backLeft = vD * Math.cos(-thetaD + Math.PI / 4) - vTheta;
-        double backRight = vD * Math.sin(-thetaD + Math.PI / 4) + vTheta;
+        double frontLeft = vD * Math.sin(thetaD + Math.PI / 4) + vTheta;
+        double frontRight  = vD * Math.cos(thetaD + Math.PI / 4) - vTheta;
+        double backLeft = vD * Math.cos(thetaD + Math.PI / 4) + vTheta;
+        double backRight = vD * Math.sin(thetaD + Math.PI / 4) - vTheta;
         return new Wheels(frontLeft, frontRight,
                 backLeft, backRight);
     }
@@ -210,10 +229,10 @@ public class BT_MecanumDrive {
         rearLeftDrive = hwMap.get(DcMotor.class, "rearLeftDrive");
         rearRightDrive = hwMap.get(DcMotor.class, "rearRightDrive");
       // TODO: fix directions
-        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        frontRightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-        rearLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rearRightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
+        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+        rearLeftDrive.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
+        rearRightDrive.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
 
         // Set all motors to zero power
         frontLeftDrive.setPower(0);
@@ -233,11 +252,10 @@ public class BT_MecanumDrive {
     }
     
     public void move (double distCm , DriveDirection direction,  double timeoutS ){
-        encoderDrive( AUTO_DRIVE_SPEED, distCm, direction , timeoutS);
+//        encoderDrive( AUTO_DRIVE_SPEED, distCm, direction , timeoutS);
     }
 
     public void turn (double degrees, double timeoutMs, Telemetry telemetry) {
-        //TODO : fix turn by gyro
         double rightSpeed, leftSpeed;
         double steer;
         double error = getError(degrees);
@@ -257,12 +275,18 @@ public class BT_MecanumDrive {
 
                 frontLeftDrive.setPower(leftSpeed);
                 frontRightDrive.setPower(rightSpeed);
+                rearLeftDrive.setPower(leftSpeed);
+                rearRightDrive.setPower( rightSpeed);
+
                 error = getError(degrees);
                 telemetry.addData("Error", error);
                 telemetry.update();
             }
             frontLeftDrive.setPower(0);
             frontRightDrive.setPower(0);
+            rearLeftDrive.setPower(0);
+            rearRightDrive.setPower(0);
+
             t= runtime.time();
             while (runtime.time() < t + 300){
                 error = getError(degrees);
@@ -272,6 +296,8 @@ public class BT_MecanumDrive {
         }
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
+        rearLeftDrive.setPower(0);
+        rearRightDrive.setPower(0);
     }
     public double getError(double targetAngle) {
 
@@ -287,14 +313,23 @@ public class BT_MecanumDrive {
         return Range.clip(error * PCoeff, -1, 1);
     }
 
-    public void teleopDrive(Gamepad gamepad) {
-        Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y, 0);
+    public void teleopDrive(Gamepad gamepad, Telemetry telemetry) {
+        double robotAngle = 0;
+//        if (gamepad.right_trigger < 0.7){
+//            robotAngle = gyro.getAngle();
+//        }
+        Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y, robotAngle);
         Wheels wheels = motionToWheels(motion);
 
         frontLeftDrive.setPower(wheels.frontLeft);
         frontRightDrive.setPower(wheels.frontRight);
         rearLeftDrive.setPower(wheels.backLeft);
         rearRightDrive.setPower(wheels.backRight);
+        telemetry.addLine("front left: "+ wheels.frontLeft);
+        telemetry.addLine("front right : "+ wheels.frontRight);
+        telemetry.addLine("rear left : "+ wheels.backLeft);
+        telemetry.addLine("rear right : "+ wheels.backRight);
+//        telemetry.update();
     }
 
     public void encoderDrive(double speed,
@@ -307,7 +342,7 @@ public class BT_MecanumDrive {
 
         ElapsedTime runtime =new ElapsedTime();
             // Determine new target position, and pass to motor controller
-        int ticks = (int)(distCm * COUNTS_PER_CM);
+        int ticks = (int)(distCm / Math.cos(Math.PI/4) * COUNTS_PER_CM);
         switch (direction){
             case FORWARD:
                 newFrontLeftTarget += ticks ;
@@ -378,4 +413,5 @@ public class BT_MecanumDrive {
         rearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
+
 }

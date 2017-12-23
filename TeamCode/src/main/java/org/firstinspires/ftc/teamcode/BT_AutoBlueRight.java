@@ -106,20 +106,14 @@ public class BT_AutoBlueRight extends LinearOpMode {
 //        telemetry.addData("Status", "Identified column: %s ",vuMark);
 //        telemetry.update();
 
-//        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
-//        sleep(3000);
-//        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.FORWARD, 3000 );
-        //while (opModeIsActive()) {
-            robot.drive.frontLeftDrive.setPower(0.6);
-            sleep(1000);
-            robot.drive.frontRightDrive.setPower(0.5);
-            sleep(1000);
-            robot.drive.rearLeftDrive.setPower(0.5);
-            sleep(1000);
-            robot.drive.rearRightDrive.setPower(0.5);
-            sleep(1000);
-        //}
+       // robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
+        sleep(3000);
+        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.FORWARD, 3000 );
+        while (opModeIsActive()) {
 
-//        robot.drive.turn(90 , 1000,telemetry);
+        }
+
+        robot.drive.turn(90 , 1000,telemetry);
+        //robot.intake.glyphsOut();
     }
 }
