@@ -87,6 +87,7 @@ public class BT_Teleop extends OpMode
     public void loop() {
         BT_Status.cleanStatus();
         robot.drive.teleopDrive(gamepad1,telemetry);
+        robot.drive.buttonDrive(gamepad1);
         telemetry.addData("status", BT_Status.getStatusLine());
         telemetry.update();
         boolean glyphOut = gamepad2.left_trigger > 0.5;
@@ -95,19 +96,40 @@ public class BT_Teleop extends OpMode
         boolean releaseGlyphs= gamepad2.right_bumper;
         boolean glyphsUp=gamepad2.y;
         boolean glyphsDown=gamepad2.a;
-//
-//        telemetry.addData("Status", "Run Time: " + runtime.toString());
-//        telemetry.update();
-//
+
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.update();
+
+//        //intake system
 //        if (glyphOut) {
 //            robot.intake.glyphsOut();
-//            telemetry.addData("pressed","y");
+//            telemetry.addData("pressed","left_trigger");
 //        }
 //        else if (glyphIn) {
 //            robot.intake.glyphsIn();
+//            telemetry.addData("pressed","right_trigger");
+//        }
+//        else {
+//            robot.intake.stop();
+//        }
+//        //clamps system
+//        if (catchGlyphs){
+//            robot.glyphs.catchGlyphs();
+//            telemetry.addData("pressed","left_bumper");
+//        }
+//        else if (releaseGlyphs){
+//            robot.glyphs.releaseGlyphs();
+//            telemetry.addData("pressed","right_bumper");
+//        }
+//        //glyphs arm system
+//        if (glyphsUp){
+//            robot.glyphs.armUp();
+//            telemetry.addData("pressed","y");
+//        }
+//        else if (glyphsDown){
+//            robot.glyphs.armDown();
 //            telemetry.addData("pressed","a");
 //        }
-
     }
 
     /*

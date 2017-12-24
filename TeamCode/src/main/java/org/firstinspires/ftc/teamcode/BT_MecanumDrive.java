@@ -91,9 +91,9 @@ public class BT_MecanumDrive {
                                                      double rightStickY,
                                           double curretAngle) {
         final double JOYSTICK_THRESHOLD = 0.2;
-        double leftX = -leftStickX;
+        double leftX = leftStickX;
         double leftY = -leftStickY;
-        double rightX = -rightStickX;
+        double rightX = rightStickX;
         if (Math.abs(leftX) < JOYSTICK_THRESHOLD){
             leftX=0;
         }
@@ -115,7 +115,7 @@ public class BT_MecanumDrive {
         //driving by driver's view
         thetaD -= radAngle;
         if (thetaD<0){
-            thetaD+=360;
+            thetaD+=2*Math.PI;
         }
         double vTheta = rightX;
 
@@ -123,10 +123,10 @@ public class BT_MecanumDrive {
     }
     public static class Wheels {
         // The mecanum wheels powers.
-        public final double frontLeft;
-        public final double frontRight;
-        public final double backLeft;
-        public final double backRight;
+        public double frontLeft;
+        public double frontRight;
+        public double backLeft;
+        public double backRight;
 
         /**
          * Sets the wheels to the given values.
@@ -147,9 +147,12 @@ public class BT_MecanumDrive {
          * Scales the wheel powers by the given factor.
          * @param scalar The wheel power scaling factor.
          */
-        public Wheels scaleWheelPower(double scalar) {
-            return new Wheels(frontLeft * scalar, frontRight * scalar,
-                    backLeft * scalar, backRight * scalar);
+        public void scaleWheelPower(double scalar) {
+            frontLeft*=scalar;
+            frontRight*=scalar;
+            backLeft*=scalar;
+            backRight*=scalar;
+
         }
     }
 
@@ -167,8 +170,9 @@ public class BT_MecanumDrive {
         double frontRight  = vD * Math.cos(thetaD + Math.PI / 4) - vTheta;
         double backLeft = vD * Math.cos(thetaD + Math.PI / 4) + vTheta;
         double backRight = vD * Math.sin(thetaD + Math.PI / 4) - vTheta;
-        return new Wheels(frontLeft, frontRight,
-                backLeft, backRight);
+        Wheels wheels = new Wheels(frontLeft, frontRight, backLeft, backRight);
+        wheels.scaleWheelPower(vD>0?vD:vTheta);
+        return wheels;
     }
 
     /**
@@ -180,10 +184,8 @@ public class BT_MecanumDrive {
         double maxPower = Collections.max(powers);
         double maxMag = Math.max(Math.abs(minPower), Math.abs(maxPower));
 
-        if (maxMag > 1.0) {
-            for (int i = 0; i < powers.size(); i++) {
-                powers.set(i, powers.get(i) / maxMag);
-            }
+        for (int i = 0; i < powers.size(); i++) {
+            powers.set(i, powers.get(i) / maxMag);
         }
     }
 
@@ -412,6 +414,36 @@ public class BT_MecanumDrive {
         rearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+    }
+    public void buttonDrive (Gamepad gamepad) {
+        double speed = 1;
+        if (gamepad.right_bumper){
+            speed = -1;
+        }
+        if (gamepad.y){
+            frontRightDrive.setPower(speed);
+        }
+        else {
+            frontRightDrive.setPower(0);
+        }
+        if (gamepad.x){
+            frontLeftDrive.setPower(speed);
+        }
+        else {
+            frontLeftDrive.setPower(0);
+        }
+        if (gamepad.b){
+            rearRightDrive.setPower(speed);
+        }
+        else {
+            rearRightDrive.setPower(0);
+        }
+        if (gamepad.a){
+            rearLeftDrive.setPower(speed);
+        }
+        else {
+            rearLeftDrive.setPower(0);
+        }
     }
 
 }
