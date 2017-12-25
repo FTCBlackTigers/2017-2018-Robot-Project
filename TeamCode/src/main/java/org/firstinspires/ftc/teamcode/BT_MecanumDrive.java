@@ -171,7 +171,7 @@ public class BT_MecanumDrive {
         double backLeft = vD * Math.cos(thetaD + Math.PI / 4) + vTheta;
         double backRight = vD * Math.sin(thetaD + Math.PI / 4) - vTheta;
         Wheels wheels = new Wheels(frontLeft, frontRight, backLeft, backRight);
-        wheels.scaleWheelPower(vD>0?vD:vTheta);
+        wheels.scaleWheelPower(vD>0?Math.abs(vD):Math.abs(vTheta));
         return wheels;
     }
 
