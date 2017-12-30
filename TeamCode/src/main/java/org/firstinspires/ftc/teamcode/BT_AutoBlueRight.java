@@ -71,7 +71,7 @@ public class BT_AutoBlueRight extends LinearOpMode {
         telemetry.addData("Status", BT_Status.getStatusLine());
         telemetry.update();
 
-        BT_Vumark btVumark = new BT_Vumark(hardwareMap) ;
+        //BT_Vumark btVumark = new BT_Vumark(hardwareMap) ;
         BT_Status.addLine("Vumark Initialized");
         telemetry.addData("Status",BT_Status.getStatusLine());
         telemetry.update();
@@ -106,14 +106,14 @@ public class BT_AutoBlueRight extends LinearOpMode {
 //        telemetry.addData("Status", "Identified column: %s ",vuMark);
 //        telemetry.update();
 
-       // robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
+//        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
         sleep(3000);
-        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.FORWARD, 3000 );
+ //       robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.FORWARD, 3000 );
         while (opModeIsActive()) {
 
         }
 
-        robot.drive.turn(90 , 1000,telemetry);
+ //       robot.drive.turn(90 , 1000,telemetry);
         //robot.intake.glyphsOut();
     }
 }

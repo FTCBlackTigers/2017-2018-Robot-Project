@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -86,19 +87,23 @@ public class BT_Teleop extends OpMode
     @Override
     public void loop() {
         BT_Status.cleanStatus();
-        robot.drive.teleopDrive(gamepad1,telemetry);
-        robot.drive.buttonDrive(gamepad1);
+//        robot.drive.teleopDrive(gamepad1,telemetry);
+//        robot.drive.buttonDrive(gamepad1);
         telemetry.addData("status", BT_Status.getStatusLine());
         telemetry.update();
         boolean glyphOut = gamepad2.left_trigger > 0.5;
         boolean glyphIn = gamepad2.right_trigger > 0.5;
         boolean catchGlyphs = gamepad2.left_bumper;
         boolean releaseGlyphs= gamepad2.right_bumper;
-        boolean glyphsUp=gamepad2.y;
+       boolean glyphsUp=gamepad2.y;
         boolean glyphsDown=gamepad2.a;
+//        double glyphsArmMotor = gamepad2.left_stick_y ;
+//        double glyphsArmServo = gamepad2.right_stick_y ;
+
 
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
+
 
 //        //intake system
 //        if (glyphOut) {
@@ -121,15 +126,15 @@ public class BT_Teleop extends OpMode
 //            robot.glyphs.releaseGlyphs();
 //            telemetry.addData("pressed","right_bumper");
 //        }
-//        //glyphs arm system
-//        if (glyphsUp){
-//            robot.glyphs.armUp();
-//            telemetry.addData("pressed","y");
-//        }
-//        else if (glyphsDown){
-//            robot.glyphs.armDown();
-//            telemetry.addData("pressed","a");
-//        }
+        //glyphs arm system
+        if (glyphsUp){
+            robot.glyphs.armUp();
+            telemetry.addData("pressed","y");
+        }
+        else if (glyphsDown){
+            robot.glyphs.armDown();
+            telemetry.addData("pressed","a");
+        }
     }
 
     /*

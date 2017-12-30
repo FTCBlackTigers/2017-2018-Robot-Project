@@ -78,7 +78,7 @@ public class VuAuto extends LinearOpMode {
     VuforiaLocalizer vuforia;
 
     @Override public void runOpMode() {
-        robot.init(hardwareMap);
+      // robot.init(hardwareMap);
 
         /*
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
@@ -109,7 +109,7 @@ public class VuAuto extends LinearOpMode {
          * Here we chose the back (HiRes) camera (for greater range), but
          * for a competition robot, the front camera might be more convenient.
          */
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
         /**
@@ -154,23 +154,26 @@ public class VuAuto extends LinearOpMode {
                 vuMark = RelicRecoveryVuMark.LEFT ;
             } */
             if (vuMark == RelicRecoveryVuMark.RIGHT ){
-                robot.leftDrive.setPower(DEFAULT_POWER);
-                robot.rightDrive.setPower(-DEFAULT_POWER);
+                telemetry.addData("status" , "right");
+              //  robot.leftDrive.setPower(DEFAULT_POWER);
+              //  robot.rightDrive.setPower(-DEFAULT_POWER);
             }
             if (vuMark == RelicRecoveryVuMark.LEFT ) {
-                robot.leftDrive.setPower(-DEFAULT_POWER);
-                robot.rightDrive.setPower(DEFAULT_POWER);
+                telemetry.addData("status" , "left");
+               // robot.leftDrive.setPower(-DEFAULT_POWER);
+               // robot.rightDrive.setPower(DEFAULT_POWER);
             }
             if (vuMark == RelicRecoveryVuMark.CENTER ) {
-                robot.leftDrive.setPower(-DEFAULT_POWER);
-                robot.rightDrive.setPower(-DEFAULT_POWER);
+                telemetry.addData("status" , "center");
+               // robot.leftDrive.setPower(-DEFAULT_POWER);
+                //robot.rightDrive.setPower(-DEFAULT_POWER);
             }
             while (opModeIsActive() && (runtime.time() <DRIVE_TIME)) {
                 telemetry.addData("Path", "Going: %s Time working: %f",vuMark, runtime.time());
                 telemetry.update();
             }
-            robot.leftDrive.setPower(0);
-            robot.rightDrive.setPower(0);
+            //robot.leftDrive.setPower(0);
+            //robot.rightDrive.setPower(0);
             telemetry.update();
         }
     }

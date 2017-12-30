@@ -29,11 +29,13 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * This is NOT an opmode.
@@ -51,27 +53,32 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
  */
-public class BT_Glyphs
-{
+public class BT_Glyphs {
     /* Public OpMode members. */
 
-    public Servo    glyphsArm     = null;
+    public Servo armServo = null;
     public Servo    clamps    = null;
-
+    public DcMotor armMotor = null ;
 
     //TODO: define constantsS
-    public static final double GLYPHS_ARM_OPEN       =  0.5 ;
-    public static final double GLYPHS_ARM_CLOSE       =  0.5 ;
-    public static final double ARM_UP_POS    =  0.45 ;
-    public static final double ARM_DOWN_POS  = 0.45 ;
-
+    public static final double ARM_POWER = 0.5;
+    public static final double  CLAMPS_OPEN_POS =  0.5 ;
+    public static final double CLAMPS_CLOSE_POS =  0.5 ;
+    public static final int ARM_HIGH_POS = 90 ;
+    public static final int ARM_LOW_POS = 45 ;
+    public static final int ARM_DOWN_POS  = 0 ;
+    public static final double SERVO_HIGH_POS = 0.2 ;
+    public static final double SERVO_LOW_POS = 0.7 ;
+    public static final double SERVO_DOWN_POS  = 0.2 ;
+    public static final double SERVO_LIFT_POS = 0.7 ;
+    public static final double SERVO_LIFT_INTERVAL = 0.025 ;
+    public static final double ARM_LIFT_INTERVAL = 9 ;
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private OpMode callerOpmode ;
 
     /* Constructor */
     public BT_Glyphs(){
-
     }
 
     /* Initialize standard Hardware interfaces */
@@ -80,23 +87,124 @@ public class BT_Glyphs
         hwMap = ahwMap;
         this.callerOpmode =callerOpmode;
         // Define and Initialize Motors
-        glyphsArm = hwMap.get(Servo.class, "glyphsArm");
-        clamps = hwMap.get(Servo.class, "clamps");
+//        armServo = hwMap.get(Servo.class, "armServo");
+//        clamps = hwMap.get(Servo.class, "clampsServo");
+        armMotor = hwMap.get(DcMotor.class, "armMotor");
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        glyphsArm.setPosition(ARM_DOWN_POS);
-        clamps.setPosition(GLYPHS_ARM_OPEN);
+//        armServo.setPosition(SERVO_DOWN_POS);
+//        clamps.setPosition(CLAMPS_OPEN_POS);
+    }
+//    private void servoChangePos(double pos) {
+//        armServo.setPosition(pos);
+//    }
+
+//    public void servoLow() {
+//        servoChangePos(SERVO_LOW_POS);
+//    }
+
+//    public void servoHigh(){
+//        servoChangePos(SERVO_HIGH_POS);
+//    }
+
+    public void armLow() {
+        int motorTarget = armMotor.getCurrentPosition();
+//        double servoTarget = armServo.getPosition();
+        while (armMotor.getCurrentPosition() < ARM_LOW_POS ){
+            motorTarget += ARM_LIFT_INTERVAL;
+            armMotor.setTargetPosition(motorTarget);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(ARM_POWER);
+            while (armMotor.getCurrentPosition() < motorTarget ) {
+            }
+            armMotor.setPower(0);
+//            if (armServo.getPosition() < SERVO_LIFT_POS){
+//            servoTarget += SERVO_LIFT_INTERVAL;
+//            armServo.setPosition(servoTarget);
+//            while (armServo.getPosition() < servoTarget ) {
+//            }
+
+        }
     }
     public void armUp (){
-        glyphsArm.setPosition(ARM_UP_POS);
+        armLow();
+        armMotor.setTargetPosition(ARM_HIGH_POS);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower(ARM_POWER);
+        while (armMotor.getCurrentPosition() < ARM_HIGH_POS  ) {
+        }
+        armMotor.setPower(0);
+
+//        int newLeftTarget;
+//        int newRightTarget;
+//        ElapsedTime runtime =new ElapsedTime();
+//        // Determine new target position, and pass to motor controller
+//        newLeftTarget = frontLeftDrive.getCurrentPosition() + (int)(leftCm * COUNTS_PER_CM);
+//        newRightTarget = frontRightDrive.getCurrentPosition() + (int)(rightCm * COUNTS_PER_CM);
+//        frontLeftDrive.setTargetPosition(newLeftTarget);
+//        frontRightDrive.setTargetPosition(newRightTarget);
+//
+//        // Turn On RUN_TO_POSITION
+//        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//        // reset the timeout time and start motion.
+//        runtime.reset();
+//        frontLeftDrive.setPower(Math.abs(speed));
+//        frontRightDrive.setPower(Math.abs(speed));
+//
+//        // keep looping while we are still active, and there is time left, and both motors are running.
+//        // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+//        // its target position, the motion will stop.  This is "safer" in the event that the robot will
+//        // always end the motion as soon as possible.
+//        // However, if you require that BOTH motors have finished their moves before the robot continues
+//        // onto the next step, use (isBusy() || isBusy()) in the loop test.
+//        while ((runtime.time() < timeoutMs) &&
+//                (frontLeftDrive.isBusy() && frontRightDrive.isBusy())) {
+//
+//        }
+//
+//        // Stop all motion;
+//        frontLeftDrive.setPower(0);
+//        frontRightDrive.setPower(0);
+//
+//        // Turn off RUN_TO_POSITION
+//        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
+    public void armTeleopMotion (Gamepad gamepad){
+        final double JOYSTICK_THRESHOLD=0.1;
+        double armMotorPower;
+        double armServoPower;
+        armMotorPower = -gamepad.left_stick_y;
+        if (Math.abs(armMotorPower) < JOYSTICK_THRESHOLD){
+            armMotorPower=0;
+        }
+        armServoPower = -gamepad.right_stick_y;
+        if (Math.abs(armServoPower) < JOYSTICK_THRESHOLD){
+            armServoPower=0;
+        }
+        armMotor.setPower(armMotorPower);
+        if(armServoPower > 0 && armServo.getPosition() < 1) {
+            armServo.setPosition(armServo.getPosition()+0.01);
+        }
+        else if (armServoPower < 0 && armServo.getPosition() > 0) {
+            armServo.setPosition(armServo.getPosition()-0.01);
+        }
+
+    }
+//    }
     public void armDown (){
-        glyphsArm.setPosition(ARM_DOWN_POS);
+        armServo.setPosition(ARM_DOWN_POS);
     }
     public void catchGlyphs (){
-        clamps.setPosition(GLYPHS_ARM_OPEN);
+        clamps.setPosition(CLAMPS_OPEN_POS);
     }
     public void releaseGlyphs (){
-        clamps.setPosition(GLYPHS_ARM_CLOSE);
+        clamps.setPosition(CLAMPS_CLOSE_POS);
     }
  }
 
