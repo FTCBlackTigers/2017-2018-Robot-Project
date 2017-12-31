@@ -53,7 +53,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @TeleOp(name="L_Arm", group="Test")
-//@Disabled
+@Disabled
 public class L_Arm extends OpMode{
 
     /* Declare OpMode members. */

@@ -52,7 +52,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @TeleOp(name="PushbotDrive", group="Test")
-//@Disabled
+@Disabled
 public class PushbotDrive extends OpMode{
 
     /* Declare OpMode members. */

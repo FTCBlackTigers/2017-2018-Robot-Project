@@ -27,11 +27,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package Samples;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -72,7 +73,7 @@ import java.util.Locale;
  */
 
 @Autonomous(name="Test Encoder", group="Auto")
-//@Disabled
+@Disabled
 public class TestEncoder extends LinearOpMode {
 
     // State used for updating telemetry
@@ -113,20 +114,33 @@ public class TestEncoder extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-//        int armMotorCurrentTarget = 0;
+        int armMotorCurrentTarget = 0;
+        int i=0;
+        robot.leftDrive.setTargetPosition(400);
+        robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.leftDrive.setPower(0.2);
+
 //        while (robot.leftDrive.getCurrentPosition() < (int)COUNTS_PER_MOTOR_REV/2 ) {
-//            armMotorCurrentTarget += 10;
+//            armMotorCurrentTarget += 72;
 //            robot.leftDrive.setTargetPosition(armMotorCurrentTarget);
 //            robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//            robot.leftDrive.setPower(0.2);
+//            robot.leftDrive.setPower(0.4);
 //            telemetry.addData("Path",robot.leftDrive.getCurrentPosition() );
 //            telemetry.update();
-
-//            while (armMotor.getCurrentPosition() < armMotorCurrentTarget ) {
-//            }
-        }
-//        robot.leftDrive.setPower(0);
-//    }
+//
+            while (robot.leftDrive.isBusy() ) {
+                i=0;
+                i++;
+                telemetry.addData("i ",i );
+                telemetry.update();
+                sleep(200);
+            }
+//        }
+        robot.leftDrive.setPower(0);
+        telemetry.addData("Path",robot.leftDrive.getCurrentPosition() );
+        telemetry.update();
+        sleep(2000);
+    }
 
 }
 

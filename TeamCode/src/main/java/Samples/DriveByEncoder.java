@@ -76,7 +76,7 @@ import java.util.Locale;
  */
 
 @Autonomous(name="Drive By Encoder", group="Drive")
-//@Disabled
+@Disabled
 public class DriveByEncoder extends LinearOpMode {
 
     BNO055IMU imu;

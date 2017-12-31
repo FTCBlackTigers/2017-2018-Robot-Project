@@ -29,6 +29,7 @@
 package Samples;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -62,7 +63,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  */
 
 @Autonomous(name="VuAuto", group ="Tests")
-//@Disabled
+@Disabled
 public class VuAuto extends LinearOpMode {
     HardwarePushbot robot       = new HardwarePushbot();
     public static final String TAG = "Vuforia VuMark Sample";

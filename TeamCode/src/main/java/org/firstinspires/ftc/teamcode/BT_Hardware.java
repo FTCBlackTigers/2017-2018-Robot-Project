@@ -51,9 +51,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class BT_Hardware {
     /* Public OpMode members. */
  //   public BT_TankDrive drive = new BT_TankDrive();
-//    public BT_MecanumDrive drive = new BT_MecanumDrive();
-//    public BT_Jewels jewels = new BT_Jewels();
-//    public BT_Intake intake = new BT_Intake();
+    public BT_MecanumDrive drive = new BT_MecanumDrive();
+    public BT_Jewels jewels = new BT_Jewels();
+    public BT_Intake intake = new BT_Intake();
     public BT_Glyphs glyphs = new BT_Glyphs();
 
     HardwareMap hwMap = null;
@@ -70,7 +70,7 @@ public class BT_Hardware {
 
         // Define and Initialize systems
 //        drive.init(hwMap,callerOpmode);
-//        jewels.init(hwMap , callerOpmode);
+      //  jewels.init(hwMap , callerOpmode);
 //        intake.init(hwMap,callerOpmode);
 //        glyphs.init(hwMap,callerOpmode);
 

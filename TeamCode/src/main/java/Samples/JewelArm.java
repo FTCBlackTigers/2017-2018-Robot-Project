@@ -3,6 +3,7 @@ package Samples;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -13,7 +14,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by Black Tigers on 05/12/2017.
  */
 @Autonomous(name = "Concept: Scan Servo", group = "Concept")
-
+//@Disabled
 public class JewelArm extends LinearOpMode{
 
         NormalizedColorSensor colorSensor;

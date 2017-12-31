@@ -198,7 +198,7 @@ public class BT_MecanumDrive {
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     //TODO : fix  DRIVE_GEAR_REDUCTION after installing wheels
-    static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
+    static final double     DRIVE_GEAR_REDUCTION    = 20.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_CM       = 10.16 ;     // For figuring circumference
     static final double     COUNTS_PER_CM           = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_CM * 3.1415);
@@ -230,7 +230,8 @@ public class BT_MecanumDrive {
         frontRightDrive = hwMap.get(DcMotor.class, "frontRightDrive");
         rearLeftDrive = hwMap.get(DcMotor.class, "rearLeftDrive");
         rearRightDrive = hwMap.get(DcMotor.class, "rearRightDrive");
-      // TODO: fix directions
+
+        //set motors dir
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
         rearLeftDrive.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
@@ -244,11 +245,17 @@ public class BT_MecanumDrive {
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        //TODO: fix motors mode
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rearRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rearLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rearRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         //Initiate the gyro
         gyro.init(hwMap);
     }
@@ -317,9 +324,9 @@ public class BT_MecanumDrive {
 
     public void teleopDrive(Gamepad gamepad, Telemetry telemetry) {
         double robotAngle = 0;
-//        if (gamepad.right_trigger < 0.7){
-//            robotAngle = gyro.getAngle();
-//        }
+        if (gamepad.right_trigger < 0.7){
+            robotAngle = gyro.getAngle();
+        }
         Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y, robotAngle);
         Wheels wheels = motionToWheels(motion);
 
@@ -331,7 +338,6 @@ public class BT_MecanumDrive {
         telemetry.addLine("front right : "+ wheels.frontRight);
         telemetry.addLine("rear left : "+ wheels.backLeft);
         telemetry.addLine("rear right : "+ wheels.backRight);
-//        telemetry.update();
     }
 
     public void encoderDrive(double speed,

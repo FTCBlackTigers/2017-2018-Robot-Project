@@ -32,8 +32,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /**
  * This is NOT an opmode.
@@ -71,19 +74,15 @@ public class BT_Intake
         this.callerOpmode =callerOpmode;
         // Define and Initialize Motors
 
-        //leftIntake = hwMap.get(DcMotor.class, "leftIntake");
-        //rightIntake = hwMap.get(DcMotor.class, "rightIntake");
-        leftIntake = hwMap.get(DcMotor.class, "frontLeftDrive");
-        rightIntake = hwMap.get(DcMotor.class, "frontRightDrive");
+        leftIntake = hwMap.get(DcMotor.class, "leftIntake");
+        rightIntake = hwMap.get(DcMotor.class, "rightIntake");
 
        //TODO: fix directions
         leftIntake.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightIntake.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
-
-
         // Set all motors to zero power
-       stop();
+        stop();
 
         leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -101,6 +100,22 @@ public class BT_Intake
         // Set all motors to zero power
         leftIntake.setPower(0);
         rightIntake.setPower(0);
+    }
+    public void teleopMotion(Gamepad gamepad, Telemetry telemetry){
+        boolean glyphOut = gamepad.left_trigger > 0.5;
+        boolean glyphIn = gamepad.right_trigger > 0.5;
+
+        if (glyphOut) {
+            glyphsOut();
+            telemetry.addData("dr: ","glyphs out");
+        }
+        else if (glyphIn) {
+            glyphsIn();
+            telemetry.addData("dr: ","glyphs in");
+        }
+        else {
+           stop();
+        }
     }
  }
 

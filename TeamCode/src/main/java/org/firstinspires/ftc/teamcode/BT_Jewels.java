@@ -63,7 +63,7 @@ public class BT_Jewels {
     /* Public OpMode members. */
     public Servo    jewelArm     = null;
     public Servo    jewelFinger    = null;
-    public NormalizedColorSensor colorSensor=null;
+    public NormalizedColorSensor colorSensor = null;
 
     //TODO: define constants
     public static final double JEWEL_ARM_START  =  1.0 ;
