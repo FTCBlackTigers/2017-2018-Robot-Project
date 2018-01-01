@@ -53,7 +53,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 @Autonomous(name="BlueRight", group="Auto")
 //@Disabled
 public class BT_AutoBlueRight extends LinearOpMode {
-
+    // Added comment by Rami
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private BT_Hardware robot = new BT_Hardware();
