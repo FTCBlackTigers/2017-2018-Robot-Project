@@ -62,9 +62,9 @@ public class BT_Glyphs {
     public DcMotor armMotor = null ;
 
 
-    public static final double ARM_MANUAL_POWER = 0.2;
+    public static final double ARM_MANUAL_POWER = 0.1;
     public static final double ARM_AUTO_POWER = 0.2;
-    public static final int ARM_HIGH_POS = 400 ;
+    public static final int ARM_HIGH_POS = 520 ;
     public static final int ARM_LOW_POS = 200 ;
     public static final int ARM_DOWN_POS  = 0 ;
     //TODO: define constantsS
@@ -88,7 +88,7 @@ public class BT_Glyphs {
         hwMap = ahwMap;
         this.callerOpmode =callerOpmode;
         // Define and Initialize Motors
-//        armServo = hwMap.get(Servo.class, "armServo");
+        armServo = hwMap.get(Servo.class, "armServo");
 //        clamps = hwMap.get(Servo.class, "clampsServo");
         armMotor = hwMap.get(DcMotor.class, "armMotor");
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -107,7 +107,10 @@ public class BT_Glyphs {
     }
     public void armHigh(){
         moveArm(ARM_HIGH_POS);
+        while (armMotor.getCurrentPosition() <= ARM_HIGH_POS*0.5){
+        }
         moveServo(SERVO_HIGH_POS);
+
     }
     public void armLow(){
         moveArm(ARM_LOW_POS);
@@ -115,6 +118,8 @@ public class BT_Glyphs {
     }
     public void armDown(){
         moveArm(ARM_DOWN_POS);
+        while (armMotor.getCurrentPosition() >= ARM_DOWN_POS/0.5){
+        }
         moveServo(SERVO_DOWN_POS);
     }
 
@@ -123,7 +128,7 @@ public class BT_Glyphs {
     }
 
     public void teleopMotion(Gamepad gamepad, Telemetry telemetry){
-        final double JOYSTICK_THRESHOLD=0.1;
+        final double JOYSTICK_THRESHOLD=0.8;
         double armMotorPower;
         double armServoPower;
 
@@ -141,6 +146,7 @@ public class BT_Glyphs {
         else {
             armMotorPower=Math.signum(armMotorPower)*ARM_MANUAL_POWER;
         }
+        telemetry.addData("arm pos: ", armMotor.getCurrentPosition());
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armMotor.setPower(armMotorPower);
 
@@ -183,10 +189,10 @@ public class BT_Glyphs {
     }
 
     public void catchGlyphs (){
-        clamps.setPosition(CLAMPS_OPEN_POS);
+//        clamps.setPosition(CLAMPS_OPEN_POS);
     }
     public void releaseGlyphs (){
-        clamps.setPosition(CLAMPS_CLOSE_POS);
+//        clamps.setPosition(CLAMPS_CLOSE_POS);
     }
  }
 

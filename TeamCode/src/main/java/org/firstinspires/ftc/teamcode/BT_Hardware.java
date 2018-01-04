@@ -69,10 +69,10 @@ public class BT_Hardware {
         hwMap = ahwMap;
 
         // Define and Initialize systems
-//        drive.init(hwMap,callerOpmode);
+        drive.init(hwMap,callerOpmode);
       //  jewels.init(hwMap , callerOpmode);
-//        intake.init(hwMap,callerOpmode);
-//        glyphs.init(hwMap,callerOpmode);
+        intake.init(hwMap,callerOpmode);
+        glyphs.init(hwMap,callerOpmode);
 
     }
 }

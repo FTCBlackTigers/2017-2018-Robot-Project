@@ -260,8 +260,8 @@ public class BT_MecanumDrive {
         gyro.init(hwMap);
     }
     
-    public void move (double distCm , DriveDirection direction,  double timeoutS ){
-//        encoderDrive( AUTO_DRIVE_SPEED, distCm, direction , timeoutS);
+    public void move (double distCm , DriveDirection direction,  double timeoutS, Telemetry telemetry ){
+        encoderDrive( AUTO_DRIVE_SPEED, distCm, direction , timeoutS, telemetry );
     }
 
     public void turn (double degrees, double timeoutMs, Telemetry telemetry) {
@@ -324,9 +324,9 @@ public class BT_MecanumDrive {
 
     public void teleopDrive(Gamepad gamepad, Telemetry telemetry) {
         double robotAngle = 0;
-        if (gamepad.right_trigger < 0.7){
-            robotAngle = gyro.getAngle();
-        }
+//        if (gamepad.right_trigger < 0.7){
+//            robotAngle = gyro.getAngle();
+//        }
         Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y, robotAngle);
         Wheels wheels = motionToWheels(motion);
 
@@ -342,7 +342,7 @@ public class BT_MecanumDrive {
 
     public void encoderDrive(double speed,
                              double distCm, DriveDirection direction,
-                             double timeoutMs) {
+                             double timeoutMs, Telemetry telemetry) {
         int newFrontLeftTarget = frontLeftDrive.getCurrentPosition();
         int newFrontRightTarget = frontRightDrive.getCurrentPosition();
         int newRearLeftTarget = rearLeftDrive.getCurrentPosition();
@@ -378,6 +378,10 @@ public class BT_MecanumDrive {
                 break;
 
         }
+        telemetry.addData("front left: " , ticks + "," + newFrontLeftTarget);
+        telemetry.addData("front right: " , ticks + "," + newFrontRightTarget);
+        telemetry.addData("rear left: " , ticks + "," + newRearLeftTarget);
+        telemetry.addData("rear right: " , ticks + "," + newRearRightTarget);
 
         frontLeftDrive.setTargetPosition(newFrontLeftTarget);
         frontRightDrive.setTargetPosition(newFrontRightTarget);
