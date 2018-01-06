@@ -108,7 +108,8 @@ public class BT_AutoBlueRight extends LinearOpMode {
 
  //       robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
  //       sleep(3000);
-        robot.drive.move(10, BT_MecanumDrive.DriveDirection.FORWARD, 3000 , telemetry );
+//        robot.drive.move(100, BT_MecanumDrive.DriveDirection.RIGHT, 2500 , telemetry );
+        robot.drive.turn(-90,3000,telemetry);
         while (opModeIsActive()) {
 
         }

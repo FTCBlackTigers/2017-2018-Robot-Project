@@ -62,7 +62,7 @@ public class BT_Glyphs {
     public DcMotor armMotor = null ;
 
 
-    public static final double ARM_MANUAL_POWER = 0.1;
+    public static final double ARM_MANUAL_POWER = 0.15;
     public static final double ARM_AUTO_POWER = 0.2;
     public static final int ARM_HIGH_POS = 520 ;
     public static final int ARM_LOW_POS = 200 ;
@@ -72,8 +72,9 @@ public class BT_Glyphs {
     public static final double CLAMPS_CLOSE_POS =  0.5 ;
     public static final double SERVO_HIGH_POS = 0.2 ;
     public static final double SERVO_LOW_POS = 0.7 ;
-    public static final double SERVO_DOWN_POS  = 0.2 ;
+    public static final double SERVO_DOWN_POS  = 0 ;
     public static final double SERVO_LIFT_POS = 0.7 ;
+    public static final double SERVO_INTERVAL =0.01;
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private OpMode callerOpmode ;
@@ -94,6 +95,7 @@ public class BT_Glyphs {
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         moveServo(SERVO_DOWN_POS);
 //        clamps.setPosition(CLAMPS_OPEN_POS);
@@ -156,11 +158,12 @@ public class BT_Glyphs {
             armServoPower=0;
         }
         if(armServoPower > 0 && armServo.getPosition() < 1) {
-            moveServo(armServo.getPosition()+0.01);
+            moveServo(armServo.getPosition()+SERVO_INTERVAL);
         }
         else if (armServoPower < 0 && armServo.getPosition() > 0) {
-            moveServo(armServo.getPosition()-0.01);
+            moveServo(armServo.getPosition()-SERVO_INTERVAL);
         }
+        telemetry.addData("servo pos: ", armServo.getPosition());
 
         // Handle automatic operations
         //clamps system
