@@ -61,13 +61,14 @@ public class BT_Glyphs {
     public Servo    clamps    = null;
     public DcMotor armMotor = null ;
 
-
-    public static final double ARM_MANUAL_POWER = 0.15;
+    //TODO: define constants
+    public static final double MIN_ARM_POS = 23;
+    public static final double MAX_ARM_POS =-500 ;
+    public static final double ARM_MANUAL_POWER = 0.5;
     public static final double ARM_AUTO_POWER = 0.2;
     public static final int ARM_HIGH_POS = 520 ;
     public static final int ARM_LOW_POS = 200 ;
     public static final int ARM_DOWN_POS  = 0 ;
-    //TODO: define constantsS
     public static final double  CLAMPS_OPEN_POS =  0.5 ;
     public static final double CLAMPS_CLOSE_POS =  0.5 ;
     public static final double SERVO_HIGH_POS = 0.2 ;
@@ -94,8 +95,9 @@ public class BT_Glyphs {
         armMotor = hwMap.get(DcMotor.class, "armMotor");
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
         moveServo(SERVO_DOWN_POS);
 //        clamps.setPosition(CLAMPS_OPEN_POS);
@@ -142,7 +144,7 @@ public class BT_Glyphs {
 
         // Handle manual arm control
         armMotorPower = -gamepad.left_stick_y;
-        if (Math.abs(armMotorPower) < JOYSTICK_THRESHOLD){
+        if ((Math.abs(armMotorPower) < JOYSTICK_THRESHOLD) || (MAX_ARM_POS>armMotor.getCurrentPosition())||(MIN_ARM_POS<armMotor.getCurrentPosition())){
             armMotorPower=0;
         }
         else {
