@@ -29,9 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -51,12 +51,15 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 public class BT_Intake
 {
+
     /* Public OpMode members. */
     public DcMotor  leftIntake  = null;
     public DcMotor  rightIntake  = null;
+    public DcMotor intakeMotor  = null;
 
     //TODO: define constants
     public static final double INTAKE_POWER  = 0.45 ;
+    public static final double EJECT_POWER  = 0.45 ;
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -76,30 +79,41 @@ public class BT_Intake
 
         leftIntake = hwMap.get(DcMotor.class, "leftIntake");
         rightIntake = hwMap.get(DcMotor.class, "rightIntake");
+        intakeMotor =  hwMap.get(DcMotor.class, "intakeMotor");
 
-       //TODO: fix directions
-        leftIntake.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightIntake.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        leftIntake.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
+        rightIntake.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+        intakeMotor.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
 
         // Set all motors to zero power
         stop();
 
         leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
     public void glyphsIn() {
         leftIntake.setPower(INTAKE_POWER);
         rightIntake.setPower(INTAKE_POWER);
+        intakeMotor.setPower(INTAKE_POWER);
     }
 
     public void glyphsOut() {
         leftIntake.setPower(-INTAKE_POWER);
         rightIntake.setPower(-INTAKE_POWER);
+        intakeMotor.setPower(-INTAKE_POWER);
+    }
+
+    public void ejectGlyphs() {
+        leftIntake.setPower(EJECT_POWER);
+        rightIntake.setPower(EJECT_POWER);
     }
     public void stop() {
         // Set all motors to zero power
         leftIntake.setPower(0);
         rightIntake.setPower(0);
+        intakeMotor.setPower(0);
+
     }
     public void teleopMotion(Gamepad gamepad, Telemetry telemetry){
         boolean glyphOut = gamepad.left_trigger > 0.5;

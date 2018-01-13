@@ -56,10 +56,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 public class BT_Glyphs {
     /* Public OpMode members. */
-
     public Servo armServo = null;
     public Servo    clamps    = null;
-    public DcMotor armMotor = null ;
+    public DcMotor armMotor = null;
+    BT_Intake intake = null;
+
+    static final double     COUNTS_PER_MOTOR_REV    = 28 ;
+    static final double     DRIVE_GEAR_REDUCTION    = 60 ;     // This is < 1.0 if geared UP
+    static final double     COUNTS_PER_DEG           = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / 360;
 
     //TODO: define constants
     public static final double MIN_ARM_POS =-500;
@@ -67,9 +71,10 @@ public class BT_Glyphs {
     public static final double ARM_MANUAL_DOWN_POWER = 0.1;
     public static final double ARM_MANUAL_UP_POWER = 0.5;
     public static final double ARM_AUTO_POWER = 0.5;
-    public static final int ARM_HIGH_POS = 332 ;
-    public static final int ARM_LOW_POS = 88 ;
+    public static final int ARM_HIGH_POS = (int) (72 * COUNTS_PER_DEG) ; //332 TICKS
+    public static final int ARM_LOW_POS =  (int) (19 * COUNTS_PER_DEG); // 88 TICKS
     public static final int ARM_DOWN_POS  = 0;
+    public static final int ARM_EXIT_POS =  (int) (15 * COUNTS_PER_DEG);
     public static final double  CLAMPS_OPEN_POS =  0.1 ;
     public static final double CLAMPS_CLOSE_POS =  0.5 ;
     public static final double SERVO_HIGH_POS = 0.48 ;
@@ -77,7 +82,7 @@ public class BT_Glyphs {
     public static final double SERVO_DOWN_POS  = 0 ;
     public static final double SERVO_LIFT_POS = 0.7 ;
     public static final double SERVO_INTERVAL =0.01;
-    public  int currentPos = 0;
+    public  int targetPos = 0;
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private OpMode callerOpmode ;
@@ -87,10 +92,11 @@ public class BT_Glyphs {
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap, OpMode callerOpmode) {
+    public void init(HardwareMap ahwMap, OpMode callerOpmode, BT_Intake intake) {
         // Save reference to Hardware map
         hwMap = ahwMap;
         this.callerOpmode =callerOpmode;
+        this.intake = intake;
         // Define and Initialize Motors
         armServo = hwMap.get(Servo.class, "armServo");
         clamps = hwMap.get(Servo.class, "clampsServo");
@@ -107,10 +113,19 @@ public class BT_Glyphs {
 
     public void moveArm(int pos) {
         armMotor.setTargetPosition(pos);
-        currentPos = pos;
+        targetPos = pos;
+        ejectGlyphs();
 //        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower(pos-armMotor.getCurrentPosition()>0?ARM_MANUAL_UP_POWER:ARM_MANUAL_DOWN_POWER);
+    }
+    public void ejectGlyphs(){
+        if((armMotor.getCurrentPosition()< ARM_EXIT_POS) && ((targetPos == ARM_HIGH_POS) || (targetPos == ARM_LOW_POS))) {
+           intake.ejectGlyphs();
+        }
+        else {
+            intake.stop();
+        }
     }
     public void armHigh(){
         moveClamps(CLAMPS_CLOSE_POS);
@@ -159,8 +174,8 @@ public class BT_Glyphs {
         boolean isTooLow = (MIN_ARM_POS > armMotor.getCurrentPosition()) && (armMotorPower < 0);
         if ((Math.abs(armMotorPower) < JOYSTICK_THRESHOLD) /*|| isTooHigh || isTooLow)*/ ) {
 //            armMotorPower = 0;
-//            if(Math.abs(currentPos - armMotor.getCurrentPosition()) > 5) {
-                moveArm(currentPos);
+//            if(Math.abs(targetPos - armMotor.getCurrentPosition()) > 5) {
+                moveArm(targetPos);
 //            }
         }
         else {
@@ -172,10 +187,10 @@ public class BT_Glyphs {
             }
             armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             armMotor.setPower(armMotorPower);
-            currentPos = armMotor.getCurrentPosition();
+            targetPos = armMotor.getCurrentPosition();
         }
         telemetry.addData("arm pos: ", armMotor.getCurrentPosition());
-        telemetry.addData("current pos: ", currentPos);
+        telemetry.addData("current pos: ", targetPos);
 
         // Handle manual servo control
         armServoPower = -gamepad.right_stick_y;
