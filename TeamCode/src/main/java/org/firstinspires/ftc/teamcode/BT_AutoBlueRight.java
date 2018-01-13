@@ -71,7 +71,7 @@ public class BT_AutoBlueRight extends LinearOpMode {
         telemetry.addData("Status", BT_Status.getStatusLine());
         telemetry.update();
 
-        //BT_Vumark btVumark = new BT_Vumark(hardwareMap) ;
+        BT_Vumark btVumark = new BT_Vumark(hardwareMap) ;
         BT_Status.addLine("Vumark Initialized");
         telemetry.addData("Status",BT_Status.getStatusLine());
         telemetry.update();
@@ -83,37 +83,38 @@ public class BT_AutoBlueRight extends LinearOpMode {
         telemetry.update();
         waitForStart();
         runtime.reset();
-//        while ((vuMark == RelicRecoveryVuMark.UNKNOWN) && (runtime.time()< WAIT_FOR_VUMARK)) {
-//            vuMark = btVumark.getVuMark();
-//        }
-//           /* if (vuMark == RelicRecoveryVuMark.UNKNOWN){
-//                vuMark = RelicRecoveryVuMark.LEFT ;
-//            } */
-//        switch (vuMark) {
-//            case RIGHT :
-//                driveDist = RIGHT_DRIVE_DIST ;
-//                break;
-//            case CENTER:
-//                driveDist = CENTER_DRIVE_DIST ;
-//                break;
-//            case LEFT:
-//                driveDist = LEFT_DRIVE_DIST ;
-//                break;
-//            case UNKNOWN:
-//                driveDist = RIGHT_DRIVE_DIST ;
-//                break;
-//        }
-//        telemetry.addData("Status", "Identified column: %s ",vuMark);
-//        telemetry.update();
+        while ((vuMark == RelicRecoveryVuMark.UNKNOWN) && (runtime.time()< WAIT_FOR_VUMARK)) {
+            vuMark = btVumark.getVuMark();
+        }
+           /* if (vuMark == RelicRecoveryVuMark.UNKNOWN){
+                vuMark = RelicRecoveryVuMark.LEFT ;
+            } */
+        switch (vuMark) {
+            case RIGHT :
+                driveDist = RIGHT_DRIVE_DIST ;
+                break;
+            case CENTER:
+                driveDist = CENTER_DRIVE_DIST ;
+                break;
+            case LEFT:
+                driveDist = LEFT_DRIVE_DIST ;
+                break;
+            case UNKNOWN:
+                driveDist = RIGHT_DRIVE_DIST ;
+                break;
+        }
+        telemetry.addData("Status", "Identified column: %s ",vuMark);
+        telemetry.update();
 
         robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
         sleep(3000);
- //       robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.FORWARD, 3000 );
+        robot.drive.move(100, BT_MecanumDrive.DriveDirection.RIGHT, 2500 , telemetry );
+        robot.drive.turn(-90,3000,telemetry);
         while (opModeIsActive()) {
 
         }
 
- //       robot.drive.turn(90 , 1000,telemetry);
-        //robot.intake.glyphsOut();
+        robot.drive.turn(90 , 1000,telemetry);
+        robot.intake.glyphsOut();
     }
 }

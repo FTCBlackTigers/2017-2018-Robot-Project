@@ -61,6 +61,7 @@ public class BT_Teleop extends OpMode
     @Override
     public void init() {
         robot.init(hardwareMap, this);
+//        robot.drive.runWithoutEncoders();
         telemetry.addData("Status", "Robot Initialized");
         telemetry.update();
     }
@@ -87,7 +88,7 @@ public class BT_Teleop extends OpMode
     public void loop() {
         BT_Status.cleanStatus();
         robot.drive.teleopDrive(gamepad1,telemetry);
-//        robot.drive.buttonDrive(gamepad1);
+//        robot.drive.buttonDrive(gamepad1,telemetry);
         robot.glyphs.teleopMotion(gamepad2,telemetry);
         robot.intake.teleopMotion(gamepad1,telemetry);
 
