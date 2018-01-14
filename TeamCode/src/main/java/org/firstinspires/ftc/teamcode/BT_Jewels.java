@@ -97,7 +97,7 @@ public class BT_Jewels {
         // Define and Initialize Motors
         jewelArm = hwMap.get(Servo.class, "jewelArm");
         jewelFinger = hwMap.get(Servo.class, "jewelFinger");
-        colorSensor = hwMap.get(NormalizedColorSensor.class, "sensor_color");
+        colorSensor = hwMap.get(NormalizedColorSensor.class, "colorSensor");
 
 
         jewelArm.setPosition(JEWEL_ARM_START);

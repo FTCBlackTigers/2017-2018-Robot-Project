@@ -58,7 +58,7 @@ public class BT_Intake
     public DcMotor intakeMotor  = null;
 
     //TODO: define constants
-    public static final double INTAKE_POWER  = 0.45 ;
+    public static final double INTAKE_POWER  = 0.5 ;
     public static final double EJECT_POWER  = 0.45 ;
 
     /* local OpMode members. */
