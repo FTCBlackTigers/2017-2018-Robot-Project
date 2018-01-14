@@ -65,6 +65,7 @@ public class BT_AutoBlueRight extends LinearOpMode {
     public void runOpMode() {
 
         double driveDist = 0 ;
+        //Rami Try
         robot.init(hardwareMap,this);
         BT_Status.cleanStatus();
         BT_Status.addLine("Robot Initialized");
