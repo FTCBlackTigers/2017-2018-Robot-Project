@@ -58,6 +58,7 @@ public class BT_Intake
     public DcMotor intakeMotor  = null;
 
     //TODO: define constants
+    public static final double MID_INTAKE_POWER  = 1 ;
     public static final double INTAKE_POWER  = 0.5 ;
     public static final double EJECT_POWER  = 0.45 ;
 
@@ -83,7 +84,7 @@ public class BT_Intake
 
         leftIntake.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         rightIntake.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
-        intakeMotor.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+        intakeMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
         // Set all motors to zero power
         stop();
@@ -95,13 +96,13 @@ public class BT_Intake
     public void glyphsIn() {
         leftIntake.setPower(INTAKE_POWER);
         rightIntake.setPower(INTAKE_POWER);
-        intakeMotor.setPower(INTAKE_POWER);
+        intakeMotor.setPower(MID_INTAKE_POWER);
     }
 
     public void glyphsOut() {
         leftIntake.setPower(-INTAKE_POWER);
         rightIntake.setPower(-INTAKE_POWER);
-        intakeMotor.setPower(-INTAKE_POWER);
+        intakeMotor.setPower(-MID_INTAKE_POWER);
     }
 
     public void ejectGlyphs() {
@@ -122,6 +123,7 @@ public class BT_Intake
         if (glyphOut) {
             glyphsOut();
             telemetry.addData("dr: ","glyphs out");
+            telemetry.addLine("power: "+ intakeMotor.getPower());
         }
         else if (glyphIn) {
             glyphsIn();

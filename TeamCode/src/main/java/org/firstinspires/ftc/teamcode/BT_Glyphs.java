@@ -76,10 +76,10 @@ public class BT_Glyphs {
     public static final int ARM_DOWN_POS  = 0;
     public static final int ARM_EXIT_POS =  (int) (15 * COUNTS_PER_DEG);
     public static final double  CLAMPS_OPEN_POS =  0.1 ;
-    public static final double CLAMPS_CLOSE_POS =  0.5 ;
+    public static final double CLAMPS_CLOSE_POS =  0 ;
     public static final double SERVO_HIGH_POS = 0.48 ;
     public static final double SERVO_LOW_POS = 0.3 ;
-    public static final double SERVO_DOWN_POS  = 0 ;
+    public static final double SERVO_DOWN_POS  = 0.0 ;
     public static final double SERVO_LIFT_POS = 0.7 ;
     public static final double SERVO_INTERVAL =0.01;
     public  int targetPos = 0;
@@ -124,7 +124,7 @@ public class BT_Glyphs {
            intake.ejectGlyphs();
         }
         else {
-            intake.stop();
+            //intake.stop();
         }
     }
     public void armHigh(){

@@ -350,10 +350,10 @@ public class BT_MecanumDrive {
     }
 
     public void teleopDrive(Gamepad gamepad, Telemetry telemetry) {
-        double robotAngle = 0;
-//        if (gamepad.right_trigger < 0.7){
-//            robotAngle = gyro.getAngle();
-//        }
+       double robotAngle = gyro.getAngle();
+        if (gamepad.right_trigger < 0.7){
+            robotAngle = 0;
+        }
         Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y, robotAngle);
         Wheels wheels = motionToWheels(motion);
 
@@ -441,8 +441,6 @@ public class BT_MecanumDrive {
             telemetry.addData("front right: " ,newFrontRightTarget + " , " + frontRightDrive.getCurrentPosition());
             telemetry.addData("rear left: " ,newRearLeftTarget + " , " + rearLeftDrive.getCurrentPosition());
             telemetry.addData("rear right: " ,newRearRightTarget + " , " + rearRightDrive.getCurrentPosition());
-            telemetry.update();
-
         }
 
         // Stop all motion;

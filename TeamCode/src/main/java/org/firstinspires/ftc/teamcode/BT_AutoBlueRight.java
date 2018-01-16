@@ -57,10 +57,10 @@ public class BT_AutoBlueRight extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private BT_Hardware robot = new BT_Hardware();
-    static final double WAIT_FOR_VUMARK = 1000;
-    static final double LEFT_DRIVE_DIST = 50 ;
-    static final double CENTER_DRIVE_DIST = 60 ;
-    static final double RIGHT_DRIVE_DIST = 70 ;
+    static final double WAIT_FOR_VUMARK = 3000;
+    static final double LEFT_DRIVE_DIST = 80 ;
+    static final double CENTER_DRIVE_DIST = 100 ;
+    static final double RIGHT_DRIVE_DIST = 120 ;
     @Override
     public void runOpMode() {
 
@@ -83,13 +83,13 @@ public class BT_AutoBlueRight extends LinearOpMode {
         telemetry.addData("Status",BT_Status.getStatusLine());
         telemetry.update();
         waitForStart();
+        BT_Status.addLine("Started...");
+        telemetry.addData("Status",BT_Status.getStatusLine());
+        telemetry.update();
         runtime.reset();
-        while ((vuMark == RelicRecoveryVuMark.UNKNOWN) && (runtime.time()< WAIT_FOR_VUMARK)) {
+        while ((vuMark == RelicRecoveryVuMark.UNKNOWN) && (runtime.milliseconds()< WAIT_FOR_VUMARK)) {
             vuMark = btVumark.getVuMark();
         }
-           /* if (vuMark == RelicRecoveryVuMark.UNKNOWN){
-                vuMark = RelicRecoveryVuMark.LEFT ;
-            } */
         switch (vuMark) {
             case RIGHT :
                 driveDist = RIGHT_DRIVE_DIST ;
@@ -105,17 +105,19 @@ public class BT_AutoBlueRight extends LinearOpMode {
                 break;
         }
         telemetry.addData("Status", "Identified column: %s ",vuMark);
+     //   telemetry.update();
+
+//        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
+//        sleep(3000);
+        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        telemetry.addData("Status", "Identified column: %s ",vuMark);
         telemetry.update();
-
-        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
-        sleep(3000);
-        robot.drive.move(100, BT_MecanumDrive.DriveDirection.RIGHT, 2500 , telemetry );
-        robot.drive.turn(-90,3000,telemetry);
+        robot.drive.turn(90,3000,telemetry);
         while (opModeIsActive()) {
-
+            telemetry.addData("Status", "Identified column: %s ",vuMark);
+            telemetry.update();
         }
 
-        robot.drive.turn(90 , 1000,telemetry);
         robot.intake.glyphsOut();
     }
 }
