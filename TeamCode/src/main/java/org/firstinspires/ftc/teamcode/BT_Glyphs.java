@@ -66,8 +66,8 @@ public class BT_Glyphs {
     static final double     COUNTS_PER_DEG           = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / 360;
 
     //TODO: define constants
-    public static final double MIN_ARM_POS =-500;
-    public static final double MAX_ARM_POS =25 ;
+    public static final double MIN_ARM_POS =(int) (0 * COUNTS_PER_DEG) ;
+    public static final double MAX_ARM_POS =(int) (160 * COUNTS_PER_DEG) ;
     public static final double ARM_MANUAL_DOWN_POWER = 0.1;
     public static final double ARM_MANUAL_UP_POWER = 0.5;
     public static final double ARM_AUTO_POWER = 0.5;
@@ -120,11 +120,12 @@ public class BT_Glyphs {
         armMotor.setPower(pos-armMotor.getCurrentPosition()>0?ARM_MANUAL_UP_POWER:ARM_MANUAL_DOWN_POWER);
     }
     public void ejectGlyphs(){
-        if((armMotor.getCurrentPosition()< ARM_EXIT_POS) && ((targetPos == ARM_HIGH_POS) || (targetPos == ARM_LOW_POS))) {
-           intake.ejectGlyphs();
-        }
-        else {
-            //intake.stop();
+        if (!intake.isPressed) {
+            if ((armMotor.getCurrentPosition() < ARM_EXIT_POS) && ((targetPos == ARM_HIGH_POS) || (targetPos == ARM_LOW_POS))) {
+                intake.ejectGlyphs();
+            } else {
+                intake.stop();
+            }
         }
     }
     public void armHigh(){

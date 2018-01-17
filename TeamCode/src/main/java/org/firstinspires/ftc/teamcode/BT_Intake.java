@@ -61,7 +61,7 @@ public class BT_Intake
     public static final double MID_INTAKE_POWER  = 1 ;
     public static final double INTAKE_POWER  = 0.5 ;
     public static final double EJECT_POWER  = 0.45 ;
-
+    public static boolean isPressed = false;
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private OpMode callerOpmode;
@@ -121,16 +121,19 @@ public class BT_Intake
         boolean glyphIn = gamepad.right_trigger > 0.5;
 
         if (glyphOut) {
+            isPressed = true ;
             glyphsOut();
             telemetry.addData("dr: ","glyphs out");
             telemetry.addLine("power: "+ intakeMotor.getPower());
         }
         else if (glyphIn) {
+            isPressed = true;
             glyphsIn();
             telemetry.addData("dr: ","glyphs in");
         }
         else {
            stop();
+            isPressed = false;
         }
     }
  }
