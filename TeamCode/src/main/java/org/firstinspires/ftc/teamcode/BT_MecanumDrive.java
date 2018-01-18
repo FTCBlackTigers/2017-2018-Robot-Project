@@ -110,6 +110,7 @@ public class BT_MecanumDrive {
         double vD = Math.min(Math.sqrt(Math.pow(leftX, 2) +
                         Math.pow(leftY, 2)),
                 1);
+        vD = Math.pow(vD,2);
         double thetaD = Math.atan2(leftX,leftY);
         double radAngle = curretAngle*Math.PI/180;
         //driving by driver's view
@@ -350,9 +351,9 @@ public class BT_MecanumDrive {
     }
 
     public void teleopDrive(Gamepad gamepad, Telemetry telemetry) {
-       double robotAngle = gyro.getAngle();
-        if (gamepad.right_trigger < 0.7){
-            robotAngle = 0;
+       double robotAngle = 0;
+        if (gamepad.right_bumper ){
+            robotAngle = gyro.getAngle();
         }
         Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y, robotAngle);
         Wheels wheels = motionToWheels(motion);

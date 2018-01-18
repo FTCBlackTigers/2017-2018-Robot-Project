@@ -67,7 +67,7 @@ public class BT_Glyphs {
 
     //TODO: define constants
     public static final double MIN_ARM_POS =(int) (0 * COUNTS_PER_DEG) ;
-    public static final double MAX_ARM_POS =(int) (160 * COUNTS_PER_DEG) ;
+    public static final double MAX_ARM_POS =(int) (80 * COUNTS_PER_DEG) ;
     public static final double ARM_MANUAL_DOWN_POWER = 0.1;
     public static final double ARM_MANUAL_UP_POWER = 0.5;
     public static final double ARM_AUTO_POWER = 0.5;
@@ -75,13 +75,13 @@ public class BT_Glyphs {
     public static final int ARM_LOW_POS =  (int) (19 * COUNTS_PER_DEG); // 88 TICKS
     public static final int ARM_DOWN_POS  = 0;
     public static final int ARM_EXIT_POS =  (int) (15 * COUNTS_PER_DEG);
-    public static final double  CLAMPS_OPEN_POS =  0.1 ;
+    public static final double  CLAMPS_OPEN_POS =  0.9 ;
     public static final double CLAMPS_CLOSE_POS =  0 ;
     public static final double SERVO_HIGH_POS = 0.48 ;
     public static final double SERVO_LOW_POS = 0.3 ;
     public static final double SERVO_DOWN_POS  = 0.0 ;
     public static final double SERVO_LIFT_POS = 0.7 ;
-    public static final double SERVO_INTERVAL =0.01;
+    public static final double SERVO_INTERVAL =0.05;
     public  int targetPos = 0;
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -123,13 +123,14 @@ public class BT_Glyphs {
         if (!intake.isPressed) {
             if ((armMotor.getCurrentPosition() < ARM_EXIT_POS) && ((targetPos == ARM_HIGH_POS) || (targetPos == ARM_LOW_POS))) {
                 intake.ejectGlyphs();
-            } else {
+            }
+            else {
                 intake.stop();
             }
         }
     }
     public void armHigh(){
-        moveClamps(CLAMPS_CLOSE_POS);
+        catchGlyphs();
         moveArm(ARM_HIGH_POS);
         while (armMotor.getCurrentPosition() <= ARM_HIGH_POS*0.5){
         }
@@ -137,16 +138,16 @@ public class BT_Glyphs {
 
     }
     public void armLow(){
+        catchGlyphs();
         moveArm(ARM_LOW_POS);
         moveServo(SERVO_HIGH_POS);
     }
     public void armDown(){
-        moveClamps(CLAMPS_CLOSE_POS);
+        releaseGlyphs();
         moveArm(ARM_DOWN_POS);
 //        while (armMotor.getCurrentPosition() >= ARM_DOWN_POS/0.5){
 //        }
         moveServo(SERVO_DOWN_POS);
-        moveClamps(CLAMPS_OPEN_POS);
     }
 
     public void moveServo (double pos){
@@ -162,8 +163,8 @@ public class BT_Glyphs {
         double armMotorPower;
         double armServoPower;
 
-//        boolean catchGlyphs = gamepad.back;
-        boolean releaseGlyphs= gamepad.back;
+        boolean catchGlyphs = (gamepad.right_trigger > 0.5);
+        boolean releaseGlyphs = (gamepad.left_trigger > 0.5);
         boolean glyphsHigh = gamepad.y;
         boolean glyphsDown = gamepad.a;
         boolean glyphsLow = gamepad.b;
@@ -173,11 +174,8 @@ public class BT_Glyphs {
         armMotorPower = -gamepad.left_stick_y;
         boolean isTooHigh = (MAX_ARM_POS < armMotor.getCurrentPosition()) && (armMotorPower > 0);
         boolean isTooLow = (MIN_ARM_POS > armMotor.getCurrentPosition()) && (armMotorPower < 0);
-        if ((Math.abs(armMotorPower) < JOYSTICK_THRESHOLD) /*|| isTooHigh || isTooLow)*/ ) {
-//            armMotorPower = 0;
-//            if(Math.abs(targetPos - armMotor.getCurrentPosition()) > 5) {
+        if ((Math.abs(armMotorPower) < JOYSTICK_THRESHOLD) || isTooHigh || isTooLow) {
                 moveArm(targetPos);
-//            }
         }
         else {
             if (armMotorPower > 0) {
@@ -217,12 +215,12 @@ public class BT_Glyphs {
 
         // Handle automatic operations
         //clamps system
-//        if (catchGlyphs){
-//            catchGlyphs();
-//            telemetry.addData("op: ","catch glyphs");
-//        }
-        /*else*/ if (releaseGlyphs){
-            moveClamps(CLAMPS_OPEN_POS);
+        if (catchGlyphs){
+            catchGlyphs();
+            telemetry.addData("op: ","catch glyphs");
+        }
+        else if (releaseGlyphs){
+            releaseGlyphs();
             telemetry.addData("op: ","release glyphs");
         }
 
