@@ -59,7 +59,6 @@ public class BT_TankDrive {
     public BT_Gyro  gyro = new BT_Gyro();
     
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    //TODO : fix  DRIVE_GEAR_REDUCTION after installing wheels
     static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_CM       = 10.16 ;     // For figuring circumference
     static final double     COUNTS_PER_CM           = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -92,7 +91,7 @@ public class BT_TankDrive {
         frontRightDrive = hwMap.get(DcMotor.class, "frontRightDrive");
         rearLeftDrive = hwMap.get(DcMotor.class, "rearLeftDrive");
         rearRightDrive = hwMap.get(DcMotor.class, "rearRightDrive");
-      // TODO: fix directions
+
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         rearLeftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
@@ -106,7 +105,6 @@ public class BT_TankDrive {
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        //TODO: fix motors mode
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -124,7 +122,7 @@ public class BT_TankDrive {
     }
 
     public void turn (double degrees, double timeoutMs, Telemetry telemetry) {
-        //TODO : fix turn by gyro
+
         double rightSpeed, leftSpeed;
         double steer;
         double error = getError(degrees);

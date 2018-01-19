@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -50,9 +49,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="BlueRight", group="Auto")
+@Autonomous(name="RedLeft", group="Auto")
 //@Disabled
-public class BT_AutoBlueRight extends LinearOpMode {
+public class BT_AutoRedLeft extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private BT_Hardware robot = new BT_Hardware();
@@ -108,10 +107,11 @@ public class BT_AutoBlueRight extends LinearOpMode {
 
 //        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
 //        sleep(3000);
+        robot.drive.turn(180,3000,telemetry);
         robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
         telemetry.addData("Status", "Identified column: %s ",vuMark);
         telemetry.update();
-        robot.drive.turn(-90,3000,telemetry);
+        robot.drive.turn(90,3000,telemetry);
         robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 1000 , telemetry );
         robot.intake.glyphsOut();
 

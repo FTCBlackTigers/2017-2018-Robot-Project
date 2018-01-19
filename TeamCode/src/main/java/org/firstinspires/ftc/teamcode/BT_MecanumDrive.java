@@ -198,7 +198,6 @@ public class BT_MecanumDrive {
     public BT_Gyro  gyro = new BT_Gyro();
 
     static final double     COUNTS_PER_MOTOR_REV    = 28 ;
-    //TODO : fix  DRIVE_GEAR_REDUCTION after installing wheels
     static final double     DRIVE_GEAR_REDUCTION    = 19.2 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_CM       = 10.16 ;     // For figuring circumference
     static final double     COUNTS_PER_CM           = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -438,10 +437,10 @@ public class BT_MecanumDrive {
         // onto the next step, use (isBusy() || isBusy()) in the loop test.
         while ((runtime.time() < timeoutMs) &&
                 (frontLeftDrive.isBusy() && frontRightDrive.isBusy() && rearLeftDrive.isBusy() && rearRightDrive.isBusy())) {
-            telemetry.addData("front left: " ,newFrontLeftTarget + " , " + frontLeftDrive.getCurrentPosition());
-            telemetry.addData("front right: " ,newFrontRightTarget + " , " + frontRightDrive.getCurrentPosition());
-            telemetry.addData("rear left: " ,newRearLeftTarget + " , " + rearLeftDrive.getCurrentPosition());
-            telemetry.addData("rear right: " ,newRearRightTarget + " , " + rearRightDrive.getCurrentPosition());
+//            telemetry.addData("front left: " ,newFrontLeftTarget + " , " + frontLeftDrive.getCurrentPosition());
+//            telemetry.addData("front right: " ,newFrontRightTarget + " , " + frontRightDrive.getCurrentPosition());
+//            telemetry.addData("rear left: " ,newRearLeftTarget + " , " + rearLeftDrive.getCurrentPosition());
+//            telemetry.addData("rear right: " ,newRearRightTarget + " , " + rearRightDrive.getCurrentPosition());
         }
 
         // Stop all motion;

@@ -57,10 +57,10 @@ public class BT_Intake
     public DcMotor  rightIntake  = null;
     public DcMotor intakeMotor  = null;
 
-    //TODO: define constants
+
     public static final double MID_INTAKE_POWER  = 1 ;
     public static final double INTAKE_POWER  = 0.5 ;
-    public static final double EJECT_POWER  = 0.45 ;
+    public static final double EJECT_POWER  = 1 ;
     public static boolean isPressed = false;
     /* local OpMode members. */
     HardwareMap hwMap           =  null;

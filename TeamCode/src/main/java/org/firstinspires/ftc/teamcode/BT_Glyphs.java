@@ -65,22 +65,19 @@ public class BT_Glyphs {
     static final double     DRIVE_GEAR_REDUCTION    = 60 ;     // This is < 1.0 if geared UP
     static final double     COUNTS_PER_DEG           = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / 360;
 
-    //TODO: define constants
+
     public static final double MIN_ARM_POS =(int) (0 * COUNTS_PER_DEG) ;
-    public static final double MAX_ARM_POS =(int) (80 * COUNTS_PER_DEG) ;
+    public static final double MAX_ARM_POS =(int) (90 * COUNTS_PER_DEG) ;
     public static final double ARM_MANUAL_DOWN_POWER = 0.1;
     public static final double ARM_MANUAL_UP_POWER = 0.5;
-    public static final double ARM_AUTO_POWER = 0.5;
-    public static final int ARM_HIGH_POS = (int) (72 * COUNTS_PER_DEG) ; //332 TICKS
-    public static final int ARM_LOW_POS =  (int) (19 * COUNTS_PER_DEG); // 88 TICKS
+    public static final int ARM_HIGH_POS = (int) (80 * COUNTS_PER_DEG) ;
+    public static final int ARM_LOW_POS =  (int) (25 * COUNTS_PER_DEG);
     public static final int ARM_DOWN_POS  = 0;
-    public static final int ARM_EXIT_POS =  (int) (15 * COUNTS_PER_DEG);
+    public static final int ARM_EXIT_POS =  (int) (20 * COUNTS_PER_DEG);
     public static final double  CLAMPS_OPEN_POS =  0.9 ;
     public static final double CLAMPS_CLOSE_POS =  0 ;
-    public static final double SERVO_HIGH_POS = 0.48 ;
-    public static final double SERVO_LOW_POS = 0.3 ;
+    public static final double SERVO_HIGH_POS = 0.55 ;
     public static final double SERVO_DOWN_POS  = 0.0 ;
-    public static final double SERVO_LIFT_POS = 0.7 ;
     public static final double SERVO_INTERVAL =0.05;
     public  int targetPos = 0;
     /* local OpMode members. */
