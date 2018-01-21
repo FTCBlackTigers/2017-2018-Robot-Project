@@ -105,7 +105,7 @@ public class BT_AutoRedRight extends LinearOpMode {
         telemetry.addData("Status", "Identified column: %s ",vuMark);
      //   telemetry.update();
 
-//        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
+//        robot.jewels.moveJewel(BT_Jewels.JewelColor.BLUE);
 //        sleep(3000);
         robot.drive.turn(180,3000,telemetry);
         robot.drive.move(80, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );

@@ -56,10 +56,10 @@ public class BT_AutoBlueLeft extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private BT_Hardware robot = new BT_Hardware();
     static final double WAIT_FOR_VUMARK = 3000;
-    static final double LEFT_DRIVE_DIST = 80 ;
-    static final double CENTER_DRIVE_DIST = 100 ;
-    static final double RIGHT_DRIVE_DIST = 120 ;
-    static final double CRYPTO_DIST = 30 ;
+    static final double LEFT_DRIVE_DIST = 5 ;
+    static final double CENTER_DRIVE_DIST = 30 ;
+    static final double RIGHT_DRIVE_DIST = 50 ;
+    static final double CRYPTO_DIST = 20 ;
     @Override
     public void runOpMode() {
 
@@ -105,15 +105,23 @@ public class BT_AutoBlueLeft extends LinearOpMode {
         telemetry.addData("Status", "Identified column: %s ",vuMark);
      //   telemetry.update();
 
-//        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
-//        sleep(3000);
+        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
+        telemetry.addLine(BT_Status.getStatusLine());
+        telemetry.update();
+        sleep(1000);
         robot.drive.move(80, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
         robot.drive.turn(-90,3000,telemetry); //turn right
         robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
         telemetry.addData("Status", "Identified column: %s ",vuMark);
         telemetry.update();
-        robot.drive.turn(-90,3000,telemetry);
+        robot.drive.turn(180,3000,telemetry);//turn right again
         robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 1000 , telemetry );
         robot.intake.glyphsOut();
+        sleep(500);
+        robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        sleep(500);
+        robot.intake.stop();
+        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+
     }
 }

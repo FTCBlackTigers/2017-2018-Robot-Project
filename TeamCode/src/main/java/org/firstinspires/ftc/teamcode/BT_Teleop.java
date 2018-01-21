@@ -92,7 +92,10 @@ public class BT_Teleop extends OpMode
 //        robot.drive.buttonDrive(gamepad1,telemetry);
         robot.glyphs.teleopMotion(gamepad2,telemetry);
         robot.intake.teleopMotion(gamepad1,telemetry);
-
+        boolean jewelsUp = gamepad1.y;
+        if (jewelsUp){
+            robot.jewels.armUp();
+        }
         telemetry.addData("status", BT_Status.getStatusLine());
         telemetry.update();
 

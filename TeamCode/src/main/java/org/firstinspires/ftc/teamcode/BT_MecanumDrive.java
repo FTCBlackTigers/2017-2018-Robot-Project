@@ -202,11 +202,11 @@ public class BT_MecanumDrive {
     static final double     WHEEL_DIAMETER_CM       = 10.16 ;     // For figuring circumference
     static final double     COUNTS_PER_CM           = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_CM * 3.1415);
-    static final double     AUTO_DRIVE_SPEED = 0.6;
+    static final double     AUTO_DRIVE_SPEED = 0.4;
     static final double      AUTO_TURN_SPEED  = 0.3;
     static final double     TELEOP_DRIVE_SPEED = 0.5;
 
-    static final double     THRESHOLD = 0.1;
+    static final double     THRESHOLD = 3;
     static final double     P_TURN_COEFF            = 0.1;
 
     ElapsedTime runtime = new ElapsedTime();
@@ -296,7 +296,7 @@ public class BT_MecanumDrive {
         double t;
         runtime.reset();
         // keep looping while we are still active, and not on heading.
-        while((Math.abs(error) > THRESHOLD) && (runtime.time() < timeoutMs)) {
+        while((Math.abs(error) > THRESHOLD) && (runtime.milliseconds() < timeoutMs)) {
             while (Math.abs(error) > THRESHOLD ) {
                 // Update telemetry & Allow time for other processes to run.
                 steer = getSteer(error, P_TURN_COEFF);
@@ -322,8 +322,8 @@ public class BT_MecanumDrive {
             rearLeftDrive.setPower(0);
             rearRightDrive.setPower(0);
 
-            t= runtime.time();
-            while (runtime.time() < t + 300){
+            t= runtime.milliseconds();
+            while (runtime.milliseconds() < t + 300){
                 error = getError(degrees);
                 telemetry.addData("Error", error);
                 telemetry.addLine("angle : " + gyro.getAngle());

@@ -57,10 +57,10 @@ public class BT_AutoBlueRight extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private BT_Hardware robot = new BT_Hardware();
     static final double WAIT_FOR_VUMARK = 3000;
-    static final double LEFT_DRIVE_DIST = 80 ;
-    static final double CENTER_DRIVE_DIST = 100 ;
+    static final double LEFT_DRIVE_DIST = 82 ;
+    static final double CENTER_DRIVE_DIST = 102 ;
     static final double RIGHT_DRIVE_DIST = 120 ;
-    static final double CRYPTO_DIST = 30 ;
+    static final double CRYPTO_DIST = 25 ;
     @Override
     public void runOpMode() {
 
@@ -103,17 +103,26 @@ public class BT_AutoBlueRight extends LinearOpMode {
                 driveDist = RIGHT_DRIVE_DIST ;
                 break;
         }
-        telemetry.addData("Status", "Identified column: %s ",vuMark);
-     //   telemetry.update();
 
-//        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
-//        sleep(3000);
+        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
+        telemetry.addLine(BT_Status.getStatusLine());
+        telemetry.update();
+        sleep(1000);
         robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
         telemetry.addData("Status", "Identified column: %s ",vuMark);
         telemetry.update();
+
         robot.drive.turn(-90,3000,telemetry);
-        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 1000 , telemetry );
+        telemetry.addData("Status", "finished turn ");
+        telemetry.update();
+        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 3000 , telemetry );
         robot.intake.glyphsOut();
+        sleep(500);
+        robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        sleep(500);
+        robot.intake.stop();
+        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+
 
 //        robot.drive.turn(180,3000,telemetry);
 //        robot.drive.move(40, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );

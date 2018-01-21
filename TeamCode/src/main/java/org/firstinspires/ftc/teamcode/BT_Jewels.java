@@ -66,12 +66,12 @@ public class BT_Jewels {
     public NormalizedColorSensor colorSensor = null;
 
     //TODO: define constants
-    public static final double JEWEL_ARM_START  =  1.0 ;
+    public static final double JEWEL_ARM_START  =  0 ;
     public static final double JEWEL_FINGER_START  = 1.0 ;
-    public static final double ARM_DOWN_POS = 0.4 ;
-    public static final double JEWEL_FINGER_MID  =  0.6 ;
-    public static final double JEWEL_FINGER_RIGHT    =  0.3 ;
-    public static final double JEWEL_FINGER_LEFT  = 0.9 ;
+    public static final double ARM_DOWN_POS = 0.65 ;
+    public static final double JEWEL_FINGER_MID  = 0.35 ;
+    public static final double JEWEL_FINGER_RIGHT    =  1.0 ;
+    public static final double JEWEL_FINGER_LEFT  = 0 ;
     public static final double ARM_UP_INTERVAL =  0.1 ;
 
     private ElapsedTime runtimeJ = new ElapsedTime();
@@ -106,7 +106,7 @@ public class BT_Jewels {
 
     public void armDown(){
         jewelFinger.setPosition(JEWEL_FINGER_MID);
-        for (double pos = JEWEL_ARM_START; pos>=ARM_DOWN_POS; pos-=0.1 ){
+        for (double pos = JEWEL_ARM_START; pos<=ARM_DOWN_POS; pos+=0.05 ){
             jewelArm.setPosition(pos);
             ((LinearOpMode)callerOpmode).sleep(100);
         }
@@ -114,11 +114,12 @@ public class BT_Jewels {
     }
 
     public void armUp(){
-        while (jewelArm.getPosition() <= JEWEL_ARM_START){
-            jewelArm.setPosition(JEWEL_ARM_START);
-        }
+//        while (jewelArm.getPosition() >= JEWEL_ARM_START){
+//            jewelArm.setPosition(JEWEL_ARM_START);
+//        }
 
         jewelArm.setPosition(JEWEL_ARM_START);
+        sleep(500);
         jewelFinger.setPosition(JEWEL_FINGER_START);
     }
 
@@ -155,18 +156,22 @@ public class BT_Jewels {
         armDown();
         ((LinearOpMode)callerOpmode).sleep(1000);
         jewelColor = getJewelColor();
-        while ((jewelColor == JewelColor.UNKNOWN) && (runtimeJ.time()< WAIT_FOR_COLOR)) {
+        while ((jewelColor == JewelColor.UNKNOWN) && (runtimeJ.milliseconds()< WAIT_FOR_COLOR)) {
             ((LinearOpMode)callerOpmode).sleep(WAIT_INTERVAL);
             jewelColor = getJewelColor();
             jewelArm.setPosition(jewelArm.getPosition()+ARM_UP_INTERVAL);
         }
         if (jewelColor != JewelColor.UNKNOWN) {
-            if (jewelColor == targetColor) {
-                fingerLeft();
-            } else {
+            BT_Status.addLine("color: "+jewelColor);
+            if (jewelColor.equals(targetColor)) {
                 fingerRight();
+                BT_Status.addLine("dir : right ");
+            } else {
+                fingerLeft();
+                BT_Status.addLine("dir : left ");
             }
         }
+        ((LinearOpMode)callerOpmode).sleep(1000);
         armUp();
     }
 }

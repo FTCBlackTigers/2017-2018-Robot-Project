@@ -70,7 +70,7 @@ public class BT_Hardware {
 
         // Define and Initialize systems
         drive.init(hwMap,callerOpmode);
-      //  jewels.init(hwMap , callerOpmode);
+        jewels.init(hwMap , callerOpmode);
         intake.init(hwMap,callerOpmode);
         glyphs.init(hwMap,callerOpmode,intake);
 
