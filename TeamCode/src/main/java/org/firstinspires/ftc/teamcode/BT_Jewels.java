@@ -151,28 +151,29 @@ public class BT_Jewels {
     }
 
     public void moveJewel(JewelColor targetColor){
-
-        JewelColor jewelColor;
-        armDown();
-        ((LinearOpMode)callerOpmode).sleep(1000);
-        jewelColor = getJewelColor();
-        while ((jewelColor == JewelColor.UNKNOWN) && (runtimeJ.milliseconds()< WAIT_FOR_COLOR)) {
-            ((LinearOpMode)callerOpmode).sleep(WAIT_INTERVAL);
+        if((((LinearOpMode)callerOpmode).opModeIsActive())) {
+            JewelColor jewelColor;
+            armDown();
+            ((LinearOpMode) callerOpmode).sleep(1000);
             jewelColor = getJewelColor();
-            jewelArm.setPosition(jewelArm.getPosition()+ARM_UP_INTERVAL);
-        }
-        if (jewelColor != JewelColor.UNKNOWN) {
-            BT_Status.addLine("color: "+jewelColor);
-            if (jewelColor.equals(targetColor)) {
-                fingerRight();
-                BT_Status.addLine("dir : right ");
-            } else {
-                fingerLeft();
-                BT_Status.addLine("dir : left ");
+            while ((jewelColor == JewelColor.UNKNOWN) && (runtimeJ.milliseconds() < WAIT_FOR_COLOR)) {
+                ((LinearOpMode) callerOpmode).sleep(WAIT_INTERVAL);
+                jewelColor = getJewelColor();
+                jewelArm.setPosition(jewelArm.getPosition() + ARM_UP_INTERVAL);
             }
+            if (jewelColor != JewelColor.UNKNOWN) {
+                BT_Status.addLine("color: " + jewelColor);
+                if (jewelColor.equals(targetColor)) {
+                    fingerRight();
+                    BT_Status.addLine("dir : right ");
+                } else {
+                    fingerLeft();
+                    BT_Status.addLine("dir : left ");
+                }
+            }
+            ((LinearOpMode) callerOpmode).sleep(1000);
+            armUp();
         }
-        ((LinearOpMode)callerOpmode).sleep(1000);
-        armUp();
     }
 }
 

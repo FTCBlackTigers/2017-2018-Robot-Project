@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -296,8 +297,9 @@ public class BT_MecanumDrive {
         double t;
         runtime.reset();
         // keep looping while we are still active, and not on heading.
-        while((Math.abs(error) > THRESHOLD) && (runtime.milliseconds() < timeoutMs)) {
-            while (Math.abs(error) > THRESHOLD ) {
+        while((Math.abs(error) > THRESHOLD) && (runtime.milliseconds() < timeoutMs) &&
+                (((LinearOpMode)callerOpmode).opModeIsActive())) {
+            while (Math.abs(error) > THRESHOLD && (((LinearOpMode)callerOpmode).opModeIsActive())) {
                 // Update telemetry & Allow time for other processes to run.
                 steer = getSteer(error, P_TURN_COEFF);
                 rightSpeed = AUTO_TURN_SPEED * steer;
@@ -323,7 +325,7 @@ public class BT_MecanumDrive {
             rearRightDrive.setPower(0);
 
             t= runtime.milliseconds();
-            while (runtime.milliseconds() < t + 300){
+            while (runtime.milliseconds() < t + 300 && (((LinearOpMode)callerOpmode).opModeIsActive())){
                 error = getError(degrees);
                 telemetry.addData("Error", error);
                 telemetry.addLine("angle : " + gyro.getAngle());
@@ -435,7 +437,7 @@ public class BT_MecanumDrive {
         // always end the motion as soon as possible.
         // However, if you require that BOTH motors have finished their moves before the robot continues
         // onto the next step, use (isBusy() || isBusy()) in the loop test.
-        while ((runtime.time() < timeoutMs) &&
+        while ((runtime.milliseconds() < timeoutMs) && (((LinearOpMode)callerOpmode).opModeIsActive()) &&
                 (frontLeftDrive.isBusy() && frontRightDrive.isBusy() && rearLeftDrive.isBusy() && rearRightDrive.isBusy())) {
 //            telemetry.addData("front left: " ,newFrontLeftTarget + " , " + frontLeftDrive.getCurrentPosition());
 //            telemetry.addData("front right: " ,newFrontRightTarget + " , " + frontRightDrive.getCurrentPosition());

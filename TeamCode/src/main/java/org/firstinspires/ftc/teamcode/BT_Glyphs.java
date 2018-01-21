@@ -69,7 +69,7 @@ public class BT_Glyphs {
     public static final double MIN_ARM_POS =(int) (0 * COUNTS_PER_DEG) ;
     public static final double MAX_ARM_POS =(int) (90 * COUNTS_PER_DEG) ;
     public static final double ARM_MANUAL_DOWN_POWER = 0.1;
-    public static final double ARM_MANUAL_UP_POWER = 0.5;
+    public static final double ARM_MANUAL_UP_POWER = 0.3;
     public static final int ARM_HIGH_POS = (int) (80 * COUNTS_PER_DEG) ;
     public static final int ARM_LOW_POS =  (int) (25 * COUNTS_PER_DEG);
     public static final int ARM_DOWN_POS  = 0;
