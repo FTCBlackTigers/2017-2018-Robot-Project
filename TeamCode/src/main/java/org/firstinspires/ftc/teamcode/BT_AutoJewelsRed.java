@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -50,33 +49,23 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="RedRight", group="Auto")
-@Disabled
-public class BT_AutoRedRight extends LinearOpMode {
+@Autonomous(name="JewelsRedOnly", group="Auto")
+//@Disabled
+public class BT_AutoJewelsRed extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private BT_Hardware robot = new BT_Hardware();
     static final double WAIT_FOR_VUMARK = 3000;
-    static final double LEFT_DRIVE_DIST = 80 ;
-    static final double CENTER_DRIVE_DIST = 100 ;
-    static final double RIGHT_DRIVE_DIST = 120 ;
-    static final double CRYPTO_DIST = 30 ;
+
     @Override
     public void runOpMode() {
 
-        double driveDist = 0 ;
         robot.init(hardwareMap,this);
         BT_Status.cleanStatus();
         BT_Status.addLine("Robot Initialized");
         telemetry.addData("Status", BT_Status.getStatusLine());
         telemetry.update();
 
-        BT_Vumark btVumark = new BT_Vumark(hardwareMap) ;
-        BT_Status.addLine("Vumark Initialized");
-        telemetry.addData("Status",BT_Status.getStatusLine());
-        telemetry.update();
-
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.UNKNOWN ;
         // Wait for the game to start (driver presses PLAY)
         BT_Status.addLine("Waiting for start...");
         telemetry.addData("Status",BT_Status.getStatusLine());
@@ -86,51 +75,11 @@ public class BT_AutoRedRight extends LinearOpMode {
         telemetry.addData("Status",BT_Status.getStatusLine());
         telemetry.update();
         runtime.reset();
-        while ((vuMark == RelicRecoveryVuMark.UNKNOWN) && (runtime.milliseconds()< WAIT_FOR_VUMARK)) {
-            vuMark = btVumark.getVuMark();
-        }
-        switch (vuMark) {
-            case RIGHT :
-                driveDist = RIGHT_DRIVE_DIST ;
-                break;
-            case CENTER:
-                driveDist = CENTER_DRIVE_DIST ;
-                break;
-            case LEFT:
-                driveDist = LEFT_DRIVE_DIST ;
-                break;
-            case UNKNOWN:
-                driveDist = RIGHT_DRIVE_DIST ;
-                break;
-        }
-        telemetry.addData("Status", "Identified column: %s ",vuMark);
-     //   telemetry.update();
 
         robot.jewels.moveJewel(BT_Jewels.JewelColor.BLUE);
-        sleep(3000);
-        robot.drive.turn(180,3000,telemetry);
-        robot.drive.move(80, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        robot.drive.turn(90,3000,telemetry); //turn right
-        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        telemetry.addData("Status", "Identified column: %s ",vuMark);
+        telemetry.addLine(BT_Status.getStatusLine());
         telemetry.update();
-        robot.drive.turn(180,3000,telemetry);
-        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 1000 , telemetry );
-        robot.intake.glyphsOut();
-        sleep(500);
-        robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        sleep(500);
-        robot.intake.stop();
-        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-
-
-//        robot.drive.turn(180,3000,telemetry);
-//        robot.drive.move(40, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-//        robot.intake.glyphsIn();
-//        robot.drive.move(40, BT_MecanumDrive.DriveDirection.FORWARD, 1000 , telemetry );
-//        robot.glyphs.armHigh();
-//        robot.glyphs.releaseGlyphs();
-
+        sleep(1000);
 
     }
 }

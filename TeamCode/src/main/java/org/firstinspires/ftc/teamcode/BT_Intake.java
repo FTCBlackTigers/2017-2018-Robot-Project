@@ -58,7 +58,7 @@ public class BT_Intake
     public DcMotor intakeMotor  = null;
 
 
-    public static final double MID_INTAKE_POWER  = 1 ;
+    public static final double MID_INTAKE_POWER  = 0.7 ;
     public static final double INTAKE_POWER  = 0.5 ;
     public static final double EJECT_POWER  = 1 ;
     public static boolean isPressed = false;
