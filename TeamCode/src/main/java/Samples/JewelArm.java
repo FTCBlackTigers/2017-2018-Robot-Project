@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by Black Tigers on 05/12/2017.
  */
 @Autonomous(name = "Concept: Scan Servo", group = "Concept")
-//@Disabled
+@Disabled
 public class JewelArm extends LinearOpMode{
 
         NormalizedColorSensor colorSensor;
