@@ -61,8 +61,12 @@ public class BT_AutoBlueRight extends LinearOpMode {
     static final double CENTER_DRIVE_DIST = 102 ;
     static final double RIGHT_DRIVE_DIST = 120 ;
     static final double CRYPTO_DIST = 25 ;
+    static final double CLOSE_CRYPTO_ANGLE = 0 ;
+    static final double SIDE_CRYPTO_ANGLE = -90 ;
     @Override
     public void runOpMode() {
+        BT_FieldSetup.closeCryptobox = CLOSE_CRYPTO_ANGLE;
+        BT_FieldSetup.sideCryptobox = SIDE_CRYPTO_ANGLE;
 
         double driveDist = 0 ;
         robot.init(hardwareMap,this);
@@ -122,7 +126,7 @@ public class BT_AutoBlueRight extends LinearOpMode {
         sleep(500);
         robot.intake.stop();
         robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-
+        robot.drive.turn(90,3000,telemetry);
 
 //        robot.drive.turn(180,3000,telemetry);
 //        robot.drive.move(40, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );

@@ -51,7 +51,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  */
 
 @Autonomous(name="RedLeft", group="Auto")
-@Disabled
+//@Disabled
 public class BT_AutoRedLeft extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -61,8 +61,13 @@ public class BT_AutoRedLeft extends LinearOpMode {
     static final double CENTER_DRIVE_DIST = 100 ;
     static final double RIGHT_DRIVE_DIST = 120 ;
     static final double CRYPTO_DIST = 30 ;
+    static final double CLOSE_CRYPTO_ANGLE = 0 ;
+    static final double SIDE_CRYPTO_ANGLE = 90 ;
+
     @Override
     public void runOpMode() {
+        BT_FieldSetup.closeCryptobox = CLOSE_CRYPTO_ANGLE;
+        BT_FieldSetup.sideCryptobox = SIDE_CRYPTO_ANGLE;
 
         double driveDist = 0 ;
         robot.init(hardwareMap,this);
@@ -106,15 +111,21 @@ public class BT_AutoRedLeft extends LinearOpMode {
         telemetry.addData("Status", "Identified column: %s ",vuMark);
      //   telemetry.update();
 
-//        robot.jewels.moveJewel(BT_Jewels.JewelColor.BLUE);
-//        sleep(3000);
-        robot.drive.turn(180,3000,telemetry);
-//        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-//        telemetry.addData("Status", "Identified column: %s ",vuMark);
-//        telemetry.update();
-//        robot.drive.turn(90,3000,telemetry);
-//        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 1000 , telemetry );
-//        robot.intake.glyphsOut();
+        robot.jewels.moveJewel(BT_Jewels.JewelColor.BLUE);
+        sleep(3000);
+       // robot.drive.turn(180,3000,telemetry);
+        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
+        telemetry.addData("Status", "Identified column: %s ",vuMark);
+        telemetry.update();
+        robot.drive.turn(-90,3000,telemetry);
+        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 1000 , telemetry );
+        robot.intake.glyphsOut();
+        sleep(500);
+        robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        sleep(500);
+        robot.intake.stop();
+        robot.drive.move(10, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        robot.drive.turn(90,3000,telemetry);
 
 //        robot.drive.turn(180,3000,telemetry);
 //        robot.drive.move(40, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );

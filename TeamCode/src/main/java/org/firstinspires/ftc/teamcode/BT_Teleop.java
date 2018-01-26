@@ -71,7 +71,6 @@ public class BT_Teleop extends OpMode
      */
     @Override
     public void init_loop() {
-        //Try Rami 2
     }
 
     /*

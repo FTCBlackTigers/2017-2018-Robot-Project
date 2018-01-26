@@ -58,10 +58,15 @@ public class BT_AutoBlueLeft extends LinearOpMode {
     static final double WAIT_FOR_VUMARK = 3000;
     static final double LEFT_DRIVE_DIST = 5 ;
     static final double CENTER_DRIVE_DIST = 30 ;
-    static final double RIGHT_DRIVE_DIST = 50 ;
+    static final double RIGHT_DRIVE_DIST = 52 ;
     static final double CRYPTO_DIST = 20 ;
+    static final double CLOSE_CRYPTO_ANGLE = 90 ;
+    static final double SIDE_CRYPTO_ANGLE = 0 ;
+
     @Override
     public void runOpMode() {
+        BT_FieldSetup.closeCryptobox = CLOSE_CRYPTO_ANGLE;
+        BT_FieldSetup.sideCryptobox = SIDE_CRYPTO_ANGLE;
 
         double driveDist = 0 ;
         robot.init(hardwareMap,this);
@@ -122,6 +127,7 @@ public class BT_AutoBlueLeft extends LinearOpMode {
         sleep(500);
         robot.intake.stop();
         robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        robot.drive.turn(0,3000,telemetry);
 
     }
 }
