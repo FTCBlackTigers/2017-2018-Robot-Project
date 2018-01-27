@@ -290,16 +290,21 @@ public class BT_MecanumDrive {
 
     }
 
-    public void turn (double degrees, double timeoutMs, Telemetry telemetry) {
+    public void turn (double degrees, double timeoutMs, Telemetry telemetry,boolean isAuto) {
         double rightSpeed, leftSpeed;
         double steer;
         double error = getError(degrees);
         double t;
         runtime.reset();
+        boolean isActive = true;
+
         // keep looping while we are still active, and not on heading.
         while((Math.abs(error) > THRESHOLD) && (runtime.milliseconds() < timeoutMs) &&
-                (((LinearOpMode)callerOpmode).opModeIsActive())) {
-            while (Math.abs(error) > THRESHOLD && (((LinearOpMode)callerOpmode).opModeIsActive())) {
+                isActive) {
+            while (Math.abs(error) > THRESHOLD && (isActive)) {
+                if (isAuto){
+                    isActive = ((LinearOpMode)callerOpmode).opModeIsActive();
+                }
                 // Update telemetry & Allow time for other processes to run.
                 steer = getSteer(error, P_TURN_COEFF);
                 rightSpeed = AUTO_TURN_SPEED * steer;
@@ -325,7 +330,10 @@ public class BT_MecanumDrive {
             rearRightDrive.setPower(0);
 
             t= runtime.milliseconds();
-            while (runtime.milliseconds() < t + 300 && (((LinearOpMode)callerOpmode).opModeIsActive())){
+            while (runtime.milliseconds() < t + 300 && isActive){
+                if (isAuto){
+                    isActive = ((LinearOpMode)callerOpmode).opModeIsActive();
+                }
                 error = getError(degrees);
                 telemetry.addData("Error", error);
                 telemetry.addLine("angle : " + gyro.getAngle());
@@ -352,7 +360,10 @@ public class BT_MecanumDrive {
     }
 
     public void teleopDrive(Gamepad gamepad, Telemetry telemetry) {
-       double robotAngle = 0;
+        boolean turnCloseCrypto = gamepad.a;
+        boolean turnSideCrypto = gamepad.b || gamepad.x;
+
+        double robotAngle = 0;
         if (gamepad.right_bumper ){
             robotAngle = gyro.getAngle();
         }
@@ -368,6 +379,13 @@ public class BT_MecanumDrive {
         telemetry.addLine("rear left : "+ wheels.backLeft);
         telemetry.addLine("rear right : "+ wheels.backRight);
         telemetry.addLine("angle : "+gyro.getAngle());
+
+        if (turnCloseCrypto){
+            turn(BT_FieldSetup.closeCryptobox, 1500, telemetry, false);
+        }
+        else if (turnSideCrypto){
+            turn(BT_FieldSetup.sideCryptobox, 1500, telemetry, false);
+        }
     }
 
     public void encoderDrive(double speed,
