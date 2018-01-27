@@ -114,15 +114,10 @@ public class BT_AutoSuper extends LinearOpMode {
 
         robot.jewels.moveJewel(TARGET_JEWEL_COLOR);
         telemetry.addLine(BT_Status.getStatusLine());
-        telemetry.update();
-        sleep(1000);
-
         telemetry.addData("Status", "Identified column: %s ",vuMark);
-        telemetry.update();
-        sleep(1000);
         telemetry.addData("dist", driveDist);
         telemetry.update();
-        sleep(1000);
+        sleep(500);
         driveToCrypto(driveDist);
         robot.intake.glyphsOut();
         sleep(500);

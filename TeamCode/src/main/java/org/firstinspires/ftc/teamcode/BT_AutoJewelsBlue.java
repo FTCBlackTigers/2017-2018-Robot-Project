@@ -49,35 +49,28 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="JewelsBlueOnly", group="Auto")
 //@Disabled
-public class BT_AutoJewelsBlue extends LinearOpMode {
+public class BT_AutoJewelsBlue extends BT_AutoSuper {
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private BT_Hardware robot = new BT_Hardware();
-    static final double WAIT_FOR_VUMARK = 3000;
+    public void initAutoConstants() {
+        TARGET_JEWEL_COLOR = BT_Jewels.JewelColor.RED;
+        CLOSE_CRYPTO_ANGLE = 90;
+        SIDE_CRYPTO_ANGLE = 0;
+    }
 
     @Override
     public void runOpMode() {
+        initAutoConstants();
 
-        robot.init(hardwareMap,this);
+        BT_FieldSetup.closeCryptobox = CLOSE_CRYPTO_ANGLE;
+        BT_FieldSetup.sideCryptobox = SIDE_CRYPTO_ANGLE;
+
+        robot.init(hardwareMap, this);
         BT_Status.cleanStatus();
         BT_Status.addLine("Robot Initialized");
         telemetry.addData("Status", BT_Status.getStatusLine());
         telemetry.update();
+        robot.jewels.moveJewel(TARGET_JEWEL_COLOR);
 
-        // Wait for the game to start (driver presses PLAY)
-        BT_Status.addLine("Waiting for start...");
-        telemetry.addData("Status",BT_Status.getStatusLine());
-        telemetry.update();
-        waitForStart();
-        BT_Status.addLine("Started...");
-        telemetry.addData("Status",BT_Status.getStatusLine());
-        telemetry.update();
-        runtime.reset();
-
-        robot.jewels.moveJewel(BT_Jewels.JewelColor.RED);
-        telemetry.addLine(BT_Status.getStatusLine());
-        telemetry.update();
-        sleep(1000);
 
     }
 }
