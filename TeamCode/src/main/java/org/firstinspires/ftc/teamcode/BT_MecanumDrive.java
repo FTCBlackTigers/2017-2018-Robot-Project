@@ -56,6 +56,9 @@ import java.util.List;
  *
  */
 public class BT_MecanumDrive {
+    public static double lastVD = 0        ;
+    public static final double DELTA_ACCELERATION = 0.05;
+    public static final double DELTA_DECELERATION = 0.2;
     public enum DriveDirection {
         FORWARD,BACKWARD,RIGHT,LEFT;
     }
@@ -67,6 +70,7 @@ public class BT_MecanumDrive {
         public final double thetaD;
         // Speed for changing direction [-1, 1].
         public final double vTheta;
+
 
         /**
          * Sets the motion to the given values.
@@ -111,7 +115,10 @@ public class BT_MecanumDrive {
         double vD = Math.min(Math.sqrt(Math.pow(leftX, 2) +
                         Math.pow(leftY, 2)),
                 1);
-        vD = Math.pow(vD,2);
+        if (vD > lastVD + DELTA_ACCELERATION) {
+            vD = lastVD + DELTA_ACCELERATION ;
+        }
+        lastVD = vD;
         double thetaD = Math.atan2(leftX,leftY);
         double radAngle = curretAngle*Math.PI/180;
         //driving by driver's view
