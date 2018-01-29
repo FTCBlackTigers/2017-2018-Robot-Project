@@ -57,8 +57,8 @@ import java.util.List;
  */
 public class BT_MecanumDrive {
     public static double lastVD = 0        ;
-    public static final double DELTA_ACCELERATION = 0.05;
-    public static final double DELTA_DECELERATION = 0.2;
+    public static final double DELTA_ACCELERATION = 0.13;
+    public static final double DELTA_DECELERATION = 0.07;
     public enum DriveDirection {
         FORWARD,BACKWARD,RIGHT,LEFT;
     }
@@ -117,6 +117,9 @@ public class BT_MecanumDrive {
                 1);
         if (vD > lastVD + DELTA_ACCELERATION) {
             vD = lastVD + DELTA_ACCELERATION ;
+        }
+        else if (vD < lastVD - DELTA_DECELERATION){
+            vD = lastVD - DELTA_DECELERATION;
         }
         lastVD = vD;
         double thetaD = Math.atan2(leftX,leftY);
@@ -221,7 +224,7 @@ public class BT_MecanumDrive {
     private OpMode callerOpmode;
 
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
+    HardwareMap hwMap = null;
 
     /* Constructor */
     public BT_MecanumDrive(){
@@ -369,6 +372,7 @@ public class BT_MecanumDrive {
     public void teleopDrive(Gamepad gamepad, Telemetry telemetry) {
         boolean turnCloseCrypto = gamepad.a;
         boolean turnSideCrypto = gamepad.b || gamepad.x;
+        boolean resetGyro = gamepad.back;
 
         double robotAngle = 0;
         if (gamepad.right_bumper ){
@@ -392,6 +396,9 @@ public class BT_MecanumDrive {
         }
         else if (turnSideCrypto){
             turn(BT_FieldSetup.sideCryptobox, 1500, telemetry, false);
+        }
+        if (resetGyro){
+            gyro.init(hwMap);
         }
     }
 

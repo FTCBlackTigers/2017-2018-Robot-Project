@@ -65,7 +65,7 @@ public class BT_Jewels {
     public Servo    jewelFinger    = null;
     public NormalizedColorSensor colorSensor = null;
 
-    //TODO: define constants
+
     public static final double JEWEL_ARM_START  =  0 ;
     public static final double JEWEL_FINGER_START  = 1.0 ;
     public static final double ARM_DOWN_POS = 0.65 ;
