@@ -71,7 +71,7 @@ public class BT_Glyphs {
     public static final int MIN_ARM_POS = (int)(0 * COUNTS_PER_DEG);
     public static final int MAX_ARM_POS = (int)(90 * COUNTS_PER_DEG);
     public static final double ARM_MANUAL_DOWN_POWER = 0.1;
-    public static final double ARM_MANUAL_UP_POWER = 0.3;
+    public static final double ARM_MANUAL_UP_POWER = 0.2;
     public static final int ARM_HIGH_POS = (int)(80 * COUNTS_PER_DEG);
     public static final int ARM_LOW_POS = (int)(25 * COUNTS_PER_DEG);
     public static final int ARM_DOWN_POS = 0;
@@ -115,7 +115,7 @@ public class BT_Glyphs {
         targetPos = pos;
         ejectGlyphs();
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armMotor.setPower((pos-armMotor.getCurrentPosition())>0?ARM_MANUAL_UP_POWER:ARM_MANUAL_DOWN_POWER);
+        armMotor.setPower((pos-armMotor.getCurrentPosition()) > 0 ? ARM_MANUAL_UP_POWER : ARM_MANUAL_DOWN_POWER);
     }
     public void ejectGlyphs(){
         if (!intake.isPressed) {

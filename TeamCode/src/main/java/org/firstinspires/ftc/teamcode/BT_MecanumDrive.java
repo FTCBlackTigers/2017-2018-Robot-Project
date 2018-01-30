@@ -113,22 +113,19 @@ public class BT_MecanumDrive {
         BT_Status.addLine("rightX: " + rightX);
 
         double vD = Math.min(Math.sqrt(Math.pow(leftX, 2) +
-                        Math.pow(leftY, 2)),
-                1);
-        if (vD > lastVD + DELTA_ACCELERATION) {
+                        Math.pow(leftY, 2)), 1);
+        if ((vD > lastVD + DELTA_ACCELERATION) && (vD < 0.6)) {
             vD = lastVD + DELTA_ACCELERATION ;
-        }
-        else if (vD < lastVD - DELTA_DECELERATION){
-            vD = lastVD - DELTA_DECELERATION;
         }
         lastVD = vD;
         double thetaD = Math.atan2(leftX,leftY);
+        BT_Status.addLine("thetaD: "+thetaD);
         double radAngle = curretAngle*Math.PI/180;
         //driving by driver's view
         thetaD -= radAngle;
-        if (thetaD<0){
-            thetaD+=2*Math.PI;
-        }
+        while (thetaD > Math.PI)  thetaD -=  Math.PI * 2;
+        while (thetaD <= - Math.PI) thetaD +=  Math.PI * 2;
+        BT_Status.addLine("thetaD 2: "+thetaD);
         double vTheta = rightX;
 
         return new Motion(vD, thetaD, vTheta);
