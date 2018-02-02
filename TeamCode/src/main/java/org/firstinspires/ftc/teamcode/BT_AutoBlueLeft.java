@@ -56,10 +56,10 @@ public class BT_AutoBlueLeft extends BT_AutoSuper {
 
     @Override
     public void initAutoConstants(){
-        LEFT_DRIVE_DIST = 5;
-        CENTER_DRIVE_DIST = 30;
-        RIGHT_DRIVE_DIST = 52;
-        CRYPTO_DIST = 20;
+        LEFT_DRIVE_DIST = 18;
+        CENTER_DRIVE_DIST = 40;
+        RIGHT_DRIVE_DIST = 59;
+        CRYPTO_DIST = 13;
         CLOSE_CRYPTO_ANGLE = 90;
         SIDE_CRYPTO_ANGLE = 0;
         FINAL_ROBOT_ANGLE = 0;

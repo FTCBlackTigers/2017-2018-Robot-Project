@@ -68,7 +68,6 @@ public class BT_AutoSuper extends LinearOpMode {
     @Override
     public void runOpMode() {
         initAutoConstants();
-
         BT_FieldSetup.closeCryptobox = CLOSE_CRYPTO_ANGLE;
         BT_FieldSetup.sideCryptobox = SIDE_CRYPTO_ANGLE;
 
@@ -116,6 +115,7 @@ public class BT_AutoSuper extends LinearOpMode {
         telemetry.addLine(BT_Status.getStatusLine());
         telemetry.addData("Status", "Identified column: %s ",vuMark);
         telemetry.addData("dist", driveDist);
+        telemetry.setAutoClear(false);
         telemetry.update();
         sleep(500);
         driveToCrypto(driveDist);
@@ -126,6 +126,9 @@ public class BT_AutoSuper extends LinearOpMode {
         robot.intake.stop();
         robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
         robot.drive.turn(FINAL_ROBOT_ANGLE,3000,telemetry, true);
+        robot.drive.move(30,  BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.drive.move(20,  BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
+
 
 //        robot.drive.turn(180,3000,telemetry);
 //        robot.drive.move(40, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );

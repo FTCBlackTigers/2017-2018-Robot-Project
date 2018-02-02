@@ -56,11 +56,14 @@ public class BT_Intake
     public DcMotor  leftIntake  = null;
     public DcMotor  rightIntake  = null;
     public DcMotor intakeMotor  = null;
+    public Servo intakeServo = null;
 
 
-    public static final double MID_INTAKE_POWER  = 0.7 ;
-    public static final double INTAKE_POWER  = 0.5 ;
-    public static final double EJECT_POWER  = 1 ;
+    public static final double MID_INTAKE_POWER  = 0.7;
+    public static final double INTAKE_POWER  = 0.5;
+    public static final double EJECT_POWER  = 0.5;
+    public static final double MOVE_SERVO  = 0 ;
+    public static final double STOP_SERVO  = 1 ;
     public static boolean isPressed = false;
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -81,6 +84,7 @@ public class BT_Intake
         leftIntake = hwMap.get(DcMotor.class, "leftIntake");
         rightIntake = hwMap.get(DcMotor.class, "rightIntake");
         intakeMotor =  hwMap.get(DcMotor.class, "intakeMotor");
+        intakeServo = hwMap.get(Servo.class, "intakeServo");
 
         leftIntake.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         rightIntake.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
@@ -92,11 +96,13 @@ public class BT_Intake
         leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeServo.setPosition(STOP_SERVO);
     }
     public void glyphsIn() {
         leftIntake.setPower(INTAKE_POWER);
         rightIntake.setPower(INTAKE_POWER);
         intakeMotor.setPower(MID_INTAKE_POWER);
+        intakeServo.setPosition(MOVE_SERVO);
     }
 
     public void glyphsOut() {
@@ -114,7 +120,7 @@ public class BT_Intake
         leftIntake.setPower(0);
         rightIntake.setPower(0);
         intakeMotor.setPower(0);
-
+        intakeServo.setPosition(STOP_SERVO);
     }
     public void teleopMotion(Gamepad gamepad, Telemetry telemetry){
         boolean glyphOut = gamepad.left_trigger > 0.5;

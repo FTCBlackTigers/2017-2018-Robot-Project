@@ -69,17 +69,19 @@ public class BT_Glyphs {
 
 
     public static final int MIN_ARM_POS = (int)(0 * COUNTS_PER_DEG);
-    public static final int MAX_ARM_POS = (int)(90 * COUNTS_PER_DEG);
+    public static final int MAX_ARM_POS = (int)(120 * COUNTS_PER_DEG);
     public static final double ARM_MANUAL_DOWN_POWER = 0.1;
-    public static final double ARM_MANUAL_UP_POWER = 0.2;
+    public static final double ARM_MANUAL_UP_POWER = 0.5;
+    public static final double ARM_AUTO_UP_POWER = 0.2      ;
+    public static final double ARM_AUTO_DOWN_POWER = 0.2 ;
     public static final int ARM_HIGH_POS = (int)(80 * COUNTS_PER_DEG);
     public static final int ARM_LOW_POS = (int)(25 * COUNTS_PER_DEG);
     public static final int ARM_DOWN_POS = 0;
     public static final int ARM_EXIT_POS = (int)(20 * COUNTS_PER_DEG);
     public static final double  UP_CLAMPS_OPEN_POS =  1;
     public static final double UP_CLAMPS_CLOSE_POS =  0.8;
-    public static final double  DOWN_CLAMPS_OPEN_POS = 1;
-    public static final double DOWN_CLAMPS_CLOSE_POS = 0.8;
+    public static final double  DOWN_CLAMPS_OPEN_POS = 0.8;
+    public static final double DOWN_CLAMPS_CLOSE_POS = 1;
     public static final double SERVO_HIGH_POS = 0.55;
     public static final double SERVO_DOWN_POS  = 0.0;
     public static final double SERVO_INTERVAL = 0.05;
@@ -109,13 +111,14 @@ public class BT_Glyphs {
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         armDown();
+
     }
     public void moveArm(int pos) {
         armMotor.setTargetPosition(pos);
         targetPos = pos;
         ejectGlyphs();
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armMotor.setPower((pos-armMotor.getCurrentPosition()) > 0 ? ARM_MANUAL_UP_POWER : ARM_MANUAL_DOWN_POWER);
+        armMotor.setPower((pos-armMotor.getCurrentPosition()) > 0 ? ARM_AUTO_UP_POWER : ARM_AUTO_DOWN_POWER);
     }
     public void ejectGlyphs(){
         if (!intake.isPressed) {
@@ -204,23 +207,7 @@ public class BT_Glyphs {
         }
         telemetry.addData("servo pos: ", armServo.getPosition());
 
-        // Handle manual clamps control
-        if(gamepad.dpad_up) {
-            if (upClamps.getPosition() < 1) {
-                moveClamps(upClamps, upClamps.getPosition() + SERVO_INTERVAL);
-            }
-            if (downClamps.getPosition() < 1) {
-                moveClamps(downClamps, downClamps.getPosition() + SERVO_INTERVAL);
-            }
-        }
-        else if (gamepad.dpad_down) {
-            if (upClamps.getPosition() > 0) {
-                moveClamps(upClamps, upClamps.getPosition() - SERVO_INTERVAL);
-            }
-            if (downClamps.getPosition() > 0) {
-                moveClamps(downClamps, downClamps.getPosition() - SERVO_INTERVAL);
-            }
-        }
+
         telemetry.addData("upClamps pos: ", upClamps.getPosition());
         telemetry.addData("downClamps pos: ", downClamps.getPosition());
 
@@ -258,5 +245,6 @@ public class BT_Glyphs {
         moveClamps(upClamps, UP_CLAMPS_OPEN_POS);
         moveClamps(downClamps, DOWN_CLAMPS_OPEN_POS);
     }
+
  }
 

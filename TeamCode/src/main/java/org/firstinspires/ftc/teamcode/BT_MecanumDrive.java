@@ -58,7 +58,6 @@ import java.util.List;
 public class BT_MecanumDrive {
     public static double lastVD = 0        ;
     public static final double DELTA_ACCELERATION = 0.13;
-    public static final double DELTA_DECELERATION = 0.07;
     public enum DriveDirection {
         FORWARD,BACKWARD,RIGHT,LEFT;
     }
@@ -114,7 +113,7 @@ public class BT_MecanumDrive {
 
         double vD = Math.min(Math.sqrt(Math.pow(leftX, 2) +
                         Math.pow(leftY, 2)), 1);
-        if ((vD > lastVD + DELTA_ACCELERATION) && (vD < 0.6)) {
+        if ((vD > lastVD + DELTA_ACCELERATION) && (lastVD + DELTA_ACCELERATION < 0.6)) {
             vD = lastVD + DELTA_ACCELERATION ;
         }
         lastVD = vD;
@@ -402,6 +401,7 @@ public class BT_MecanumDrive {
     public void encoderDrive(double speed,
                              double distCm, DriveDirection direction,
                              double timeoutMs, Telemetry telemetry) {
+        double robotAngle = gyro.getAngle();
         int newFrontLeftTarget = frontLeftDrive.getCurrentPosition();
         int newFrontRightTarget = frontRightDrive.getCurrentPosition();
         int newRearLeftTarget = rearLeftDrive.getCurrentPosition();
@@ -472,6 +472,21 @@ public class BT_MecanumDrive {
 //            telemetry.addData("front right: " ,newFrontRightTarget + " , " + frontRightDrive.getCurrentPosition());
 //            telemetry.addData("rear left: " ,newRearLeftTarget + " , " + rearLeftDrive.getCurrentPosition());
 //            telemetry.addData("rear right: " ,newRearRightTarget + " , " + rearRightDrive.getCurrentPosition());
+            double steer = getSteer(getError(robotAngle), P_TURN_COEFF);
+            if (direction == DriveDirection.BACKWARD){
+                steer *= -1.0;
+            }
+            double leftSpeed = speed - steer;
+            double rightSpeed = speed + steer;
+            double max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
+            if (max > 1.0) {
+                leftSpeed /= max;
+                rightSpeed /= max;
+            }
+//            frontLeftDrive.setPower(leftSpeed);
+//            frontRightDrive.setPower(rightSpeed);
+//            rearRightDrive.setPower(rightSpeed);
+//            rearLeftDrive.setPower(leftSpeed);
         }
 
         // Stop all motion;
