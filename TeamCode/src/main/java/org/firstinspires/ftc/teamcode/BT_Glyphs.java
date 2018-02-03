@@ -72,39 +72,39 @@ public class BT_Glyphs {
     public static final int MAX_ARM_POS = (int)(120 * COUNTS_PER_DEG);
     public static final double ARM_MANUAL_DOWN_POWER = 0.1;
     public static final double ARM_MANUAL_UP_POWER = 0.5;
-    public static final double ARM_AUTO_UP_POWER = 0.2      ;
-    public static final double ARM_AUTO_DOWN_POWER = 0.2 ;
+    public static final double ARM_AUTO_UP_POWER = 0.2;
+    public static final double ARM_AUTO_DOWN_POWER = 0.2;
     public static final int ARM_HIGH_POS = (int)(80 * COUNTS_PER_DEG);
     public static final int ARM_LOW_POS = (int)(25 * COUNTS_PER_DEG);
     public static final int ARM_DOWN_POS = 0;
     public static final int ARM_EXIT_POS = (int)(20 * COUNTS_PER_DEG);
-    public static final double  UP_CLAMPS_OPEN_POS =  1;
-    public static final double UP_CLAMPS_CLOSE_POS =  0.8;
-    public static final double  DOWN_CLAMPS_OPEN_POS = 1;
-    public static final double DOWN_CLAMPS_CLOSE_POS = 0.8;
-    public static final double SERVO_HIGH_POS = 0.55;
-    public static final double SERVO_DOWN_POS  = 0.0;
+    public static final double  UP_CLAMPS_OPEN_POS =  0.2;
+    public static final double UP_CLAMPS_CLOSE_POS =  0;
+    public static final double  DOWN_CLAMPS_OPEN_POS = 0.2;
+    public static final double DOWN_CLAMPS_CLOSE_POS = 0;
+    public static final double SERVO_HIGH_POS = 0.65;
+    public static final double SERVO_DOWN_POS  = 0.1;
     public static final double SERVO_INTERVAL = 0.05;
     public  int targetPos = 0;
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
-    private OpMode callerOpmode ;
+    HardwareMap hwMap = null;
 
     /* Constructor */
     public BT_Glyphs(){
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap, OpMode callerOpmode, BT_Intake intake) {
+    public void init(HardwareMap ahwMap, BT_Intake intake) {
         // Save reference to Hardware map
         hwMap = ahwMap;
-        this.callerOpmode = callerOpmode;
         this.intake = intake;
         // Define and Initialize Motors
         armServo = hwMap.get(Servo.class, "armServo");
         upClamps = hwMap.get(Servo.class, "upClampsServo");
         downClamps = hwMap.get(Servo.class, "downClampsServo");
         armMotor = hwMap.get(DcMotor.class, "armMotor");
+        upClamps.setDirection(Servo.Direction.REVERSE);
+        downClamps.setDirection(Servo.Direction.REVERSE);
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setDirection(DcMotorSimple.Direction.FORWARD);

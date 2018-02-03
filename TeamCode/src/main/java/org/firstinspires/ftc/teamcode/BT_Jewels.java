@@ -78,7 +78,7 @@ public class BT_Jewels {
     private OpMode callerOpmode;
 
     static final double WAIT_FOR_COLOR = 3000;
-    static final long WAIT_INTERVAL = 500;
+    static final long WAIT_INTERVAL = 250;
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -114,10 +114,6 @@ public class BT_Jewels {
     }
 
     public void armUp(){
-//        while (jewelArm.getPosition() >= JEWEL_ARM_START){
-//            jewelArm.setPosition(JEWEL_ARM_START);
-//        }
-
         jewelArm.setPosition(JEWEL_ARM_START);
         sleep(500);
         jewelFinger.setPosition(JEWEL_FINGER_START);
@@ -154,7 +150,7 @@ public class BT_Jewels {
         if((((LinearOpMode)callerOpmode).opModeIsActive())) {
             JewelColor jewelColor;
             armDown();
-            ((LinearOpMode) callerOpmode).sleep(1000);
+            ((LinearOpMode) callerOpmode).sleep(500);
             jewelColor = getJewelColor();
             while ((jewelColor == JewelColor.UNKNOWN) && (runtimeJ.milliseconds() < WAIT_FOR_COLOR)) {
                 ((LinearOpMode) callerOpmode).sleep(WAIT_INTERVAL);
@@ -171,7 +167,7 @@ public class BT_Jewels {
                     BT_Status.addLine("dir : left ");
                 }
             }
-            ((LinearOpMode) callerOpmode).sleep(1000);
+            ((LinearOpMode) callerOpmode).sleep(500);
             armUp();
         }
     }

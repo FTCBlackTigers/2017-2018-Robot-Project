@@ -72,7 +72,7 @@ public class BT_Hardware {
         drive.init(hwMap,callerOpmode);
         jewels.init(hwMap ,callerOpmode);
         intake.init(hwMap,callerOpmode);
-        glyphs.init(hwMap,callerOpmode,intake);
+        glyphs.init(hwMap,intake);
 
     }
 }

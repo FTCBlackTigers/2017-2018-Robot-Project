@@ -83,7 +83,7 @@ public class BT_AutoSuper extends LinearOpMode {
         telemetry.addData("Status",BT_Status.getStatusLine());
         telemetry.update();
 
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.UNKNOWN ;
+        RelicRecoveryVuMark vuMark = btVumark.getVuMark();
         // Wait for the game to start (driver presses PLAY)
         BT_Status.addLine("Waiting for start...");
         telemetry.addData("Status",BT_Status.getStatusLine());
@@ -125,8 +125,8 @@ public class BT_AutoSuper extends LinearOpMode {
         sleep(500);
         robot.intake.stop();
         robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        robot.drive.turn(FINAL_ROBOT_ANGLE,3000,telemetry, true);
-        robot.drive.move(30,  BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.drive.turn(FINAL_ROBOT_ANGLE,5000,telemetry, true);
+        robot.drive.move(23,  BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
         robot.drive.move(20,  BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
 
 

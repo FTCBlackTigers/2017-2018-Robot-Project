@@ -31,7 +31,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -59,10 +58,11 @@ public class BT_Intake
     public Servo intakeServo = null;
 
 
-    public static final double MID_INTAKE_POWER  = 0.7;
-    public static final double INTAKE_POWER  = 0.5;
+    public static final double MID_INTAKE_POWER  = 0.8;
+    public static final double INTAKE_POWER  = 0.6;
     public static final double EJECT_POWER  = 0.5;
-    public static final double MOVE_SERVO  = 0 ;
+    public static final double SERVO_OUT  = 1 ;
+    public static final double SERVO_IN = 0 ;
     public static final double STOP_SERVO  = 0.393 ;
     public static boolean isPressed = false;
     /* local OpMode members. */
@@ -102,13 +102,14 @@ public class BT_Intake
         leftIntake.setPower(INTAKE_POWER);
         rightIntake.setPower(INTAKE_POWER);
         intakeMotor.setPower(MID_INTAKE_POWER);
-        intakeServo.setPosition(MOVE_SERVO);
+        intakeServo.setPosition(SERVO_IN);
     }
 
     public void glyphsOut() {
         leftIntake.setPower(-INTAKE_POWER);
         rightIntake.setPower(-INTAKE_POWER);
         intakeMotor.setPower(-MID_INTAKE_POWER);
+        intakeServo.setPosition(SERVO_OUT);
     }
 
     public void ejectGlyphs() {
