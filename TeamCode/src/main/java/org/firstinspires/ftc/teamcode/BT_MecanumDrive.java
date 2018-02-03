@@ -58,6 +58,7 @@ import java.util.List;
 public class BT_MecanumDrive {
     public static double lastVD = 0        ;
     public static final double DELTA_ACCELERATION = 0.13;
+    public static final double SLOW_SPEED = 0.2;
     public enum DriveDirection {
         FORWARD,BACKWARD,RIGHT,LEFT;
     }
@@ -92,9 +93,10 @@ public class BT_MecanumDrive {
     public static Motion joystickToMotion(double leftStickX,
                                                      double leftStickY,
                                                      double rightStickX,
-                                                     double rightStickY,
+                                                     double rightStickY, double rightTrigger,
                                           double curretAngle) {
         final double JOYSTICK_THRESHOLD = 0.2;
+        boolean glyphIn = rightTrigger > 0.5;
         double leftX = leftStickX;
         double leftY = -leftStickY;
         double rightX = rightStickX;
@@ -113,6 +115,9 @@ public class BT_MecanumDrive {
 
         double vD = Math.min(Math.sqrt(Math.pow(leftX, 2) +
                         Math.pow(leftY, 2)), 1);
+        if (glyphIn){
+            vD = Math.min(vD, SLOW_SPEED);
+        }
         if ((vD > lastVD + DELTA_ACCELERATION) && (lastVD + DELTA_ACCELERATION < 0.6)) {
             vD = lastVD + DELTA_ACCELERATION ;
         }
@@ -121,7 +126,7 @@ public class BT_MecanumDrive {
         BT_Status.addLine("thetaD: "+thetaD);
         double radAngle = curretAngle*Math.PI/180;
         //driving by driver's view
-        thetaD -= radAngle;
+        thetaD += radAngle;
         while (thetaD > Math.PI)  thetaD -=  Math.PI * 2;
         while (thetaD <= - Math.PI) thetaD +=  Math.PI * 2;
         BT_Status.addLine("thetaD 2: "+thetaD);
@@ -374,7 +379,8 @@ public class BT_MecanumDrive {
         if (gamepad.right_bumper ){
             robotAngle = gyro.getAngle();
         }
-        Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y, robotAngle);
+        Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y,
+                gamepad.right_trigger, robotAngle);
         Wheels wheels = motionToWheels(motion);
 
         frontLeftDrive.setPower(wheels.frontLeft*TELEOP_DRIVE_SPEED);

@@ -63,7 +63,7 @@ public class BT_Intake
     public static final double INTAKE_POWER  = 0.5;
     public static final double EJECT_POWER  = 0.5;
     public static final double MOVE_SERVO  = 0 ;
-    public static final double STOP_SERVO  = 1 ;
+    public static final double STOP_SERVO  = 0.393 ;
     public static boolean isPressed = false;
     /* local OpMode members. */
     HardwareMap hwMap           =  null;

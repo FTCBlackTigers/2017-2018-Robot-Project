@@ -80,8 +80,8 @@ public class BT_Glyphs {
     public static final int ARM_EXIT_POS = (int)(20 * COUNTS_PER_DEG);
     public static final double  UP_CLAMPS_OPEN_POS =  1;
     public static final double UP_CLAMPS_CLOSE_POS =  0.8;
-    public static final double  DOWN_CLAMPS_OPEN_POS = 0.8;
-    public static final double DOWN_CLAMPS_CLOSE_POS = 1;
+    public static final double  DOWN_CLAMPS_OPEN_POS = 1;
+    public static final double DOWN_CLAMPS_CLOSE_POS = 0.8;
     public static final double SERVO_HIGH_POS = 0.55;
     public static final double SERVO_DOWN_POS  = 0.0;
     public static final double SERVO_INTERVAL = 0.05;
