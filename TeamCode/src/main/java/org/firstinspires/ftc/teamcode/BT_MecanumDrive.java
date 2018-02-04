@@ -62,6 +62,7 @@ public class BT_MecanumDrive {
     public enum DriveDirection {
         FORWARD,BACKWARD,RIGHT,LEFT;
     }
+
     //invert joystick values to motion
     public static class Motion {
         // Robot speed [-1, 1].
