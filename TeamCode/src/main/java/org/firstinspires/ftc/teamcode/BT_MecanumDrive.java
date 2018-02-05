@@ -58,6 +58,7 @@ import java.util.List;
 public class BT_MecanumDrive {
     public static double lastVD = 0        ;
     public static final double DELTA_ACCELERATION = 0.13;
+    public static final double TELEOP_DRIVE_SPEED = 0.5;
     public static final double SLOW_SPEED = 0.3;
     public enum DriveDirection {
         FORWARD,BACKWARD,RIGHT,LEFT;
@@ -116,9 +117,7 @@ public class BT_MecanumDrive {
 
         double vD = Math.min(Math.sqrt(Math.pow(leftX, 2) +
                         Math.pow(leftY, 2)), 1);
-        if (glyphIn){
-            vD = Math.min(vD, SLOW_SPEED);
-        }
+        vD = Math.min(vD, glyphIn ? SLOW_SPEED : TELEOP_DRIVE_SPEED);
         if ((vD > lastVD + DELTA_ACCELERATION) && (lastVD + DELTA_ACCELERATION < 0.6)) {
             vD = lastVD + DELTA_ACCELERATION ;
         }
@@ -217,9 +216,9 @@ public class BT_MecanumDrive {
             (WHEEL_DIAMETER_CM * 3.1415);
     static final double     AUTO_DRIVE_SPEED = 0.4;
     static final double      AUTO_TURN_SPEED  = 0.3;
-    static final double     TELEOP_DRIVE_SPEED = 0.5;
 
-    static final double     THRESHOLD = 3;
+
+    static final double     THRESHOLD = 1;
     static final double     P_TURN_COEFF            = 0.1;
 
     ElapsedTime runtime = new ElapsedTime();
@@ -384,10 +383,10 @@ public class BT_MecanumDrive {
                 gamepad.right_trigger, robotAngle);
         Wheels wheels = motionToWheels(motion);
 
-        frontLeftDrive.setPower(wheels.frontLeft*TELEOP_DRIVE_SPEED);
-        frontRightDrive.setPower(wheels.frontRight*TELEOP_DRIVE_SPEED);
-        rearLeftDrive.setPower(wheels.backLeft*TELEOP_DRIVE_SPEED);
-        rearRightDrive.setPower(wheels.backRight*TELEOP_DRIVE_SPEED);
+        frontLeftDrive.setPower(wheels.frontLeft);
+        frontRightDrive.setPower(wheels.frontRight);
+        rearLeftDrive.setPower(wheels.backLeft);
+        rearRightDrive.setPower(wheels.backRight);
         telemetry.addLine("front left: "+ wheels.frontLeft);
         telemetry.addLine("front right : "+ wheels.frontRight);
         telemetry.addLine("rear left : "+ wheels.backLeft);

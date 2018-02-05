@@ -59,7 +59,7 @@ public class BT_AutoBlueRight extends BT_AutoSuper {
         LEFT_DRIVE_DIST = 82;
         CENTER_DRIVE_DIST = 101;
         RIGHT_DRIVE_DIST = 120;
-        CRYPTO_DIST = 25;
+        CRYPTO_DIST = 23;
         CLOSE_CRYPTO_ANGLE = 0;
         SIDE_CRYPTO_ANGLE = -90;
         FINAL_ROBOT_ANGLE = 90;

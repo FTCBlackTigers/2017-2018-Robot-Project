@@ -30,8 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
@@ -49,28 +47,33 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-public class BT_AutoSuper extends LinearOpMode {
+@Autonomous(name="BlueRight2cubes", group="Auto")
+//@Disabled
+public class BT_AutoBlueRight2cudes extends BT_AutoSuper {
     // Declare OpMode members.
-    protected ElapsedTime runtime = new ElapsedTime();
-    protected BT_Hardware robot = new BT_Hardware();
-    static final double WAIT_FOR_VUMARK = 3000;
-    protected static double LEFT_DRIVE_DIST ;
-    protected static double CENTER_DRIVE_DIST ;
-    protected static double RIGHT_DRIVE_DIST ;
-    protected static double CRYPTO_DIST  ;
-    protected static double CLOSE_CRYPTO_ANGLE ;
-    protected static double SIDE_CRYPTO_ANGLE  ;
-    protected static double FINAL_ROBOT_ANGLE ;
-    protected static BT_Jewels.JewelColor TARGET_JEWEL_COLOR ;
-
+    @Override
     public void initAutoConstants(){
+        LEFT_DRIVE_DIST = 76;
+        CENTER_DRIVE_DIST = 101;
+        RIGHT_DRIVE_DIST = 117;
+        CRYPTO_DIST = 23;
+        CLOSE_CRYPTO_ANGLE = 0;
+        SIDE_CRYPTO_ANGLE = -90;
+        FINAL_ROBOT_ANGLE = 90;
+        TARGET_JEWEL_COLOR = BT_Jewels.JewelColor.RED;
     }
+
+    @Override
+    public void driveToCrypto(double driveDist){
+        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        robot.drive.turn(90,3000,telemetry, true);
+
+
+    }
+
     @Override
     public void runOpMode() {
         initAutoConstants();
-        BT_FieldSetup.closeCryptobox = CLOSE_CRYPTO_ANGLE;
-        BT_FieldSetup.sideCryptobox = SIDE_CRYPTO_ANGLE;
-
         double driveDist = 0 ;
         robot.init(hardwareMap,this);
         BT_Status.cleanStatus();
@@ -119,27 +122,31 @@ public class BT_AutoSuper extends LinearOpMode {
         telemetry.update();
         sleep(500);
         driveToCrypto(driveDist);
-        robot.intake.glyphsOut();
-        sleep(500);
-        robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        sleep(250);
-        robot.intake.stop();
-        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        robot.drive.turn(FINAL_ROBOT_ANGLE,5000,telemetry, true);
         robot.drive.move(40, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
         robot.intake.glyphsIn();
-        robot.drive.move(40, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
+        robot.drive.move(80, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
+        robot.drive.move(100, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        robot.intake.stop();
+        robot.glyphs.catchGlyphs();
+        sleep(500);
+        robot.glyphs.armHigh();
+        sleep(250);
+        robot.glyphs.armLow();
+        robot.drive.turn(90,2500,telemetry,true);
+        sleep(1000);
+        robot.drive.move(35, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        robot.glyphs.releaseGlyphs();
+        sleep(250);
+        robot.drive.move(20, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
+        robot.glyphs.armDown();
+        sleep(250);
+        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        robot.drive.move(10, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
 
 
-//        robot.drive.turn(180,3000,telemetry);
-//        robot.drive.move(40, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-//        robot.intake.glyphsIn();
-//        robot.drive.move(40, BT_MecanumDrive.DriveDirection.FORWARD, 1000 , telemetry );
-//        robot.glyphs.armHigh();
-//        robot.glyphs.releaseGlyphs();
+
+
 
     }
-    public void driveToCrypto(double driveDist){
-    }
-
 }
+
