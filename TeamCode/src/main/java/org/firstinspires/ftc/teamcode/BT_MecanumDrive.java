@@ -374,24 +374,32 @@ public class BT_MecanumDrive {
         boolean turnCloseCrypto = gamepad.a;
         boolean turnSideCrypto = gamepad.b || gamepad.x;
         boolean resetGyro = gamepad.back;
-
+        boolean rightDrive = gamepad.dpad_right;
+        boolean leftDrive = gamepad.dpad_left;
         double robotAngle = 0;
         if (gamepad.right_bumper ){
             robotAngle = gyro.getAngle();
         }
         Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y,
                 gamepad.right_trigger, robotAngle);
-        Wheels wheels = motionToWheels(motion);
+        if (rightDrive){
+            motion = new Motion(1, Math.PI/2, 0);
 
+        }
+        else if (leftDrive){
+            motion = new Motion(1, -Math.PI/2, 0);
+        }
+        Wheels wheels = motionToWheels(motion);
         frontLeftDrive.setPower(wheels.frontLeft);
         frontRightDrive.setPower(wheels.frontRight);
         rearLeftDrive.setPower(wheels.backLeft);
         rearRightDrive.setPower(wheels.backRight);
-        telemetry.addLine("front left: "+ wheels.frontLeft);
-        telemetry.addLine("front right : "+ wheels.frontRight);
-        telemetry.addLine("rear left : "+ wheels.backLeft);
-        telemetry.addLine("rear right : "+ wheels.backRight);
-        telemetry.addLine("angle : "+gyro.getAngle());
+        telemetry.addLine("DRIVE");
+        telemetry.addLine(" front left: "+ wheels.frontLeft +", " + frontLeftDrive.getCurrentPosition());
+        telemetry.addLine(" front right : "+ wheels.frontRight +", " + frontRightDrive.getCurrentPosition());
+        telemetry.addLine(" rear left : "+ wheels.backLeft +", " + rearLeftDrive.getCurrentPosition());
+        telemetry.addLine(" rear right : "+ wheels.backRight +", " + rearRightDrive.getCurrentPosition());
+        telemetry.addLine(" angle : "+gyro.getAngle());
 
         if (turnCloseCrypto){
             turn(BT_FieldSetup.closeCryptobox, 1500, telemetry, false);
@@ -402,6 +410,7 @@ public class BT_MecanumDrive {
         if (resetGyro){
             gyro.init(hwMap);
         }
+
     }
 
     public void encoderDrive(double speed,

@@ -6,6 +6,6 @@ package org.firstinspires.ftc.teamcode;
 
 public class BT_FieldSetup {
     public static double closeCryptobox = 0;
-    public static double sideCryptobox  = 90;
+    public static double sideCryptobox  = -90;
 
 }

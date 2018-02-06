@@ -191,8 +191,9 @@ public class BT_Glyphs {
             armMotor.setPower(armMotorPower);
             targetPos = armMotor.getCurrentPosition();
         }
-        telemetry.addData("arm pos: ", armMotor.getCurrentPosition());
-        telemetry.addData("current pos: ", targetPos);
+        telemetry.addLine("GLYPHS");
+        telemetry.addData(" arm pos: ", armMotor.getCurrentPosition());
+        telemetry.addData(" current pos: ", targetPos);
 
         // Handle manual servo control
         armServoPower = -gamepad.right_stick_y;
@@ -205,11 +206,11 @@ public class BT_Glyphs {
         else if (armServoPower < 0 && armServo.getPosition() > 0) {
             moveServo(armServo.getPosition()-SERVO_INTERVAL);
         }
-        telemetry.addData("servo pos: ", armServo.getPosition());
+        telemetry.addData(" servo pos: ", armServo.getPosition());
 
 
-        telemetry.addData("upClamps pos: ", upClamps.getPosition());
-        telemetry.addData("downClamps pos: ", downClamps.getPosition());
+        telemetry.addData(" upClamps pos: ", upClamps.getPosition());
+        telemetry.addData(" downClamps pos: ", downClamps.getPosition());
 
         // Handle automatic operations
         //clamps system

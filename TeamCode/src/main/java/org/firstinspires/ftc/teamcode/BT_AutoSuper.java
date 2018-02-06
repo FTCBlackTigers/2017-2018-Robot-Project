@@ -126,18 +126,6 @@ public class BT_AutoSuper extends LinearOpMode {
         robot.intake.stop();
         robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
         robot.drive.turn(FINAL_ROBOT_ANGLE,5000,telemetry, true);
-        robot.drive.move(40, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
-        robot.intake.glyphsIn();
-        robot.drive.move(40, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
-
-
-//        robot.drive.turn(180,3000,telemetry);
-//        robot.drive.move(40, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-//        robot.intake.glyphsIn();
-//        robot.drive.move(40, BT_MecanumDrive.DriveDirection.FORWARD, 1000 , telemetry );
-//        robot.glyphs.armHigh();
-//        robot.glyphs.releaseGlyphs();
-
     }
     public void driveToCrypto(double driveDist){
     }
