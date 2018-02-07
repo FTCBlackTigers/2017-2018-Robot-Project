@@ -74,7 +74,7 @@ public class BT_Glyphs {
     public static final double ARM_MANUAL_UP_POWER = 0.5;
     public static final double ARM_AUTO_UP_POWER = 0.2;
     public static final double ARM_AUTO_DOWN_POWER = 0.2;
-    public static final int ARM_HIGH_POS = (int)(80 * COUNTS_PER_DEG);
+    public static final int ARM_HIGH_POS = (int)(90 * COUNTS_PER_DEG);
     public static final int ARM_LOW_POS = (int)(25 * COUNTS_PER_DEG);
     public static final int ARM_DOWN_POS = 0;
     public static final int ARM_EXIT_POS = (int)(20 * COUNTS_PER_DEG);
@@ -83,8 +83,8 @@ public class BT_Glyphs {
     public static final double  DOWN_CLAMPS_OPEN_POS = 0.2;
     public static final double DOWN_CLAMPS_CLOSE_POS = 0;
     public static final double SERVO_HIGH_POS = 0.65;
-    public static final double SERVO_DOWN_POS  = 0.1;
-    public static final double SERVO_INTERVAL = 0.05;
+    public static final double SERVO_DOWN_POS  = 0;
+    public static final double SERVO_INTERVAL = 0.02;
     public  int targetPos = 0;
     /* local OpMode members. */
     HardwareMap hwMap = null;
@@ -110,7 +110,7 @@ public class BT_Glyphs {
         armMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        armDown();
+        armDown(true);
 
     }
     public void moveArm(int pos) {
@@ -143,13 +143,16 @@ public class BT_Glyphs {
         moveArm(ARM_LOW_POS);
         moveServo(SERVO_HIGH_POS);
     }
-    public void armDown(){
-        releaseGlyphs();
+    public void armDown(boolean releseGlyphs ){
+        if (releseGlyphs) {
+            releaseGlyphs();
+        }
         moveArm(ARM_DOWN_POS);
 //        while (armMotor.getCurrentPosition() >= ARM_DOWN_POS/0.5){
 //        }
         moveServo(SERVO_DOWN_POS);
     }
+
 
     public void moveServo (double pos){
         armServo.setPosition(pos);
@@ -171,6 +174,7 @@ public class BT_Glyphs {
         boolean glyphsHigh = gamepad.y;
         boolean glyphsDown = gamepad.a;
         boolean glyphsLow = gamepad.b;
+        boolean armDownNoRelese = gamepad.dpad_down;
 
         // Handle manual arm control
 
@@ -229,11 +233,16 @@ public class BT_Glyphs {
             telemetry.addData("op: ","arm high");
         }
         else if (glyphsLow){
+            armHigh();
             armLow();
             telemetry.addData("op: ","arm low");
         }
         else if (glyphsDown){
-            armDown();
+            armDown(true);
+            telemetry.addData("op: ","arm down");
+        }
+        else if (armDownNoRelese){
+            armDown(false);
             telemetry.addData("op: ","arm down");
         }
     }

@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.os.AsyncTask;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
@@ -138,7 +140,7 @@ public class BT_AutoBlueRight2cudes extends BT_AutoSuper {
         robot.glyphs.releaseGlyphs();
         sleep(250);
         robot.drive.move(20, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
-        robot.glyphs.armDown();
+        robot.glyphs.armDown(true);
         sleep(250);
         robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
         robot.drive.move(10, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
@@ -147,6 +149,19 @@ public class BT_AutoBlueRight2cudes extends BT_AutoSuper {
 
 
 
+    }
+
+    class intakeTask extends AsyncTask{
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+        }
     }
 }
 

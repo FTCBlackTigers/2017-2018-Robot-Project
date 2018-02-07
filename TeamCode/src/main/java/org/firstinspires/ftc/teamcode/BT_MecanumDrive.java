@@ -58,7 +58,7 @@ import java.util.List;
 public class BT_MecanumDrive {
     public static double lastVD = 0        ;
     public static final double DELTA_ACCELERATION = 0.13;
-    public static final double TELEOP_DRIVE_SPEED = 0.5;
+    public static final double TELEOP_DRIVE_SPEED = 0.8;
     public static final double SLOW_SPEED = 0.3;
     public enum DriveDirection {
         FORWARD,BACKWARD,RIGHT,LEFT;
