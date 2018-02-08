@@ -60,6 +60,7 @@ public class BT_MecanumDrive {
     public static final double DELTA_ACCELERATION = 0.13;
     public static final double TELEOP_DRIVE_SPEED = 0.8;
     public static final double SLOW_SPEED = 0.3;
+    public static final double TURN_SPEED = 0.2;
     public enum DriveDirection {
         FORWARD,BACKWARD,RIGHT,LEFT;
     }
@@ -117,7 +118,7 @@ public class BT_MecanumDrive {
 
         double vD = Math.min(Math.sqrt(Math.pow(leftX, 2) +
                         Math.pow(leftY, 2)), 1);
-        vD = Math.min(vD, glyphIn ? SLOW_SPEED : TELEOP_DRIVE_SPEED);
+        vD = vD*(glyphIn ? SLOW_SPEED : TELEOP_DRIVE_SPEED);
         if ((vD > lastVD + DELTA_ACCELERATION) && (lastVD + DELTA_ACCELERATION < 0.6)) {
             vD = lastVD + DELTA_ACCELERATION ;
         }
@@ -130,7 +131,7 @@ public class BT_MecanumDrive {
         while (thetaD > Math.PI)  thetaD -=  Math.PI * 2;
         while (thetaD <= - Math.PI) thetaD +=  Math.PI * 2;
         BT_Status.addLine("thetaD 2: "+thetaD);
-        double vTheta = rightX;
+        double vTheta = Math.abs(rightX) < 0.8 ? rightX*TURN_SPEED : rightX;
 
         return new Motion(vD, thetaD, vTheta);
     }
@@ -373,7 +374,7 @@ public class BT_MecanumDrive {
     public void teleopDrive(Gamepad gamepad, Telemetry telemetry) {
         boolean turnCloseCrypto = gamepad.a;
         boolean turnSideCrypto = gamepad.b || gamepad.x;
-        boolean resetGyro = gamepad.back;
+        boolean resetGyro = gamepad.dpad_up;
         boolean rightDrive = gamepad.dpad_right;
         boolean leftDrive = gamepad.dpad_left;
         double robotAngle = 0;
