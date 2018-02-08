@@ -56,6 +56,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 public class BT_Glyphs {
     /* Public OpMode members. */
+    enum ArmState {
+        HOLD,
+        MANUAL,
+        DOWN,
+        DOWN_NO_RELEASE,
+        LOW_ARM,
+        HIGH_ARM
+    }
     public Servo armServo = null;
     public Servo upClamps = null;
     public Servo downClamps = null;
@@ -85,7 +93,9 @@ public class BT_Glyphs {
     public static final double SERVO_HIGH_POS = 0.65;
     public static final double SERVO_DOWN_POS  = 0;
     public static final double SERVO_INTERVAL = 0.02;
-    public  int targetPos = 0;
+    public int targetPos = 0;
+    public ArmState armState = ArmState.HOLD;
+    public boolean doneHigh = false;
     /* local OpMode members. */
     HardwareMap hwMap = null;
 
@@ -133,10 +143,6 @@ public class BT_Glyphs {
     public void armHigh(){
         catchGlyphs();
         moveArm(ARM_HIGH_POS);
-        while (armMotor.getCurrentPosition() <= ARM_HIGH_POS*0.5){
-        }
-        moveServo(SERVO_HIGH_POS);
-
     }
     public void armLow(){
         catchGlyphs();
@@ -177,23 +183,16 @@ public class BT_Glyphs {
         boolean armDownNoRelese = gamepad.dpad_down;
 
         // Handle manual arm control
-
         armMotorPower = -gamepad.left_stick_y;
         boolean isTooHigh = (MAX_ARM_POS < armMotor.getCurrentPosition()) && (armMotorPower > 0);
         boolean isTooLow = (MIN_ARM_POS > armMotor.getCurrentPosition()) && (armMotorPower < 0);
         if ((Math.abs(armMotorPower) < JOYSTICK_THRESHOLD) || isTooHigh || isTooLow) {
-                moveArm(targetPos);
+            if (armState == ArmState.MANUAL) {
+                armState = ArmState.HOLD;
+            }
         }
         else {
-            if (armMotorPower > 0) {
-                armMotorPower = armMotorPower * ARM_MANUAL_UP_POWER;
-            }
-            else {
-                armMotorPower = armMotorPower * ARM_MANUAL_DOWN_POWER;
-            }
-            armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            armMotor.setPower(armMotorPower);
-            targetPos = armMotor.getCurrentPosition();
+            armState = ArmState.MANUAL;
         }
         telemetry.addLine("GLYPHS");
         telemetry.addData(" arm pos: ", armMotor.getCurrentPosition());
@@ -229,21 +228,64 @@ public class BT_Glyphs {
 
         //glyphs arm system
         if (glyphsHigh){
-            armHigh();
-            telemetry.addData("op: ","arm high");
+            armState = ArmState.HIGH_ARM;
         }
         else if (glyphsLow){
-            armHigh();
-            armLow();
-            telemetry.addData("op: ","arm low");
+            armState = ArmState.LOW_ARM;
         }
         else if (glyphsDown){
-            armDown(true);
-            telemetry.addData("op: ","arm down");
+            armState = ArmState.DOWN;
         }
         else if (armDownNoRelese){
-            armDown(false);
-            telemetry.addData("op: ","arm down");
+            armState = ArmState.DOWN_NO_RELEASE;
+        }
+        switch (armState){
+            case HOLD:
+                moveArm(targetPos);
+                break;
+            case MANUAL:
+                if (armMotorPower > 0) {
+                    armMotorPower = armMotorPower * ARM_MANUAL_UP_POWER;
+                }
+                else {
+                    armMotorPower = armMotorPower * ARM_MANUAL_DOWN_POWER;
+                }
+                armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                armMotor.setPower(armMotorPower);
+                targetPos = armMotor.getCurrentPosition();
+                break;
+            case DOWN:
+                armDown(true);
+                armState = ArmState.HOLD;
+                telemetry.addData("op: ","arm down");
+                break;
+            case DOWN_NO_RELEASE:
+                armDown(false);
+                armState = ArmState.HOLD;
+                telemetry.addData("op: ","arm down");
+                break;
+            case HIGH_ARM:
+                armHigh();
+                if (armMotor.getCurrentPosition() >= ARM_HIGH_POS*0.5){
+                    moveServo(SERVO_HIGH_POS);
+                    armState = ArmState.HOLD;
+                }
+                telemetry.addData("op: ","arm high");
+                break;
+            case LOW_ARM:
+                if (!doneHigh) {
+                    armHigh();
+                    if (armMotor.getCurrentPosition() >= ARM_HIGH_POS*0.5) {
+                        moveServo(SERVO_HIGH_POS);
+                        doneHigh = true;
+                    }
+                }
+                else{
+                    armLow();
+                    doneHigh = false;
+                    armState = ArmState.HOLD;
+                }
+                telemetry.addData("op: ","arm low");
         }
     }
 
