@@ -40,6 +40,8 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -64,6 +66,10 @@ public class BT_MecanumDrive {
     public enum DriveDirection {
         FORWARD,BACKWARD,RIGHT,LEFT;
     }
+    public double frontLeftFactor = 1;
+    public double frontRightFactor = 1;
+    public double rearLeftFactor = 1;
+    public double rearRightFactor = 1;
 
     //invert joystick values to motion
     public static class Motion {
@@ -278,7 +284,35 @@ public class BT_MecanumDrive {
 
         //Initiate the gyro
         gyro.init(hwMap);
+        //readMotorFactor(this.callerOpmode.telemetry);
     }
+    public void readMotorFactor(Telemetry telemetry){
+        try {
+            InputStreamReader inputStreamReader = new InputStreamReader(hwMap.appContext.openFileInput("DriveConfig.txt"));
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder stringBuilder;
+            stringBuilder = new StringBuilder();
+            stringBuilder.append(bufferedReader.readLine());
+            frontLeftFactor = Double.parseDouble(stringBuilder.toString());
+            stringBuilder = new StringBuilder();
+            stringBuilder.append(bufferedReader.readLine());
+            rearLeftFactor = Double.parseDouble(stringBuilder.toString());
+            stringBuilder = new StringBuilder();
+            stringBuilder.append(bufferedReader.readLine());
+            frontRightFactor = Double.parseDouble(stringBuilder.toString());
+            stringBuilder = new StringBuilder();
+            stringBuilder.append(bufferedReader.readLine());
+            rearRightFactor = Double.parseDouble(stringBuilder.toString());
+
+        } catch (java.io.IOException e) {
+            telemetry.addLine("file not found");
+            telemetry.update();
+        }
+       // telemetry.addData("drives","%f, %f, %f, %f",frontLeftFactor,rearLeftFactor,frontRightFactor,rearRightFactor);
+        //telemetry.update();
+    }
+
 
     public void runWithoutEncoders (){
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -391,10 +425,10 @@ public class BT_MecanumDrive {
             motion = new Motion(1, -Math.PI/2, 0);
         }
         Wheels wheels = motionToWheels(motion);
-        frontLeftDrive.setPower(wheels.frontLeft);
-        frontRightDrive.setPower(wheels.frontRight);
-        rearLeftDrive.setPower(wheels.backLeft);
-        rearRightDrive.setPower(wheels.backRight);
+        frontLeftDrive.setPower(wheels.frontLeft*frontLeftFactor);
+        frontRightDrive.setPower(wheels.frontRight*frontRightFactor);
+        rearLeftDrive.setPower(wheels.backLeft*rearLeftFactor);
+        rearRightDrive.setPower(wheels.backRight*rearRightFactor);
         telemetry.addLine("DRIVE");
         telemetry.addLine(" front left: "+ wheels.frontLeft +", " + frontLeftDrive.getCurrentPosition());
         telemetry.addLine(" front right : "+ wheels.frontRight +", " + frontRightDrive.getCurrentPosition());

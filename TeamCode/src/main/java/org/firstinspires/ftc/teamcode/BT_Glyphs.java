@@ -144,6 +144,15 @@ public class BT_Glyphs {
         catchGlyphs();
         moveArm(ARM_HIGH_POS);
     }
+
+    public void autoArmHigh(){
+        catchGlyphs();
+        moveArm(ARM_HIGH_POS);
+        while (armMotor.getCurrentPosition() <= ARM_HIGH_POS*0.5) {
+        }
+        moveServo(SERVO_HIGH_POS);
+    }
+
     public void armLow(){
         catchGlyphs();
         moveArm(ARM_LOW_POS);

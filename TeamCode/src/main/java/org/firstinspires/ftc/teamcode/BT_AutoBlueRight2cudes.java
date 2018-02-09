@@ -131,7 +131,7 @@ public class BT_AutoBlueRight2cudes extends BT_AutoSuper {
         robot.intake.stop();
         robot.glyphs.catchGlyphs();
         sleep(500);
-        robot.glyphs.armHigh();
+        robot.glyphs.autoArmHigh();
         sleep(250);
         robot.glyphs.armLow();
         robot.drive.turn(90,2500,telemetry,true);
