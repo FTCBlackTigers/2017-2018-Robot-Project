@@ -85,12 +85,12 @@ public class BT_Glyphs {
     public static final int ARM_HIGH_POS = (int)(90 * COUNTS_PER_DEG);
     public static final int ARM_LOW_POS = (int)(25 * COUNTS_PER_DEG);
     public static final int ARM_DOWN_POS = 0;
-    public static final int ARM_EXIT_POS = (int)(20 * COUNTS_PER_DEG);
+    public static final int ARM_EXIT_POS = (int)(40 * COUNTS_PER_DEG);
     public static final double  UP_CLAMPS_OPEN_POS =  0.2;
     public static final double UP_CLAMPS_CLOSE_POS =  0;
     public static final double  DOWN_CLAMPS_OPEN_POS = 0.2;
     public static final double DOWN_CLAMPS_CLOSE_POS = 0;
-    public static final double SERVO_HIGH_POS = 0.65;
+    public static final double SERVO_HIGH_POS = 0.8;
     public static final double SERVO_DOWN_POS  = 0;
     public static final double SERVO_INTERVAL = 0.02;
     public int targetPos = 0;
@@ -126,19 +126,25 @@ public class BT_Glyphs {
     public void moveArm(int pos) {
         armMotor.setTargetPosition(pos);
         targetPos = pos;
-        ejectGlyphs();
+//        ejectGlyphs();
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower((pos-armMotor.getCurrentPosition()) > 0 ? ARM_AUTO_UP_POWER : ARM_AUTO_DOWN_POWER);
     }
-    public void ejectGlyphs(){
-        if (!intake.isPressed) {
-            if ((armMotor.getCurrentPosition() < ARM_EXIT_POS) && ((targetPos == ARM_HIGH_POS) || (targetPos == ARM_LOW_POS))) {
-                intake.ejectGlyphs();
-            }
-            else {
-                intake.stop();
-            }
-        }
+    public void ejectGlyphs(boolean on){
+      if (on) {
+          intake.ejectGlyphs();
+//        if (!intake.isPressed) {
+//            if ((armMotor.getCurrentPosition() < ARM_EXIT_POS) && ((targetPos == ARM_HIGH_POS) || (targetPos == ARM_LOW_POS))) {
+//                intake.ejectGlyphs();
+//            }
+//            else {
+//                intake.stop();
+//            }
+//        }
+      }
+        else {
+          intake.stop();
+      }
     }
     public void armHigh(){
         catchGlyphs();
@@ -147,9 +153,11 @@ public class BT_Glyphs {
 
     public void autoArmHigh(){
         catchGlyphs();
+        ejectGlyphs(true);
         moveArm(ARM_HIGH_POS);
         while (armMotor.getCurrentPosition() <= ARM_HIGH_POS*0.5) {
         }
+        ejectGlyphs(false);
         moveServo(SERVO_HIGH_POS);
     }
 
@@ -274,19 +282,24 @@ public class BT_Glyphs {
                 telemetry.addData("op: ","arm down");
                 break;
             case HIGH_ARM:
+                ejectGlyphs(true);
                 armHigh();
                 if (armMotor.getCurrentPosition() >= ARM_HIGH_POS*0.5){
                     moveServo(SERVO_HIGH_POS);
                     armState = ArmState.HOLD;
+                    ejectGlyphs(false);
                 }
                 telemetry.addData("op: ","arm high");
                 break;
             case LOW_ARM:
                 if (!doneHigh) {
+                    ejectGlyphs(true);
                     armHigh();
+
                     if (armMotor.getCurrentPosition() >= ARM_HIGH_POS*0.5) {
                         moveServo(SERVO_HIGH_POS);
                         doneHigh = true;
+                        ejectGlyphs(false);
                     }
                 }
                 else{

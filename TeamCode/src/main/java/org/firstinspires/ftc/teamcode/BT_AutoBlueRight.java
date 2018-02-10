@@ -56,9 +56,9 @@ public class BT_AutoBlueRight extends BT_AutoSuper {
     // Declare OpMode members.
     @Override
     public void initAutoConstants(){
-        LEFT_DRIVE_DIST = 82;
-        CENTER_DRIVE_DIST = 101;
-        RIGHT_DRIVE_DIST = 120;
+        LEFT_DRIVE_DIST = 75.5;
+        CENTER_DRIVE_DIST = 96;
+        RIGHT_DRIVE_DIST = 115.5;
         CRYPTO_DIST = 23;
         CLOSE_CRYPTO_ANGLE = 0;
         SIDE_CRYPTO_ANGLE = -90;

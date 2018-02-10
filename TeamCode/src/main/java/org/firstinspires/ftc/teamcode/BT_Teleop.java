@@ -79,6 +79,7 @@ public class BT_Teleop extends OpMode
     @Override
     public void start() {
         runtime.reset();
+        telemetry.setAutoClear(true);
     }
 
     /*

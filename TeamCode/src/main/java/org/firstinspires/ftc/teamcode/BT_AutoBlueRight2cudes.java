@@ -124,9 +124,8 @@ public class BT_AutoBlueRight2cudes extends BT_AutoSuper {
         telemetry.update();
         sleep(500);
         driveToCrypto(driveDist);
-        robot.drive.move(40, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
         robot.intake.glyphsIn();
-        robot.drive.move(80, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
+        robot.drive.move(120, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
         robot.drive.move(100, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
         robot.intake.stop();
         robot.glyphs.catchGlyphs();

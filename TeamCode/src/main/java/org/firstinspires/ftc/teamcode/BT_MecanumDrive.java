@@ -124,11 +124,11 @@ public class BT_MecanumDrive {
 
         double vD = Math.min(Math.sqrt(Math.pow(leftX, 2) +
                         Math.pow(leftY, 2)), 1);
-        vD = vD*(glyphIn ? SLOW_SPEED : TELEOP_DRIVE_SPEED);
         if ((vD > lastVD + DELTA_ACCELERATION) && (lastVD + DELTA_ACCELERATION < 0.6)) {
             vD = lastVD + DELTA_ACCELERATION ;
         }
         lastVD = vD;
+        vD = vD*(glyphIn ? SLOW_SPEED : TELEOP_DRIVE_SPEED);
         double thetaD = Math.atan2(leftX,leftY);
         BT_Status.addLine("thetaD: "+thetaD);
         double radAngle = curretAngle*Math.PI/180;
@@ -284,33 +284,38 @@ public class BT_MecanumDrive {
 
         //Initiate the gyro
         gyro.init(hwMap);
-        //readMotorFactor(this.callerOpmode.telemetry);
+        readMotorFactor(this.callerOpmode.telemetry);
     }
     public void readMotorFactor(Telemetry telemetry){
         try {
             InputStreamReader inputStreamReader = new InputStreamReader(hwMap.appContext.openFileInput("DriveConfig.txt"));
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
             StringBuilder stringBuilder;
             stringBuilder = new StringBuilder();
             stringBuilder.append(bufferedReader.readLine());
-            frontLeftFactor = Double.parseDouble(stringBuilder.toString());
-            stringBuilder = new StringBuilder();
-            stringBuilder.append(bufferedReader.readLine());
-            rearLeftFactor = Double.parseDouble(stringBuilder.toString());
-            stringBuilder = new StringBuilder();
-            stringBuilder.append(bufferedReader.readLine());
-            frontRightFactor = Double.parseDouble(stringBuilder.toString());
-            stringBuilder = new StringBuilder();
-            stringBuilder.append(bufferedReader.readLine());
-            rearRightFactor = Double.parseDouble(stringBuilder.toString());
-
+//            StringBuilder stringBuilder;
+//            stringBuilder = new StringBuilder();
+//            stringBuilder.append(bufferedReader.readLine().split("\n")[0]);
+//            frontLeftFactor = Double.parseDouble(stringBuilder.toString());
+//            stringBuilder = new StringBuilder();
+//            stringBuilder.append(bufferedReader.readLine().split("\n")[1]);
+//            rearLeftFactor = Double.parseDouble(stringBuilder.toString());
+//            stringBuilder = new StringBuilder();
+//            stringBuilder.append(bufferedReader.readLine().split("\n")[2]);
+//            frontRightFactor = Double.parseDouble(stringBuilder.toString());
+//            stringBuilder = new StringBuilder();
+//            stringBuilder.append(bufferedReader.readLine().split("\n")[3]);
+//            rearRightFactor = Double.parseDouble(stringBuilder.toString());
+            telemetry.setAutoClear(false);
+            telemetry.addLine(stringBuilder.toString());
+            telemetry.update();
         } catch (java.io.IOException e) {
             telemetry.addLine("file not found");
             telemetry.update();
         }
        // telemetry.addData("drives","%f, %f, %f, %f",frontLeftFactor,rearLeftFactor,frontRightFactor,rearRightFactor);
         //telemetry.update();
+
     }
 
 
@@ -391,6 +396,42 @@ public class BT_MecanumDrive {
         rearLeftDrive.setPower(0);
         rearRightDrive.setPower(0);
     }
+    public void teleopTurn (double degrees, Telemetry telemetry){
+        double rightSpeed, leftSpeed;
+        double steer;
+        double error = getError(degrees);
+        double t;
+        runtime.reset();
+        boolean isActive = true;
+
+        // keep looping while we are still active, and not on heading.
+        if ((Math.abs(error) > THRESHOLD) && isActive) {
+                // Update telemetry & Allow time for other processes to run.
+                steer = getSteer(error, P_TURN_COEFF);
+                rightSpeed = AUTO_TURN_SPEED * steer;
+                if(rightSpeed>0&& rightSpeed<0.1)
+                    rightSpeed=0.1;
+                else if(rightSpeed<0&&rightSpeed>-0.1)
+                    rightSpeed=-0.1;
+                leftSpeed = -rightSpeed;
+
+                frontLeftDrive.setPower(leftSpeed);
+                frontRightDrive.setPower(rightSpeed);
+                rearLeftDrive.setPower(leftSpeed);
+                rearRightDrive.setPower( rightSpeed);
+
+                error = getError(degrees);
+                telemetry.addData("Error", error);
+                telemetry.addLine("angle : " + gyro.getAngle());
+                telemetry.update();
+        }
+        else {
+            frontLeftDrive.setPower(0);
+            frontRightDrive.setPower(0);
+            rearLeftDrive.setPower(0);
+            rearRightDrive.setPower(0);
+        }
+    }
     public double getError(double targetAngle) {
 
         double robotError;
@@ -408,9 +449,11 @@ public class BT_MecanumDrive {
     public void teleopDrive(Gamepad gamepad, Telemetry telemetry) {
         boolean turnCloseCrypto = gamepad.a;
         boolean turnSideCrypto = gamepad.b || gamepad.x;
-        boolean resetGyro = gamepad.dpad_up;
+        boolean forwDrive = gamepad.dpad_up;
         boolean rightDrive = gamepad.dpad_right;
         boolean leftDrive = gamepad.dpad_left;
+        boolean backDrive = gamepad.dpad_down;
+        boolean resetGyro = gamepad.start;
         double robotAngle = 0;
         if (gamepad.right_bumper ){
             robotAngle = gyro.getAngle();
@@ -418,29 +461,35 @@ public class BT_MecanumDrive {
         Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y,
                 gamepad.right_trigger, robotAngle);
         if (rightDrive){
-            motion = new Motion(1, Math.PI/2, 0);
-
+            motion = new Motion(0.3, Math.PI/2, 0);
         }
         else if (leftDrive){
-            motion = new Motion(1, -Math.PI/2, 0);
+            motion = new Motion(0.3, -Math.PI/2, 0);
+        }
+        else if(backDrive){
+            motion = new Motion(0.3, Math.PI, 0);
+        }
+        else if(forwDrive) {
+            motion = new Motion(0.3, 0, 0);
         }
         Wheels wheels = motionToWheels(motion);
-        frontLeftDrive.setPower(wheels.frontLeft*frontLeftFactor);
-        frontRightDrive.setPower(wheels.frontRight*frontRightFactor);
-        rearLeftDrive.setPower(wheels.backLeft*rearLeftFactor);
-        rearRightDrive.setPower(wheels.backRight*rearRightFactor);
-        telemetry.addLine("DRIVE");
-        telemetry.addLine(" front left: "+ wheels.frontLeft +", " + frontLeftDrive.getCurrentPosition());
-        telemetry.addLine(" front right : "+ wheels.frontRight +", " + frontRightDrive.getCurrentPosition());
-        telemetry.addLine(" rear left : "+ wheels.backLeft +", " + rearLeftDrive.getCurrentPosition());
-        telemetry.addLine(" rear right : "+ wheels.backRight +", " + rearRightDrive.getCurrentPosition());
-        telemetry.addLine(" angle : "+gyro.getAngle());
-
         if (turnCloseCrypto){
-            turn(BT_FieldSetup.closeCryptobox, 1500, telemetry, false);
+            teleopTurn(BT_FieldSetup.closeCryptobox, telemetry);
         }
         else if (turnSideCrypto){
-            turn(BT_FieldSetup.sideCryptobox, 1500, telemetry, false);
+            teleopTurn(BT_FieldSetup.sideCryptobox, telemetry);
+        }
+        else {
+            frontLeftDrive.setPower(wheels.frontLeft/*frontLeftFactor*/);
+            frontRightDrive.setPower(wheels.frontRight/*frontRightFactor*/);
+            rearLeftDrive.setPower(wheels.backLeft/*rearLeftFactor*/);
+            rearRightDrive.setPower(wheels.backRight/*rearRightFactor*/);
+            telemetry.addLine("DRIVE");
+            telemetry.addLine(" front left: " + wheels.frontLeft + ", " + frontLeftDrive.getCurrentPosition());
+            telemetry.addLine(" front right : " + wheels.frontRight + ", " + frontRightDrive.getCurrentPosition());
+            telemetry.addLine(" rear left : " + wheels.backLeft + ", " + rearLeftDrive.getCurrentPosition());
+            telemetry.addLine(" rear right : " + wheels.backRight + ", " + rearRightDrive.getCurrentPosition());
+            telemetry.addLine(" angle : " + gyro.getAngle());
         }
         if (resetGyro){
             gyro.init(hwMap);

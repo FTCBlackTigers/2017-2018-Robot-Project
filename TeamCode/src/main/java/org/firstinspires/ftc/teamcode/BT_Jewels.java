@@ -167,7 +167,7 @@ public class BT_Jewels {
                     BT_Status.addLine("dir : left ");
                 }
             }
-            ((LinearOpMode) callerOpmode).sleep(500);
+            ((LinearOpMode) callerOpmode).sleep(750);
             armUp();
         }
     }

@@ -60,7 +60,7 @@ public class BT_Intake
 
     public static final double MID_INTAKE_POWER  = 0.8;
     public static final double INTAKE_POWER  = 0.6;
-    public static final double EJECT_POWER  = 0.5;
+    public static final double EJECT_POWER  = 0.8;
     public static final double SERVO_OUT  = 1 ;
     public static final double SERVO_IN = 0 ;
     public static final double STOP_SERVO  = 0.393 ;
