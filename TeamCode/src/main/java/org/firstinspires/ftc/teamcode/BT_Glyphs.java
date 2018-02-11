@@ -61,6 +61,7 @@ public class BT_Glyphs {
         MANUAL,
         DOWN,
         DOWN_NO_RELEASE,
+        HOLD_DOWN,
         LOW_ARM,
         HIGH_ARM
     }
@@ -85,6 +86,7 @@ public class BT_Glyphs {
     public static final int ARM_HIGH_POS = (int)(90 * COUNTS_PER_DEG);
     public static final int ARM_LOW_POS = (int)(25 * COUNTS_PER_DEG);
     public static final int ARM_DOWN_POS = 0;
+    public static final int ARM_COLLECT_POS = (int)(-5 * COUNTS_PER_DEG) ;
     public static final int ARM_EXIT_POS = (int)(40 * COUNTS_PER_DEG);
     public static final double  UP_CLAMPS_OPEN_POS =  0.2;
     public static final double UP_CLAMPS_CLOSE_POS =  0;
@@ -273,18 +275,22 @@ public class BT_Glyphs {
                 break;
             case DOWN:
                 armDown(true);
-                armState = ArmState.HOLD;
+                armState = ArmState.HOLD_DOWN;
                 telemetry.addData("op: ","arm down");
                 break;
             case DOWN_NO_RELEASE:
                 armDown(false);
-                armState = ArmState.HOLD;
+                armState = ArmState.HOLD_DOWN;
                 telemetry.addData("op: ","arm down");
+                break;
+            case HOLD_DOWN:
+                moveArm(ARM_COLLECT_POS);
+                moveServo(SERVO_DOWN_POS);
                 break;
             case HIGH_ARM:
                 ejectGlyphs(true);
                 armHigh();
-                if (armMotor.getCurrentPosition() >= ARM_HIGH_POS*0.5){
+                if (armMotor.getCurrentPosition() >= ARM_HIGH_POS*0.3){
                     moveServo(SERVO_HIGH_POS);
                     armState = ArmState.HOLD;
                     ejectGlyphs(false);
@@ -296,7 +302,7 @@ public class BT_Glyphs {
                     ejectGlyphs(true);
                     armHigh();
 
-                    if (armMotor.getCurrentPosition() >= ARM_HIGH_POS*0.5) {
+                    if (armMotor.getCurrentPosition() >= ARM_HIGH_POS*0.3) {
                         moveServo(SERVO_HIGH_POS);
                         doneHigh = true;
                         ejectGlyphs(false);

@@ -226,7 +226,7 @@ public class BT_MecanumDrive {
 
 
     static final double     THRESHOLD = 1;
-    static final double     P_TURN_COEFF            = 0.1;
+    static final double     P_TURN_COEFF            = 0.15;
 
     ElapsedTime runtime = new ElapsedTime();
     private OpMode callerOpmode;
