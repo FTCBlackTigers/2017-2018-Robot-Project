@@ -55,11 +55,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 public class BT_AutoRedRight extends BT_AutoSuper {
     // Declare OpMode members.
     @Override
-    public void initAutoConstants() {
+    public void initAutoConstants(){
+        IS_2_CUBES = false;
         LEFT_DRIVE_DIST = 5;
         CENTER_DRIVE_DIST = 30;
         RIGHT_DRIVE_DIST = 52;
         CRYPTO_DIST = 20;
+        CRYPTO_TURN =0;
         CLOSE_CRYPTO_ANGLE = -90;
         SIDE_CRYPTO_ANGLE = 0;
         FINAL_ROBOT_ANGLE = 180;
@@ -71,7 +73,5 @@ public class BT_AutoRedRight extends BT_AutoSuper {
         robot.drive.move(80, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
         robot.drive.turn(90, 3000, telemetry,true); //turn right
         robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
-        robot.drive.turn(0, 3000, telemetry, true);
-        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 1000, telemetry);
     }
 }

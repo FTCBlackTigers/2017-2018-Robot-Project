@@ -56,10 +56,12 @@ public class BT_AutoBlueRight extends BT_AutoSuper {
     // Declare OpMode members.
     @Override
     public void initAutoConstants(){
+        IS_2_CUBES = false;
         LEFT_DRIVE_DIST = 75.5;
         CENTER_DRIVE_DIST = 96;
         RIGHT_DRIVE_DIST = 115.5;
         CRYPTO_DIST = 23;
+        CRYPTO_TURN = -90 ;
         CLOSE_CRYPTO_ANGLE = 0;
         SIDE_CRYPTO_ANGLE = -90;
         FINAL_ROBOT_ANGLE = 90;
@@ -69,10 +71,6 @@ public class BT_AutoBlueRight extends BT_AutoSuper {
     @Override
     public void driveToCrypto(double driveDist){
         robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        robot.drive.turn(-90,3000,telemetry, true);
-        telemetry.addData("Status", "finished turn ");
-        telemetry.update();
-        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 3000 , telemetry );
     }
 }
 

@@ -70,7 +70,7 @@ public class BT_AutoJewelsBlue extends BT_AutoSuper {
         telemetry.addData("Status", BT_Status.getStatusLine());
         telemetry.update();
         robot.jewels.moveJewel(TARGET_JEWEL_COLOR);
-
+        sleep(3000);
 
     }
 }

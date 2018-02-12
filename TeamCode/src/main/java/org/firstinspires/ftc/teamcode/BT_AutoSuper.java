@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -51,6 +50,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 public class BT_AutoSuper extends LinearOpMode {
     // Declare OpMode members.
+    protected static boolean IS_2_CUBES;
     protected ElapsedTime runtime = new ElapsedTime();
     protected BT_Hardware robot = new BT_Hardware();
     static final double WAIT_FOR_VUMARK = 3000;
@@ -58,10 +58,12 @@ public class BT_AutoSuper extends LinearOpMode {
     protected static double CENTER_DRIVE_DIST ;
     protected static double RIGHT_DRIVE_DIST ;
     protected static double CRYPTO_DIST  ;
+    protected static double CRYPTO_TURN ;
     protected static double CLOSE_CRYPTO_ANGLE ;
     protected static double SIDE_CRYPTO_ANGLE  ;
     protected static double FINAL_ROBOT_ANGLE ;
     protected static BT_Jewels.JewelColor TARGET_JEWEL_COLOR ;
+
 
     public void initAutoConstants(){
     }
@@ -119,6 +121,12 @@ public class BT_AutoSuper extends LinearOpMode {
         telemetry.update();
         sleep(500);
         driveToCrypto(driveDist);
+        if (IS_2_CUBES){
+            put2Cubes();
+        }
+        else {
+            putCube();
+        }
         robot.intake.glyphsOut();
         sleep(500);
         robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
@@ -128,6 +136,20 @@ public class BT_AutoSuper extends LinearOpMode {
         robot.drive.turn(FINAL_ROBOT_ANGLE,5000,telemetry, true);
     }
     public void driveToCrypto(double driveDist){
+    }
+    public void putCube (){
+        robot.drive.turn(CRYPTO_TURN,3000,telemetry,true);
+        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 1000, telemetry);
+        robot.intake.glyphsOut();
+        sleep(500);
+        robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        sleep(250);
+        robot.intake.stop();
+        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        robot.drive.turn(FINAL_ROBOT_ANGLE,5000,telemetry, true);
+    }
+    public void put2Cubes (){
+
     }
 
 }

@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.google.gson.internal.bind.util.ISO8601Utils;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -56,14 +57,17 @@ public class BT_AutoBlueLeft extends BT_AutoSuper {
 
     @Override
     public void initAutoConstants(){
+        IS_2_CUBES = false;
         LEFT_DRIVE_DIST = 10;
         CENTER_DRIVE_DIST = 30;
         RIGHT_DRIVE_DIST = 65;
         CRYPTO_DIST = 10;
+        CRYPTO_TURN = 180;
         CLOSE_CRYPTO_ANGLE = 90;
         SIDE_CRYPTO_ANGLE = 0;
         FINAL_ROBOT_ANGLE = 0;
         TARGET_JEWEL_COLOR = BT_Jewels.JewelColor.RED;
+
     }
 
     @Override
@@ -71,7 +75,7 @@ public class BT_AutoBlueLeft extends BT_AutoSuper {
         robot.drive.move(70, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
         robot.drive.turn(-90,3000,telemetry, true); //turn right
         robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        robot.drive.turn(180,3000,telemetry, true);//turn right again
-        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 1000 , telemetry );
     }
+
+
 }

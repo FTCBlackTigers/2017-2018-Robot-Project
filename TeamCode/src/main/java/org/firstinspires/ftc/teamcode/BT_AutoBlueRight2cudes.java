@@ -54,7 +54,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 public class BT_AutoBlueRight2cudes extends BT_AutoSuper {
     // Declare OpMode members.
     @Override
-    public void initAutoConstants(){
+    public void initAutoConstants() {
+        IS_2_CUBES = true;
         LEFT_DRIVE_DIST = 76;
         CENTER_DRIVE_DIST = 101;
         RIGHT_DRIVE_DIST = 117;
@@ -66,101 +67,36 @@ public class BT_AutoBlueRight2cudes extends BT_AutoSuper {
     }
 
     @Override
-    public void driveToCrypto(double driveDist){
-        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        robot.drive.turn(90,3000,telemetry, true);
+    public void driveToCrypto(double driveDist) {
+        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
 
 
     }
 
     @Override
-    public void runOpMode() {
-        initAutoConstants();
-        double driveDist = 0 ;
-        robot.init(hardwareMap,this);
-        BT_Status.cleanStatus();
-        BT_Status.addLine("Robot Initialized");
-        telemetry.addData("Status", BT_Status.getStatusLine());
-        telemetry.update();
-
-        BT_Vumark btVumark = new BT_Vumark(hardwareMap) ;
-        BT_Status.addLine("Vumark Initialized");
-        telemetry.addData("Status",BT_Status.getStatusLine());
-        telemetry.update();
-
-        RelicRecoveryVuMark vuMark = btVumark.getVuMark();
-        // Wait for the game to start (driver presses PLAY)
-        BT_Status.addLine("Waiting for start...");
-        telemetry.addData("Status",BT_Status.getStatusLine());
-        telemetry.update();
-        waitForStart();
-        BT_Status.addLine("Started...");
-        telemetry.addData("Status",BT_Status.getStatusLine());
-        telemetry.update();
-        runtime.reset();
-        while ((vuMark == RelicRecoveryVuMark.UNKNOWN) && (runtime.milliseconds()< WAIT_FOR_VUMARK)) {
-            vuMark = btVumark.getVuMark();
-        }
-        switch (vuMark) {
-            case RIGHT :
-                driveDist = RIGHT_DRIVE_DIST ;
-                break;
-            case CENTER:
-                driveDist = CENTER_DRIVE_DIST ;
-                break;
-            case LEFT:
-                driveDist = LEFT_DRIVE_DIST ;
-                break;
-            case UNKNOWN:
-                driveDist = RIGHT_DRIVE_DIST ;
-                break;
-        }
-
-        robot.jewels.moveJewel(TARGET_JEWEL_COLOR);
-        telemetry.addLine(BT_Status.getStatusLine());
-        telemetry.addData("Status", "Identified column: %s ",vuMark);
-        telemetry.addData("dist", driveDist);
-        telemetry.setAutoClear(false);
-        telemetry.update();
-        sleep(500);
-        driveToCrypto(driveDist);
+    public void put2Cubes() {
+        robot.drive.turn(90, 3000, telemetry, true);
         robot.intake.glyphsIn();
-        robot.drive.move(120, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
-        robot.drive.move(100, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        robot.drive.move(120, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
+        robot.drive.move(100, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
         robot.intake.stop();
         robot.glyphs.catchGlyphs();
         sleep(500);
         robot.glyphs.autoArmHigh();
         sleep(250);
         robot.glyphs.armLow();
-        robot.drive.turn(90,2500,telemetry,true);
+        robot.drive.turn(90, 2500, telemetry, true);
         sleep(1000);
-        robot.drive.move(35, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        robot.drive.move(35, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
         robot.glyphs.releaseGlyphs();
         sleep(250);
-        robot.drive.move(20, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
+        robot.drive.move(20, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
         robot.glyphs.armDown(true);
         sleep(250);
-        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        robot.drive.move(10, BT_MecanumDrive.DriveDirection.FORWARD, 2500 , telemetry );
-
-
-
+        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.drive.move(10, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
 
 
     }
 
-    class intakeTask extends AsyncTask{
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-        }
-    }
 }
-

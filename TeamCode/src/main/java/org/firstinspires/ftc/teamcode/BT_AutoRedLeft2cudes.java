@@ -30,10 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
 /**
@@ -49,32 +45,54 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="JewelsRedOnly", group="Auto")
+@Autonomous(name="RedLeft2cubes", group="Auto")
 //@Disabled
-public class BT_AutoJewelsRed extends BT_AutoSuper {
+public class BT_AutoRedLeft2cudes extends BT_AutoSuper {
     // Declare OpMode members.
-
     @Override
     public void initAutoConstants() {
-       TARGET_JEWEL_COLOR = BT_Jewels.JewelColor.BLUE;
-        CLOSE_CRYPTO_ANGLE = 90;
-        SIDE_CRYPTO_ANGLE = 180;
+        IS_2_CUBES = true;
+        LEFT_DRIVE_DIST = 76;
+        CENTER_DRIVE_DIST = 101;
+        RIGHT_DRIVE_DIST = 117;
+        CRYPTO_DIST = 23;
+        CLOSE_CRYPTO_ANGLE = 0;
+        SIDE_CRYPTO_ANGLE = -90;
+        FINAL_ROBOT_ANGLE = 90;
+        TARGET_JEWEL_COLOR = BT_Jewels.JewelColor.BLUE;
     }
 
     @Override
-    public void runOpMode() {
-        initAutoConstants();
+    public void driveToCrypto(double driveDist) {
+        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
 
-        BT_FieldSetup.closeCryptobox = CLOSE_CRYPTO_ANGLE;
-        BT_FieldSetup.sideCryptobox = SIDE_CRYPTO_ANGLE;
-
-        robot.init(hardwareMap,this);
-        BT_Status.cleanStatus();
-        BT_Status.addLine("Robot Initialized");
-        telemetry.addData("Status", BT_Status.getStatusLine());
-        telemetry.update();
-        robot.jewels.moveJewel(TARGET_JEWEL_COLOR);
-        sleep(3000);
 
     }
+
+    @Override
+    public void put2Cubes() {
+        robot.drive.turn(-90, 3000, telemetry, true);
+        robot.intake.glyphsIn();
+        robot.drive.move(120, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
+        robot.drive.move(100, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.intake.stop();
+        robot.glyphs.catchGlyphs();
+        sleep(500);
+        robot.glyphs.autoArmHigh();
+        sleep(250);
+        robot.glyphs.armLow();
+        robot.drive.turn(-90, 2500, telemetry, true);
+        sleep(1000);
+        robot.drive.move(35, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.glyphs.releaseGlyphs();
+        sleep(250);
+        robot.drive.move(20, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
+        robot.glyphs.armDown(true);
+        sleep(250);
+        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.drive.move(10, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
+
+
+    }
+
 }

@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
@@ -48,33 +49,49 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
+@Autonomous(name="TurnTest", group="Auto")
 
-@Autonomous(name="JewelsRedOnly", group="Auto")
-//@Disabled
-public class BT_AutoJewelsRed extends BT_AutoSuper {
+public class BT_AutoTurnTest extends LinearOpMode {
     // Declare OpMode members.
+    protected ElapsedTime runtime = new ElapsedTime();
+    protected BT_Hardware robot = new BT_Hardware();
+    static final double WAIT_FOR_VUMARK = 3000;
+    protected static double LEFT_DRIVE_DIST ;
+    protected static double CENTER_DRIVE_DIST ;
+    protected static double RIGHT_DRIVE_DIST ;
+    protected static double CRYPTO_DIST  ;
+    protected static double CLOSE_CRYPTO_ANGLE ;
+    protected static double SIDE_CRYPTO_ANGLE  ;
+    protected static double FINAL_ROBOT_ANGLE ;
+    protected static BT_Jewels.JewelColor TARGET_JEWEL_COLOR ;
 
-    @Override
-    public void initAutoConstants() {
-       TARGET_JEWEL_COLOR = BT_Jewels.JewelColor.BLUE;
-        CLOSE_CRYPTO_ANGLE = 90;
-        SIDE_CRYPTO_ANGLE = 180;
+    public void initAutoConstants(){
     }
-
     @Override
     public void runOpMode() {
-        initAutoConstants();
-
-        BT_FieldSetup.closeCryptobox = CLOSE_CRYPTO_ANGLE;
-        BT_FieldSetup.sideCryptobox = SIDE_CRYPTO_ANGLE;
-
-        robot.init(hardwareMap,this);
+   robot.init(hardwareMap,this);
+        telemetry.setAutoClear(true);
         BT_Status.cleanStatus();
         BT_Status.addLine("Robot Initialized");
         telemetry.addData("Status", BT_Status.getStatusLine());
         telemetry.update();
-        robot.jewels.moveJewel(TARGET_JEWEL_COLOR);
-        sleep(3000);
-
+        waitForStart();
+        robot.drive.move(100, BT_MecanumDrive.DriveDirection.FORWARD, 10000, telemetry);
+        robot.drive.turn(90,5000,telemetry,true);
+        telemetry.addLine(Double.toString(robot.drive.gyro.getAngle()));
+        robot.drive.move(100, BT_MecanumDrive.DriveDirection.FORWARD, 10000, telemetry);
+        robot.drive.turn(180,5000,telemetry,true);
+        telemetry.addLine(Double.toString(robot.drive.gyro.getAngle()));
+        robot.drive.move(100, BT_MecanumDrive.DriveDirection.FORWARD, 10000, telemetry);
+        robot.drive.turn(-90,5000,telemetry,true);
+        telemetry.addLine(Double.toString(robot.drive.gyro.getAngle()));
+        robot.drive.move(100, BT_MecanumDrive.DriveDirection.FORWARD, 10000, telemetry);
+        robot.drive.turn(0,5000,telemetry,true);
+        telemetry.addLine(Double.toString(robot.drive.gyro.getAngle()));
+        telemetry.update();
+        sleep(1000000);
     }
+
+
+
 }
