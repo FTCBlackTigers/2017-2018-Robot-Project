@@ -59,6 +59,7 @@ public class BT_AutoRedLeft2cudes extends BT_AutoSuper {
         CLOSE_CRYPTO_ANGLE = 0;
         SIDE_CRYPTO_ANGLE = -90;
         FINAL_ROBOT_ANGLE = 90;
+        ALLIANCE_COLOR = "RED";
         TARGET_JEWEL_COLOR = BT_Jewels.JewelColor.BLUE;
     }
 

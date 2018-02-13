@@ -59,10 +59,11 @@ public class BT_AutoBlueRight2cudes extends BT_AutoSuper {
         LEFT_DRIVE_DIST = 76;
         CENTER_DRIVE_DIST = 101;
         RIGHT_DRIVE_DIST = 117;
-        CRYPTO_DIST = 23;
+        CRYPTO_DIST = 45;
         CLOSE_CRYPTO_ANGLE = 0;
         SIDE_CRYPTO_ANGLE = -90;
         FINAL_ROBOT_ANGLE = 90;
+        ALLIANCE_COLOR = "BLUE";
         TARGET_JEWEL_COLOR = BT_Jewels.JewelColor.RED;
     }
 
@@ -87,7 +88,7 @@ public class BT_AutoBlueRight2cudes extends BT_AutoSuper {
         robot.glyphs.armLow();
         robot.drive.turn(90, 2500, telemetry, true);
         sleep(1000);
-        robot.drive.move(35, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
         robot.glyphs.releaseGlyphs();
         sleep(250);
         robot.drive.move(20, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);

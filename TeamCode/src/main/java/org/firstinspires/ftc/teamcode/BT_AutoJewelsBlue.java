@@ -55,6 +55,7 @@ public class BT_AutoJewelsBlue extends BT_AutoSuper {
         TARGET_JEWEL_COLOR = BT_Jewels.JewelColor.RED;
         CLOSE_CRYPTO_ANGLE = 90;
         SIDE_CRYPTO_ANGLE = 0;
+        ALLIANCE_COLOR = "BLUE";
     }
 
     @Override

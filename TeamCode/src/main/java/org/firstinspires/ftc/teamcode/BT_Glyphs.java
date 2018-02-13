@@ -92,7 +92,7 @@ public class BT_Glyphs {
     public static final double UP_CLAMPS_CLOSE_POS =  0;
     public static final double  DOWN_CLAMPS_OPEN_POS = 0.2;
     public static final double DOWN_CLAMPS_CLOSE_POS = 0;
-    public static final double SERVO_HIGH_POS = 0.8;
+    public static final double SERVO_HIGH_POS = 0.74;
     public static final double SERVO_DOWN_POS  = 0;
     public static final double SERVO_INTERVAL = 0.02;
     public int targetPos = 0;

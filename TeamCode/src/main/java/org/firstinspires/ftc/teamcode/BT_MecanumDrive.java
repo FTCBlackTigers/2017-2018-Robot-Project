@@ -453,25 +453,33 @@ public class BT_MecanumDrive {
         boolean rightDrive = gamepad.dpad_right;
         boolean leftDrive = gamepad.dpad_left;
         boolean backDrive = gamepad.dpad_down;
-        boolean resetGyro = gamepad.start;
+        boolean resetGyro = gamepad.left_bumper;
         double robotAngle = 0;
+        double cryptoAngle = 0;
         if (gamepad.right_bumper ){
             robotAngle = gyro.getAngle();
+            if (BT_FieldSetup.allianceColor == "RED"){
+                cryptoAngle = -Math.PI / 2;
+            }
+            else {
+                cryptoAngle = Math.PI / 2;
+            }
         }
         Motion motion = joystickToMotion(gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y,
                 gamepad.right_trigger, robotAngle);
         if (rightDrive){
-            motion = new Motion(0.3, Math.PI/2, 0);
+            motion = new Motion(0.3, Math.PI/2+cryptoAngle, 0);
         }
         else if (leftDrive){
-            motion = new Motion(0.3, -Math.PI/2, 0);
+            motion = new Motion(0.3, -Math.PI/2+cryptoAngle, 0);
         }
         else if(backDrive){
-            motion = new Motion(0.3, Math.PI, 0);
+            motion = new Motion(0.3, Math.PI+cryptoAngle, 0);
         }
         else if(forwDrive) {
-            motion = new Motion(0.3, 0, 0);
+            motion = new Motion(0.3, 0+cryptoAngle, 0);
         }
+
         Wheels wheels = motionToWheels(motion);
         if (turnCloseCrypto){
             teleopTurn(BT_FieldSetup.closeCryptobox, telemetry);

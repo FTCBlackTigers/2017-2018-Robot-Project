@@ -50,6 +50,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 public class BT_AutoSuper extends LinearOpMode {
     // Declare OpMode members.
+    protected static String ALLIANCE_COLOR ;
     protected static boolean IS_2_CUBES;
     protected ElapsedTime runtime = new ElapsedTime();
     protected BT_Hardware robot = new BT_Hardware();
@@ -72,6 +73,7 @@ public class BT_AutoSuper extends LinearOpMode {
         initAutoConstants();
         BT_FieldSetup.closeCryptobox = CLOSE_CRYPTO_ANGLE;
         BT_FieldSetup.sideCryptobox = SIDE_CRYPTO_ANGLE;
+        BT_FieldSetup.allianceColor = ALLIANCE_COLOR;
 
         double driveDist = 0 ;
         robot.init(hardwareMap,this);
@@ -127,13 +129,7 @@ public class BT_AutoSuper extends LinearOpMode {
         else {
             putCube();
         }
-        robot.intake.glyphsOut();
-        sleep(500);
-        robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        sleep(250);
-        robot.intake.stop();
-        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        robot.drive.turn(FINAL_ROBOT_ANGLE,5000,telemetry, true);
+
     }
     public void driveToCrypto(double driveDist){
     }
