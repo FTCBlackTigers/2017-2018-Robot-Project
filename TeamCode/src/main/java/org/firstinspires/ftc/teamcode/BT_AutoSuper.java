@@ -141,7 +141,7 @@ public class BT_AutoSuper extends LinearOpMode {
         robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
         sleep(250);
         robot.intake.stop();
-        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        robot.drive.move(17, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
         robot.drive.turn(FINAL_ROBOT_ANGLE,5000,telemetry, true);
     }
     public void put2Cubes (){

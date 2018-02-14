@@ -57,10 +57,11 @@ public class BT_AutoBlueRight extends BT_AutoSuper {
     @Override
     public void initAutoConstants(){
         IS_2_CUBES = false;
-        LEFT_DRIVE_DIST = 75.5;
+        LEFT_DRIVE_DIST = 72.5;
         CENTER_DRIVE_DIST = 96;
         RIGHT_DRIVE_DIST = 115.5;
         CRYPTO_DIST = 23;
+
         CRYPTO_TURN = -90 ;
         CLOSE_CRYPTO_ANGLE = 0;
         SIDE_CRYPTO_ANGLE = -90;

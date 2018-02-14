@@ -59,6 +59,7 @@ public class BT_Glyphs {
     enum ArmState {
         HOLD,
         MANUAL,
+        SERVO_DOWN,
         DOWN,
         DOWN_NO_RELEASE,
         HOLD_DOWN,
@@ -98,6 +99,7 @@ public class BT_Glyphs {
     public int targetPos = 0;
     public ArmState armState = ArmState.HOLD;
     public boolean doneHigh = false;
+    public int servoCount = 0;
     /* local OpMode members. */
     HardwareMap hwMap = null;
 
@@ -172,10 +174,8 @@ public class BT_Glyphs {
         if (releseGlyphs) {
             releaseGlyphs();
         }
-        moveArm(ARM_DOWN_POS);
-//        while (armMotor.getCurrentPosition() >= ARM_DOWN_POS/0.5){
-//        }
         moveServo(SERVO_DOWN_POS);
+        moveArm(ARM_DOWN_POS);
     }
 
 
@@ -253,7 +253,7 @@ public class BT_Glyphs {
             armState = ArmState.LOW_ARM;
         }
         else if (glyphsDown){
-            armState = ArmState.DOWN;
+            armState = ArmState.SERVO_DOWN;
         }
         else if (armDownNoRelese){
             armState = ArmState.DOWN_NO_RELEASE;
@@ -272,6 +272,14 @@ public class BT_Glyphs {
                 armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 armMotor.setPower(armMotorPower);
                 targetPos = armMotor.getCurrentPosition();
+                break;
+            case SERVO_DOWN:
+                moveServo(SERVO_DOWN_POS);
+                servoCount++;
+                if(servoCount >= 5){
+                    armState = ArmState.DOWN;
+                    servoCount = 0;
+                }
                 break;
             case DOWN:
                 armDown(true);
