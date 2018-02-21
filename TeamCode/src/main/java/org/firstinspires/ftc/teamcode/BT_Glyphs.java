@@ -85,6 +85,7 @@ public class BT_Glyphs {
     public static final double ARM_AUTO_UP_POWER = 0.2;
     public static final double ARM_AUTO_DOWN_POWER = 0.2;
     public static final int ARM_HIGH_POS = (int)(90 * COUNTS_PER_DEG);
+    public static final int ARM_MID_POS = (int)(57 * COUNTS_PER_DEG);
     public static final int ARM_LOW_POS = (int)(25 * COUNTS_PER_DEG);
     public static final int ARM_DOWN_POS = 0;
     public static final int ARM_COLLECT_POS = (int)(-5 * COUNTS_PER_DEG) ;
@@ -97,7 +98,7 @@ public class BT_Glyphs {
     public static final double SERVO_DOWN_POS  = 0;
     public static final double SERVO_INTERVAL = 0.02;
     public int targetPos = 0;
-    public ArmState armState = ArmState.HOLD;
+    public ArmState armState = ArmState.HOLD_DOWN;
     public boolean doneHigh = false;
     public int servoCount = 0;
     /* local OpMode members. */
@@ -159,7 +160,16 @@ public class BT_Glyphs {
         catchGlyphs();
         ejectGlyphs(true);
         moveArm(ARM_HIGH_POS);
-        while (armMotor.getCurrentPosition() <= ARM_HIGH_POS*0.5) {
+        while (armMotor.getCurrentPosition() <= ARM_HIGH_POS*0.4) {
+        }
+        ejectGlyphs(false);
+        moveServo(SERVO_HIGH_POS);
+    }
+    public void  autoArmMid(){
+        catchGlyphs();
+        ejectGlyphs(true);
+        moveArm(ARM_MID_POS);
+        while (armMotor.getCurrentPosition() <= ARM_HIGH_POS*0.4) {
         }
         ejectGlyphs(false);
         moveServo(SERVO_HIGH_POS);

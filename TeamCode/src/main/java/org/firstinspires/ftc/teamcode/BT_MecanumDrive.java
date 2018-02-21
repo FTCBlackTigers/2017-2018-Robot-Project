@@ -221,11 +221,13 @@ public class BT_MecanumDrive {
     static final double     WHEEL_DIAMETER_CM       = 10.16 ;     // For figuring circumference
     static final double     COUNTS_PER_CM           = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_CM * 3.1415);
-    static final double     AUTO_DRIVE_SPEED = 0.4;
-    static final double      AUTO_TURN_SPEED  = 0.3;
 
 
-    static final double     THRESHOLD = 1;
+    static final double     AUTO_DRIVE_SPEED = 0.6;
+    static final double      AUTO_TURN_SPEED  = 0.2;
+
+
+    static final double     THRESHOLD = 1.50;
     static final double     P_TURN_COEFF            = 0.1;
 
     ElapsedTime runtime = new ElapsedTime();
@@ -284,7 +286,7 @@ public class BT_MecanumDrive {
 
         //Initiate the gyro
         gyro.init(hwMap);
-        readMotorFactor(this.callerOpmode.telemetry);
+        //readMotorFactor(this.callerOpmode.telemetry);
     }
     public void readMotorFactor(Telemetry telemetry){
         try {
@@ -364,7 +366,6 @@ public class BT_MecanumDrive {
                 else if(rightSpeed<0&&rightSpeed>-0.1)
                     rightSpeed=-0.1;
                 leftSpeed = -rightSpeed;
-
                 frontLeftDrive.setPower(leftSpeed);
                 frontRightDrive.setPower(rightSpeed);
                 rearLeftDrive.setPower(leftSpeed);
@@ -508,7 +509,6 @@ public class BT_MecanumDrive {
     public void encoderDrive(double speed,
                              double distCm, DriveDirection direction,
                              double timeoutMs, Telemetry telemetry) {
-        double robotAngle = gyro.getAngle();
         int newFrontLeftTarget = frontLeftDrive.getCurrentPosition();
         int newFrontRightTarget = frontRightDrive.getCurrentPosition();
         int newRearLeftTarget = rearLeftDrive.getCurrentPosition();
@@ -579,21 +579,7 @@ public class BT_MecanumDrive {
 //            telemetry.addData("front right: " ,newFrontRightTarget + " , " + frontRightDrive.getCurrentPosition());
 //            telemetry.addData("rear left: " ,newRearLeftTarget + " , " + rearLeftDrive.getCurrentPosition());
 //            telemetry.addData("rear right: " ,newRearRightTarget + " , " + rearRightDrive.getCurrentPosition());
-            double steer = getSteer(getError(robotAngle), P_TURN_COEFF);
-            if (direction == DriveDirection.BACKWARD){
-                steer *= -1.0;
-            }
-            double leftSpeed = speed - steer;
-            double rightSpeed = speed + steer;
-            double max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
-            if (max > 1.0) {
-                leftSpeed /= max;
-                rightSpeed /= max;
-            }
-//            frontLeftDrive.setPower(leftSpeed);
-//            frontRightDrive.setPower(rightSpeed);
-//            rearRightDrive.setPower(rightSpeed);
-//            rearLeftDrive.setPower(leftSpeed);
+
         }
 
         // Stop all motion;
@@ -646,4 +632,19 @@ public class BT_MecanumDrive {
 
     }
 
+
+    public void move (double distCm , DriveDirection direction,  double timeoutS, Telemetry telemetry,double driveSpeed ){
+        frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        encoderDrive( driveSpeed, distCm, direction , timeoutS, telemetry );
+
+    }
 }

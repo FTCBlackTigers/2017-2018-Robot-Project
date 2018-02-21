@@ -123,19 +123,15 @@ public class BT_AutoSuper extends LinearOpMode {
         telemetry.update();
         sleep(500);
         driveToCrypto(driveDist);
-        if (IS_2_CUBES){
-            put2Cubes();
-        }
-        else {
-            putCube();
-        }
+        putCube(driveDist);
+        put2Cubes();
 
     }
     public void driveToCrypto(double driveDist){
     }
-    public void putCube (){
+    public void putCube (double driveDist){
         robot.drive.turn(CRYPTO_TURN,3000,telemetry,true);
-        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 1000, telemetry);
+        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 1000, telemetry, 0.3);
         robot.intake.glyphsOut();
         sleep(500);
         robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
@@ -143,6 +139,8 @@ public class BT_AutoSuper extends LinearOpMode {
         robot.intake.stop();
         robot.drive.move(17, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
         robot.drive.turn(FINAL_ROBOT_ANGLE,5000,telemetry, true);
+        //robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+
     }
     public void put2Cubes (){
 

@@ -58,8 +58,8 @@ public class BT_Intake
     public Servo intakeServo = null;
 
 
-    public static final double MID_INTAKE_POWER  = 0.8;
-    public static final double INTAKE_POWER  = 0.6;
+    public static final double MID_INTAKE_POWER  = 0.9;
+    public static final double INTAKE_POWER  = 1;
     public static final double EJECT_POWER  = 0.8;
     public static final double SERVO_OUT  = 1 ;
     public static final double SERVO_IN = 0 ;
@@ -89,7 +89,7 @@ public class BT_Intake
         leftIntake.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         rightIntake.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
         intakeMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-
+        intakeServo.setDirection(Servo.Direction.FORWARD);
         // Set all motors to zero power
         stop();
 

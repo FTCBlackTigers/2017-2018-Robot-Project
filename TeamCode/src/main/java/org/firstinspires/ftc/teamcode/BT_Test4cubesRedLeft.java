@@ -30,11 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
 /**
@@ -50,50 +45,108 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="RedLeft", group="Auto")
+@Autonomous(name="RedLeft4cubesTest", group="Test")
 //@Disabled
-public class BT_AutoRedLeft extends BT_AutoSuper {
+public class BT_Test4cubesRedLeft extends BT_AutoRedLeft2cudes {
     // Declare OpMode members.
+
 
     @Override
     public void initAutoConstants() {
-        IS_2_CUBES = false;
+        super.initAutoConstants();
         LEFT_DRIVE_DIST = 116.5;
         CENTER_DRIVE_DIST = 97;
-        RIGHT_DRIVE_DIST = 75.5;
-        CRYPTO_DIST = 27;
-        CRYPTO_TURN =-90;
-        CLOSE_CRYPTO_ANGLE = 0;
-        SIDE_CRYPTO_ANGLE = 90;
-        FINAL_ROBOT_ANGLE = 90;
-        ALLIANCE_COLOR = "RED";
-        TARGET_JEWEL_COLOR = BT_Jewels.JewelColor.BLUE;
+        RIGHT_DRIVE_DIST = 76.5;
     }
 
-    @Override
-    public void driveToCrypto(double driveDist) {
-        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry,0.4);
-    }
     @Override
     public void put2Cubes() {
+        super.put2Cubes();
         robot.intake.glyphsIn();
-        robot.drive.move(68, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
+        robot.drive.move(90, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.8);
         robot.drive.move(90, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.3);
+        sleep(500);
         robot.drive.move(140, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry,1);
         robot.intake.stop();
-        robot.glyphs.autoArmMid();
+        robot.glyphs.autoArmHigh();
         sleep(200);
-        robot.drive.turn(90, 2500, telemetry, true);
+        robot.drive.turn(87, 2500, telemetry, true);
         sleep(100);
-        //robot.glyphs.autoArmHigh();
-
-        robot.drive.move(CRYPTO_DIST+10, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.drive.move(11, BT_MecanumDrive.DriveDirection.RIGHT, 2500, telemetry, 0.2);
+        robot.glyphs.autoArmHigh();
+        sleep(200);
+        robot.drive.move(CRYPTO_DIST+13, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
         robot.glyphs.releaseGlyphs();
-        sleep(1000);
-        robot.drive.move(5, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry,0.1);
-        robot.drive.move(20, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry,0.9);
+        sleep(300);
+        robot.drive.move(25, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry,0.9);
         robot.glyphs.armDown(true);
-        robot.drive.move(10, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        sleep(300);
+
 
     }
+
+
+//    @Override
+//public void runOpMode() {
+//    initAutoConstants();
+//    BT_FieldSetup.closeCryptobox = CLOSE_CRYPTO_ANGLE;
+//    BT_FieldSetup.sideCryptobox = SIDE_CRYPTO_ANGLE;
+//    BT_FieldSetup.allianceColor = ALLIANCE_COLOR;
+//
+//    double driveDist = 0 ;
+//    robot.init(hardwareMap,this);
+//    BT_Status.cleanStatus();
+//    BT_Status.addLine("Robot Initialized");
+//    telemetry.addData("Status", BT_Status.getStatusLine());
+//    telemetry.update();
+//
+//    BT_Vumark btVumark = new BT_Vumark(hardwareMap) ;
+//    BT_Status.addLine("Vumark Initialized");
+//    telemetry.addData("Status",BT_Status.getStatusLine());
+//    telemetry.update();
+//
+//    RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.RIGHT;
+//    // Wait for the game to start (driver presses PLAY)
+//    BT_Status.addLine("Waiting for start...");
+//    telemetry.addData("Status",BT_Status.getStatusLine());
+//    telemetry.update();
+//    waitForStart();
+//    BT_Status.addLine("Started...");
+//    telemetry.addData("Status",BT_Status.getStatusLine());
+//    telemetry.update();
+//    runtime.reset();
+//    while ((vuMark == RelicRecoveryVuMark.UNKNOWN) && (runtime.milliseconds()< WAIT_FOR_VUMARK)) {
+//        vuMark = btVumark.getVuMark();
+//    }
+//    switch (vuMark) {
+//        case RIGHT :
+//            driveDist = RIGHT_DRIVE_DIST ;
+//            break;
+//        case CENTER:
+//            driveDist = CENTER_DRIVE_DIST ;
+//            break;
+//        case LEFT:
+//            driveDist = LEFT_DRIVE_DIST ;
+//            break;
+//        case UNKNOWN:
+//            driveDist = RIGHT_DRIVE_DIST ;
+//            break;
+//    }
+//
+//    //robot.jewels.moveJewel(TARGET_JEWEL_COLOR);
+//    telemetry.addLine(BT_Status.getStatusLine());
+//    telemetry.addData("Status", "Identified column: %s ",vuMark);
+//    telemetry.addData("dist", driveDist);
+//    telemetry.setAutoClear(false);
+//    telemetry.update();
+//    sleep(500);
+//    driveToCrypto(driveDist);
+//    if (IS_2_CUBES){
+//        put2Cubes();
+//    }
+//    else {
+//        putCube();
+//    }
+//
+//}
 }

@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
 /**
@@ -46,7 +47,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  */
 
 @Autonomous(name="RedLeft2cubes", group="Auto")
-//@Disabled
+@Disabled
 public class BT_AutoRedLeft2cudes extends BT_AutoSuper {
     // Declare OpMode members.
     @Override
@@ -55,7 +56,7 @@ public class BT_AutoRedLeft2cudes extends BT_AutoSuper {
         LEFT_DRIVE_DIST = 76;
         CENTER_DRIVE_DIST = 101;
         RIGHT_DRIVE_DIST = 117;
-        CRYPTO_DIST = 23;
+        CRYPTO_DIST = 43;
         CLOSE_CRYPTO_ANGLE = 0;
         SIDE_CRYPTO_ANGLE = -90;
         FINAL_ROBOT_ANGLE = 90;
@@ -72,28 +73,23 @@ public class BT_AutoRedLeft2cudes extends BT_AutoSuper {
 
     @Override
     public void put2Cubes() {
-        robot.drive.turn(-90, 3000, telemetry, true);
+        robot.drive.turn(90, 3000, telemetry, true);
         robot.intake.glyphsIn();
-        robot.drive.move(120, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
-        robot.drive.move(100, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.drive.move(55, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
+        robot.drive.move(25, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.3);
+        robot.drive.move(65, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
         robot.intake.stop();
         robot.glyphs.catchGlyphs();
-        sleep(500);
+        sleep(250);
         robot.glyphs.autoArmHigh();
         sleep(250);
         robot.glyphs.armLow();
-        robot.drive.turn(-90, 2500, telemetry, true);
-        sleep(1000);
-        robot.drive.move(35, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.drive.turn(90, 2500, telemetry, true);
+        robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
         robot.glyphs.releaseGlyphs();
-        sleep(250);
+        sleep(500);
         robot.drive.move(20, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
         robot.glyphs.armDown(true);
-        sleep(250);
-        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
-        robot.drive.move(10, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
-
-
     }
 
 }

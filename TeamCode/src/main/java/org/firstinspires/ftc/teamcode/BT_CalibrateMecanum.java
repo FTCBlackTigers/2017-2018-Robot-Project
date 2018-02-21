@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.sun.tools.javac.util.Context;
@@ -61,7 +62,7 @@ import java.io.OutputStreamWriter;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @Autonomous(name="BT_CalibrateMecanum", group="Test")
-
+@Disabled
 public class BT_CalibrateMecanum extends LinearOpMode {
     // Declare OpMode members.
     protected ElapsedTime runtime = new ElapsedTime();
