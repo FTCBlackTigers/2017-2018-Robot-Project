@@ -52,22 +52,25 @@ public class BT_AutoSuper extends LinearOpMode {
     // Declare OpMode members.
     protected static String ALLIANCE_COLOR ;
     protected static boolean IS_2_CUBES;
+
+    static final double WAIT_FOR_VUMARK = 1500;
+
+    protected static double LEFT_DRIVE_DIST;
+    protected static double CENTER_DRIVE_DIST;
+    protected static double RIGHT_DRIVE_DIST;
+    protected static double CRYPTO_DIST;
+    protected static double CRYPTO_TURN;
+    protected static double CLOSE_CRYPTO_ANGLE;
+    protected static double SIDE_CRYPTO_ANGLE;
+    protected static double FINAL_ROBOT_ANGLE;
+    protected static BT_Jewels.JewelColor TARGET_JEWEL_COLOR;
+
     protected ElapsedTime runtime = new ElapsedTime();
     protected BT_Hardware robot = new BT_Hardware();
-    static final double WAIT_FOR_VUMARK = 3000;
-    protected static double LEFT_DRIVE_DIST ;
-    protected static double CENTER_DRIVE_DIST ;
-    protected static double RIGHT_DRIVE_DIST ;
-    protected static double CRYPTO_DIST  ;
-    protected static double CRYPTO_TURN ;
-    protected static double CLOSE_CRYPTO_ANGLE ;
-    protected static double SIDE_CRYPTO_ANGLE  ;
-    protected static double FINAL_ROBOT_ANGLE ;
-    protected static BT_Jewels.JewelColor TARGET_JEWEL_COLOR ;
-
 
     public void initAutoConstants(){
     }
+
     @Override
     public void runOpMode() {
         initAutoConstants();
@@ -76,7 +79,7 @@ public class BT_AutoSuper extends LinearOpMode {
         BT_FieldSetup.allianceColor = ALLIANCE_COLOR;
 
         double driveDist = 0 ;
-        robot.init(hardwareMap,this);
+        robot.init(hardwareMap, this);
         BT_Status.cleanStatus();
         BT_Status.addLine("Robot Initialized");
         telemetry.addData("Status", BT_Status.getStatusLine());
@@ -116,7 +119,7 @@ public class BT_AutoSuper extends LinearOpMode {
         }
 
         robot.jewels.moveJewel(TARGET_JEWEL_COLOR);
-        telemetry.addLine(BT_Status.getStatusLine());
+
         telemetry.addData("Status", "Identified column: %s ",vuMark);
         telemetry.addData("dist", driveDist);
         telemetry.setAutoClear(false);
@@ -125,25 +128,20 @@ public class BT_AutoSuper extends LinearOpMode {
         driveToCrypto(driveDist);
         putCube(driveDist);
         put2Cubes();
-
     }
     public void driveToCrypto(double driveDist){
     }
     public void putCube (double driveDist){
-        robot.drive.turn(CRYPTO_TURN,3000,telemetry,true);
+        robot.drive.turn(CRYPTO_TURN, 3000, telemetry, true);
         robot.drive.move(CRYPTO_DIST, BT_MecanumDrive.DriveDirection.FORWARD, 1000, telemetry, 0.3);
         robot.intake.glyphsOut();
         sleep(500);
-        robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
+        robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
         sleep(250);
         robot.intake.stop();
-        robot.drive.move(17, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        robot.drive.turn(FINAL_ROBOT_ANGLE,5000,telemetry, true);
-        //robot.drive.move(5, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
-
+        robot.drive.move(17, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.drive.turn(FINAL_ROBOT_ANGLE, 5000, telemetry, true);
     }
     public void put2Cubes (){
-
     }
-
 }

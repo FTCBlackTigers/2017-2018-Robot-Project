@@ -50,13 +50,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 public class BT_Intake
 {
-
     /* Public OpMode members. */
-    public DcMotor  leftIntake  = null;
-    public DcMotor  rightIntake  = null;
-    public DcMotor intakeMotor  = null;
+    public DcMotor leftIntake = null;
+    public DcMotor rightIntake = null;
+    public DcMotor intakeMotor = null;
     public Servo intakeServo = null;
-
 
     public static final double MID_INTAKE_POWER  = 0.9;
     public static final double INTAKE_POWER  = 1;
@@ -66,8 +64,7 @@ public class BT_Intake
     public static final double STOP_SERVO  = 0.393 ;
     public static boolean isPressed = false;
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
-    private OpMode callerOpmode;
+    HardwareMap hwMap = null;
 
     /* Constructor */
     public BT_Intake(){
@@ -75,10 +72,9 @@ public class BT_Intake
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap, OpMode callerOpmode) {
+    public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
-        this.callerOpmode =callerOpmode;
         // Define and Initialize Motors
 
         leftIntake = hwMap.get(DcMotor.class, "leftIntake");
@@ -126,7 +122,6 @@ public class BT_Intake
     public void teleopMotion(Gamepad gamepad, Telemetry telemetry){
         boolean glyphOut = gamepad.left_trigger > 0.5;
         boolean glyphIn = gamepad.right_trigger > 0.5;
-
         if (glyphOut) {
             isPressed = true ;
             glyphsOut();
@@ -144,4 +139,3 @@ public class BT_Intake
         }
     }
  }
-

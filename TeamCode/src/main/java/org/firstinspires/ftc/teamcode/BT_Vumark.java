@@ -65,42 +65,22 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 public class BT_Vumark  {
 
-
-    /**
-     * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
-     * localization engine.
-     */
     VuforiaLocalizer vuforia;
     VuforiaTrackable relicTemplate;
 
-     public BT_Vumark (HardwareMap hardwareMap) {
+    public BT_Vumark (HardwareMap hardwareMap) {
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-
-        /*
-         * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
-         * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
-         */
-         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-         // OR...  Do Not Activate the Camera Monitor View, to save power
-         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-
-        /*
-         * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
-         * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
-         * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
-         * web site at https://developer.vuforia.com/license-manager.
-         */
-         parameters.vuforiaLicenseKey = "AWaLkov/////AAAAGajgDmwwHElMoSZSQF/igOV0U3k8R46bwkhNdgaSlEzAlq4km1sZEIJw5mTpeDDWqMF23kle1OerQRpyttR5yeCffg1KA80XUdL4we9DgGoruXqE5/zkYU2DYNUo9Cfgk/Z58NjhE8JV1KyV0aKJIFqJpWnR5SiIMO4tnph5G0nBPNECxLDDP00ZquuhXuam/VlVzRm6EQ8b41x2rN0ETQf7Z2ZsGu1xfXXc1xpLvy5ijf5qLxOfnBJVSnSW1LFvawhzbV8+zKYrCb6AUArrOBHtuzw7dDk21QekDz7uD1CqUCITQtjDDPrzsqA0LQPoiBW/gKJQQdUV7oMjuqybUhzscssgi/jTIIUWMNuzqNoK";
+        parameters.vuforiaLicenseKey = "AWaLkov/////AAAAGajgDmwwHElMoSZSQF/igOV0U3k8R46bwkhNdgaSlEzAlq4km1sZEIJw5mTpeDDWqMF23kle1OerQRpyttR5yeCffg1KA80XUdL4we9DgGoruXqE5/zkYU2DYNUo9Cfgk/Z58NjhE8JV1KyV0aKJIFqJpWnR5SiIMO4tnph5G0nBPNECxLDDP00ZquuhXuam/VlVzRm6EQ8b41x2rN0ETQf7Z2ZsGu1xfXXc1xpLvy5ijf5qLxOfnBJVSnSW1LFvawhzbV8+zKYrCb6AUArrOBHtuzw7dDk21QekDz7uD1CqUCITQtjDDPrzsqA0LQPoiBW/gKJQQdUV7oMjuqybUhzscssgi/jTIIUWMNuzqNoK";
 
         /*
          * We also indicate which camera on the RC that we wish to use.
          * Here we chose the back (HiRes) camera (for greater range), but
          * for a competition robot, the front camera might be more convenient.
          */
-         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
-         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
          /**
           * Load the data set containing the VuMarks for Relic Recovery. There's only one trackable
@@ -108,19 +88,13 @@ public class BT_Vumark  {
           * but differ in their instance id information.
           * @see VuMarkInstanceId
           */
-         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-         this.relicTemplate = relicTrackables.get(0);
-         this.relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        this.relicTemplate = relicTrackables.get(0);
+        this.relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
-         relicTrackables.activate();
+        relicTrackables.activate();
      }
 
-    /**
-     * See if any of the instances of {@link relicTemplate} are currently visible.
-     * {@link RelicRecoveryVuMark} is an enum which can have the following values:
-     * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
-     * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
-     */
     public RelicRecoveryVuMark getVuMark() {
         return RelicRecoveryVuMark.from(relicTemplate);
     }

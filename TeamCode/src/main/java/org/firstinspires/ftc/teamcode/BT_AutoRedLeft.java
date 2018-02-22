@@ -54,7 +54,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 //@Disabled
 public class BT_AutoRedLeft extends BT_AutoSuper {
     // Declare OpMode members.
-
     @Override
     public void initAutoConstants() {
         IS_2_CUBES = false;
@@ -74,26 +73,24 @@ public class BT_AutoRedLeft extends BT_AutoSuper {
     public void driveToCrypto(double driveDist) {
         robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry,0.4);
     }
+
     @Override
     public void put2Cubes() {
         robot.intake.glyphsIn();
         robot.drive.move(68, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
         robot.drive.move(90, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.3);
-        robot.drive.move(140, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry,1);
+        robot.drive.move(140, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry, 1);
         robot.intake.stop();
         robot.glyphs.autoArmMid();
         sleep(200);
         robot.drive.turn(90, 2500, telemetry, true);
         sleep(100);
-        //robot.glyphs.autoArmHigh();
-
         robot.drive.move(CRYPTO_DIST+10, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
         robot.glyphs.releaseGlyphs();
         sleep(1000);
-        robot.drive.move(5, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry,0.1);
-        robot.drive.move(20, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry,0.9);
+        robot.drive.move(5, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.1);
+        robot.drive.move(20, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.9);
         robot.glyphs.armDown(true);
         robot.drive.move(10, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
-
     }
 }

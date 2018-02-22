@@ -75,4 +75,11 @@ public class BT_AutoRedRight extends BT_AutoSuper {
         robot.drive.turn(-90, 3000, telemetry,true); //turn right
         robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
     }
+
+    @Override
+    public void putCube(double driveDist) {
+        super.putCube(driveDist);
+        robot.drive.move(LEFT_DRIVE_DIST  - driveDist, BT_MecanumDrive.DriveDirection.LEFT, 2500, telemetry);
+        robot.drive.turn(FINAL_ROBOT_ANGLE, 5000, telemetry, true);
+    }
 }

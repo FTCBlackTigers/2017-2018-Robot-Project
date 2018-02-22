@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
@@ -48,7 +49,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  */
 
 @Autonomous(name="BlueRight4cubesTest", group="Test")
-//@Disabled
+@Disabled
 public class BT_Test4cubesBlueRight extends BT_AutoBlueRight2cudes {
     // Declare OpMode members.
 

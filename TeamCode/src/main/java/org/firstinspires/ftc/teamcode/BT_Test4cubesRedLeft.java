@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
 /**
@@ -46,7 +47,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  */
 
 @Autonomous(name="RedLeft4cubesTest", group="Test")
-//@Disabled
+@Disabled
 public class BT_Test4cubesRedLeft extends BT_AutoRedLeft2cudes {
     // Declare OpMode members.
 

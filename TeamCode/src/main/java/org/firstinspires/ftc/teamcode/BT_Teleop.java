@@ -48,9 +48,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="BT_Teleop", group="Teleop")
-//@Disabled
-public class BT_Teleop extends OpMode
-{
+public class BT_Teleop extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private BT_Hardware robot = new BT_Hardware();
@@ -61,7 +59,6 @@ public class BT_Teleop extends OpMode
     @Override
     public void init() {
         robot.init(hardwareMap, this);
-//        robot.drive.runWithoutEncoders();
         telemetry.addData("Status", "Robot Initialized");
         telemetry.update();
     }
@@ -89,7 +86,6 @@ public class BT_Teleop extends OpMode
     public void loop() {
         BT_Status.cleanStatus();
         robot.drive.teleopDrive(gamepad1,telemetry);
-//        robot.drive.buttonDrive(gamepad1,telemetry);
         robot.glyphs.teleopMotion(gamepad2,telemetry);
         robot.intake.teleopMotion(gamepad1,telemetry);
         boolean jewelsUp = gamepad1.y;
@@ -101,8 +97,6 @@ public class BT_Teleop extends OpMode
 
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
-
-
     }
 
     /*
@@ -111,5 +105,4 @@ public class BT_Teleop extends OpMode
     @Override
     public void stop() {
     }
-
 }

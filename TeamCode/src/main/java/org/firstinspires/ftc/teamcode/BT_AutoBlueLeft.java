@@ -54,7 +54,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 //@Disabled
 public class BT_AutoBlueLeft extends BT_AutoSuper {
     // Declare OpMode members.
-
     @Override
     public void initAutoConstants(){
         IS_2_CUBES = false;
@@ -68,24 +67,19 @@ public class BT_AutoBlueLeft extends BT_AutoSuper {
         FINAL_ROBOT_ANGLE = 0;
         ALLIANCE_COLOR = "BLUE";
         TARGET_JEWEL_COLOR = BT_Jewels.JewelColor.RED;
-
     }
 
     @Override
     public void driveToCrypto(double driveDist){
-        robot.drive.move(70, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-        robot.drive.turn(-90,3000,telemetry, true); //turn right
-        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry );
-
+        robot.drive.move(70, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.drive.turn(-90,3000, telemetry, true); //turn right
+        robot.drive.move(driveDist, BT_MecanumDrive.DriveDirection.BACKWARD, 2500 , telemetry);
     }
-
 
     @Override
     public void putCube(double driveDist) {
         super.putCube(driveDist);
-        robot.drive.move(RIGHT_DRIVE_DIST  - driveDist, BT_MecanumDrive.DriveDirection.RIGHT, 2500 , telemetry );
-        robot.drive.turn(FINAL_ROBOT_ANGLE,5000,telemetry, true);
+        robot.drive.move(RIGHT_DRIVE_DIST  - driveDist, BT_MecanumDrive.DriveDirection.RIGHT, 2500, telemetry);
+        robot.drive.turn(FINAL_ROBOT_ANGLE, 5000, telemetry, true);
     }
-
-
 }
