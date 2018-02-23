@@ -49,7 +49,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="JewelsRedOnly", group="Auto")
+@Autonomous(name="JewelsRedOnly", group="JewelsAuto")
 //@Disabled
 public class BT_AutoJewelsRed extends BT_AutoSuper {
     // Declare OpMode members.

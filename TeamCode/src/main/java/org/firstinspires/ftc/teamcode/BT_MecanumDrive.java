@@ -125,7 +125,6 @@ public class BT_MecanumDrive {
         lastVD = vD;
         vD = vD * (glyphIn ? SLOW_SPEED : TELEOP_DRIVE_SPEED);
         double thetaD = Math.atan2(leftX,leftY);
-        BT_Status.addLine("thetaD: "+thetaD);
         double radAngle = curretAngle*Math.PI/180;
         //driving by driver's view
         thetaD += radAngle;
@@ -215,7 +214,7 @@ public class BT_MecanumDrive {
             (WHEEL_DIAMETER_CM * 3.1415);
 
     static final double AUTO_DRIVE_SPEED = 0.6;
-    static final double AUTO_TURN_SPEED = 0.2;
+    static final double AUTO_TURN_SPEED = 0.25;
     static final double THRESHOLD = 1.50;
     static final double P_TURN_COEFF = 0.1;
 

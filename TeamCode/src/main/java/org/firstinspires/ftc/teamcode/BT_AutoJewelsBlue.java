@@ -47,7 +47,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="JewelsBlueOnly", group="Auto")
+@Autonomous(name="JewelsBlueOnly", group="JewelsAuto")
 //@Disabled
 public class BT_AutoJewelsBlue extends BT_AutoSuper {
     // Declare OpMode members.

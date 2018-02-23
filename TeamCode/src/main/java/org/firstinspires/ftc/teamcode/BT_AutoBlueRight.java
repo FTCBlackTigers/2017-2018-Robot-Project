@@ -57,7 +57,7 @@ public class BT_AutoBlueRight extends BT_AutoSuper {
     @Override
     public void initAutoConstants(){
         IS_2_CUBES = false;
-        LEFT_DRIVE_DIST = 72.5;
+        LEFT_DRIVE_DIST = 75;
         CENTER_DRIVE_DIST = 96;
         RIGHT_DRIVE_DIST = 115.5;
         CRYPTO_DIST = 23;
@@ -77,8 +77,9 @@ public class BT_AutoBlueRight extends BT_AutoSuper {
     @Override
     public void put2Cubes() {
         robot.intake.glyphsIn();
-        robot.drive.move(68, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry);
+        robot.drive.move(68, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.8);
         robot.drive.move(90, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.3);
+        robot.drive.turn(90, 2500, telemetry, true);
         robot.drive.move(140, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry, 1);
         robot.intake.stop();
         robot.glyphs.autoArmMid();
@@ -87,11 +88,11 @@ public class BT_AutoBlueRight extends BT_AutoSuper {
         sleep(100);
         robot.drive.move(CRYPTO_DIST+10, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
         robot.glyphs.releaseGlyphs();
-        sleep(1000);
+        sleep(700);
         robot.drive.move(5, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.1);
         robot.drive.move(20, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.9);
         robot.glyphs.armDown(true);
-        robot.drive.move(10, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
+        robot.drive.move(20, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry);
     }
 }
 
