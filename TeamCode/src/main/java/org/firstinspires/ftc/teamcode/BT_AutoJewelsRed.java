@@ -68,6 +68,7 @@ public class BT_AutoJewelsRed extends BT_AutoSuper {
 
         BT_FieldSetup.closeCryptobox = CLOSE_CRYPTO_ANGLE;
         BT_FieldSetup.sideCryptobox = SIDE_CRYPTO_ANGLE;
+        BT_FieldSetup.allianceColor = ALLIANCE_COLOR;
 
         robot.init(hardwareMap,this);
         BT_Status.cleanStatus();

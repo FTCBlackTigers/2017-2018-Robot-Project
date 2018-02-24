@@ -57,10 +57,10 @@ public class BT_AutoBlueRight extends BT_AutoSuper {
     @Override
     public void initAutoConstants(){
         IS_2_CUBES = false;
-        LEFT_DRIVE_DIST = 75;
-        CENTER_DRIVE_DIST = 96;
-        RIGHT_DRIVE_DIST = 115.5;
-        CRYPTO_DIST = 23;
+        LEFT_DRIVE_DIST = 78.5;
+        CENTER_DRIVE_DIST = 100;
+        RIGHT_DRIVE_DIST = 119.5;
+        CRYPTO_DIST = 22;
         CRYPTO_TURN = -90;
         CLOSE_CRYPTO_ANGLE = 0;
         SIDE_CRYPTO_ANGLE = -90;
@@ -77,7 +77,7 @@ public class BT_AutoBlueRight extends BT_AutoSuper {
     @Override
     public void put2Cubes() {
         robot.intake.glyphsIn();
-        robot.drive.move(68, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.8);
+        robot.drive.move(68, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.5);
         robot.drive.move(90, BT_MecanumDrive.DriveDirection.FORWARD, 2500, telemetry, 0.3);
         robot.drive.turn(90, 2500, telemetry, true);
         robot.drive.move(140, BT_MecanumDrive.DriveDirection.BACKWARD, 2500, telemetry, 1);

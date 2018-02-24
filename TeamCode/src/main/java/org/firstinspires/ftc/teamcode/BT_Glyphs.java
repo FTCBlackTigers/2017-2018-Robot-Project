@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -107,16 +108,18 @@ public class BT_Glyphs {
 
     /* local OpMode members. */
     HardwareMap hwMap = null;
+    private OpMode callerOpmode;
 
     /* Constructor */
     public BT_Glyphs(){
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap, BT_Intake intake) {
+    public void init(HardwareMap ahwMap, BT_Intake intake, OpMode callerOpmode) {
         // Save reference to Hardware map
         hwMap = ahwMap;
         this.intake = intake;
+        this.callerOpmode = callerOpmode;
         // Define and Initialize Motors
         armServo = hwMap.get(Servo.class, "armServo");
         upClamps = hwMap.get(Servo.class, "upClampsServo");
@@ -167,7 +170,7 @@ public class BT_Glyphs {
         catchGlyphs();
         ejectGlyphs(true);
         moveArm(ARM_MID_POS);
-        while (armMotor.getCurrentPosition() <= ARM_HIGH_POS*0.4) {
+        while ((armMotor.getCurrentPosition() <= ARM_HIGH_POS*0.4) && ((LinearOpMode)callerOpmode).opModeIsActive()) {
         }
         ejectGlyphs(false);
         moveServo(SERVO_HIGH_POS);
@@ -206,7 +209,7 @@ public class BT_Glyphs {
         boolean glyphsDown = gamepad.a;
         boolean glyphsLow = gamepad.b;
         boolean armDownNoRelese = gamepad.dpad_down;
-        boolean resetArmPos = gamepad.dpad_up;
+        boolean resetArmPos = gamepad.left_bumper && gamepad.right_bumper;
 
         if(resetArmPos){
             resetArmPos();
@@ -274,7 +277,7 @@ public class BT_Glyphs {
                 break;
             case MANUAL:
                 armMotorPower = armMotorPower * (armMotorPower > 0 ? ARM_MANUAL_UP_POWER : ARM_MANUAL_DOWN_POWER);
-                armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 armMotor.setPower(armMotorPower);
                 targetPos = armMotor.getCurrentPosition();
                 break;
@@ -314,7 +317,7 @@ public class BT_Glyphs {
                 if (!doneHigh) {
                     ejectGlyphs(true);
                     armHigh();
-                    if (armMotor.getCurrentPosition() >= ARM_HIGH_POS*0.3) {
+                    if (armMotor.getCurrentPosition() >= ARM_HIGH_POS*0.5) {
                         moveServo(SERVO_HIGH_POS);
                         doneHigh = true;
                         ejectGlyphs(false);
